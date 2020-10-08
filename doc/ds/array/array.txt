@@ -1,0 +1,18 @@
+create an array
+	Type
+		float 
+		int 
+		char
+		str
+		def
+	
+	
+sort an arrray
+seacrch
+delete
+	nth
+	first
+	last
+	chunk
+inser
+
