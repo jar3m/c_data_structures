@@ -28,7 +28,8 @@ MODULE_ARCHIVES += $(test_ARCHIVE)
 endif
 
 ifeq ($(MODULE), all)
-MODULE_ARCHIVES += $(nn_ARCHIVE)
+MODULE_ARCHIVES += $(algo_ARCHIVE)
+MODULE_ARCHIVES += $(ds_ARCHIVE)
 MODULE_ARCHIVES += $(test_ARCHIVE)
 endif
 
