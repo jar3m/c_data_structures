@@ -4,14 +4,24 @@ common_OBJ=bin/common.o
 
 common_ARCHIVE=$(PROJ_PATH)/common/bin/common.a
 
+logger_SRC=src/logger.c
+logger_OBJ=bin/logger.o
+
+common_ARCHIVE=$(PROJ_PATH)/common/bin/common.a
+
 OBJS=$(common_OBJ)
+OBJS+=$(logger_OBJ)
 
 $(common_OBJ): $(common_SRC)
+	$(CC) $(INCLUDES) -c $^ -o $@ $(CFLAGS)
+
+$(logger_OBJ): $(logger_SRC)
 	$(CC) $(INCLUDES) -c $^ -o $@ $(CFLAGS)
 
 all: $(OBJS)
 	@echo "building common"
 	ar rcs $(common_ARCHIVE) $(OBJS)
+	rm -f  $(OBJS)
 
 
 .PHONY: clean
