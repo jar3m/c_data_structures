@@ -5,7 +5,7 @@
 #
 #All defines to be explained in docs/testing_framework.txt
 
-PROJ_PATH=~/workspaces/c_everything
+PROJ_PATH=$(PWD)
 MODULE=test
 
 .show:
