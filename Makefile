@@ -55,8 +55,8 @@ $(test_ARCHIVE) :
 .PHONY: clean help
 
 clean:
-	make -C ds/ clean
 	make -C test/ clean
+#	make -C ds/ clean
 	find ${PROJ_PATH} -name "*.[ao]" -exec rm -v {} \;
 
 

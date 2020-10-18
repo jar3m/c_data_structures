@@ -1,0 +1,2 @@
+
+void logger_init();

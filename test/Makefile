@@ -17,6 +17,7 @@ $(test_OBJ): $(test_SRC)
 
 all: $(OBJS)
 	ar rcs $(test_ARCHIVE) $(OBJS)
+	rm -f  $(OBJS)
 
 
 .PHONY: clean
