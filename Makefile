@@ -1,6 +1,6 @@
 include Defs.make
 
-CC=cc
+CC=gcc
 TEST_FILE_DIRECTORY="$(PROJ_PATH)/test/src"
 
 LDLIBS= -lm -pg
@@ -58,6 +58,7 @@ clean:
 	make -C test/ clean
 #	make -C ds/ clean
 	find ${PROJ_PATH} -name "*.[ao]" -exec rm -v {} \;
+	rm $(PROJ_PATH)/gmon.out
 
 
 help:
