@@ -9,13 +9,22 @@ logger_OBJ=bin/logger.o
 
 common_ARCHIVE=$(PROJ_PATH)/common/bin/common.a
 
+logger_SRC=src/memory.c
+logger_OBJ=bin/memory.o
+
+common_ARCHIVE=$(PROJ_PATH)/common/bin/common.a
+
 OBJS=$(common_OBJ)
 OBJS+=$(logger_OBJ)
+OBJS+=$(memory_OBJ)
 
 $(common_OBJ): $(common_SRC)
 	$(CC) $(INCLUDES) -c $^ -o $@ $(CFLAGS)
 
 $(logger_OBJ): $(logger_SRC)
+	$(CC) $(INCLUDES) -c $^ -o $@ $(CFLAGS)
+
+$(memory_OBJ): $(memory_SRC)
 	$(CC) $(INCLUDES) -c $^ -o $@ $(CFLAGS)
 
 all: $(OBJS)
