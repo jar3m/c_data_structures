@@ -12,7 +12,6 @@ test_ARCHIVE=$(PROJ_PATH)/test/bin/test.a
 OBJS=$(test_OBJ)
 
 $(test_OBJ): $(test_SRC)
-	echo "----- $(INCLUDES)"
 	$(CC) $(INCLUDES) -c $^ -o $@ $(CFLAGS)
 
 all: $(OBJS)
