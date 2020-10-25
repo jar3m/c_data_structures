@@ -7,6 +7,15 @@ static bool module_logs[MAX_MODULES] = {false};
 
 void logger_init()
 {
+	int i;
+
+	for (i = 0; i < MAX_LOG_LEVELS; i++) {
+		log_level[i] = true;
+	}
+	for (i = 0; i < MAX_MODULES; i++) {
+		module_logs[i] = true;
+	}
+
 	printf("Logger init\n");
 }
 
@@ -16,6 +25,7 @@ int app_log(int module, int level, char *prefix, const char *format, ...)
 	va_list args;
 
 	va_start(args, format);
+
 	if ((level < MAX_LOG_LEVELS && log_level[level] == true) &&
 			(module < MAX_MODULES && module_logs[module] == true)) {
 		char time_buff[64];
