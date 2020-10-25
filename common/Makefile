@@ -12,6 +12,9 @@ common_ARCHIVE=$(PROJ_PATH)/common/bin/common.a
 logger_SRC=src/memory.c
 logger_OBJ=bin/memory.o
 
+mem_SRC=src/memory_manager.c
+mem_OBJ=bin/memory_manager.o
+
 common_ARCHIVE=$(PROJ_PATH)/common/bin/common.a
 
 OBJS=$(common_OBJ)
