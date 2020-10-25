@@ -8,26 +8,23 @@ static bool module_logs[MAX_MODULES] = {false};
 void logger_init()
 {
 	int i;
-
+	
 	for (i = 0; i < MAX_LOG_LEVELS; i++) {
 		log_level[i] = true;
 	}
-	for (i = 0; i < MAX_MODULES; i++) {
-		module_logs[i] = true;
-	}
 
 	printf("Logger init\n");
+
 }
 
-int app_log(int module, int level, char *prefix, const char *format, ...)
+int app_log(char *module, int level, char *prefix, const char *format, ...)
 {
 	int len = 0;
 	va_list args;
 
 	va_start(args, format);
 
-	if ((level < MAX_LOG_LEVELS && log_level[level] == true) &&
-			(module < MAX_MODULES && module_logs[module] == true)) {
+	if (level < MAX_LOG_LEVELS && log_level[level] == true) {
 		char time_buff[64];
 		int millisec;
 		struct timeval tv;
@@ -57,20 +54,9 @@ int app_log(int module, int level, char *prefix, const char *format, ...)
 				printf("[UDF");
 				break;
 		}
-		switch (module) {
-			case COMMON_MODULE:
-				printf(":COMMON] ");
-				break;
-				//		case APPLICATION:
-				//			printf(":APP] ");
-				//			break;
-				//		case DRIVER:
-				//			printf(":DRV] ");
-				//			break;
-			default:
-				printf(":UDF] ");
-				break;
-		}
+
+		printf(":%s] ",module);
+
 		if (prefix != NULL) {
 			printf("{%s} ", prefix);
 		}
