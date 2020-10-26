@@ -58,7 +58,7 @@ clean:
 	make -C test/ clean
 #	make -C ds/ clean
 	find ${PROJ_PATH} -name "*.[ao]" -exec rm -v {} \;
-	rm $(PROJ_PATH)/gmon.out
+	rm -f $(PROJ_PATH)/gmon.out
 
 
 help:

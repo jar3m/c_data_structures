@@ -1,4 +1,5 @@
 #include "common.h"
+
 static t_mem_manager memer; 
 
 void mem_init() 
@@ -10,7 +11,14 @@ void mem_init()
 
 void mem_finit(void) 
 {
-  memory_report();
+	t_mem_record *iter = NULL;
+  mem_alloc_report();
+	if (memer.mem_record != NULL) {
+		for (iter = memer.mem_record ; iter != NULL; iter = iter->next) {
+		  printf("cleaning up allocated memory space %p\n", iter);
+			os_free(iter);
+		}
+	}
 	memer.alloc_count = 0;
 	memer.free_count = 0;
 
@@ -35,8 +43,8 @@ void *tag_alloc(size_t nmemb, size_t size, char *file, int line)
 	}
 	else {
 		memer.alloc_count++;
-		new_mem->next = mem_record;
-		mem_record = new_mem;
+		new_mem->next = memer.mem_record;
+		memer.mem_record = new_mem;
 	}
 
 
@@ -49,35 +57,33 @@ void *tag_alloc(size_t nmemb, size_t size, char *file, int line)
 
 void untag_alloc(void *mem_addr, char *file, int line)
 {
-	t_mem_record * mem_list = NULL, prev_addr = NULL;
-	if (mem_record == NULL)
+	t_mem_record * mem_list = NULL, *prev_addr = NULL;
+	if (memer.mem_record == NULL)
 		return;
 
-	for (mem_list = mem_record; mem_list->next != NULL; prev = mem_list, mem_list = mem_list->next) {
-		if (mem_addr == mem_record->mem) {
-			mem_record = mem_list->next;
-			if (mem_addr)	{
-				os_free(mem_addr);
+	for (mem_list = memer.mem_record; mem_list != NULL; prev_addr = mem_list, mem_list = mem_list->next) {
+		if (mem_addr == mem_list->mem) {
+			
+			if (mem_addr == memer.mem_record->mem) {
+				memer.mem_record = mem_list->next;
 			}
-			//free the memory for the tagged memory in the tracker
-			os_free(mem_list);
-			memer.free_count++;
-		}
-		else if (mem_addr == mem_list->mem) {
-			prev_addr->next = mem_list->next;
-			if (mem_addr)	{
-				os_free(mem_addr);
+			else {
+				prev_addr->next = mem_list->next;
 			}
-			os_free(mem_list);
-			memer.free_count++;
-		}
 
+			if (mem_addr)	{
+				os_free(mem_addr);
+				memer.free_count++;
+			}
+		
+		os_free(mem_list);
+		}
 	}
-
 }
 
 
-void mem_report(void)
+void mem_alloc_report(void)
 {
-	return
+	printf("allocations = %4d , freed allocations = %4d\n", 
+	           memer.alloc_count, memer.free_count);
 }
