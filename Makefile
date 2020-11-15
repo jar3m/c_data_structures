@@ -37,7 +37,7 @@ export
 
 all: $(MODULE_ARCHIVES)
 	@echo "All archives ($(MODULE_ARCHIVES)) created"
-	$(CC) $(INCLUDES) $^ -o $@ $(MODULE_ARCHIVES) $(LDLIBS) $(CFLAGS)
+	$(CC) $(INCLUDES) $^ -o foo.out $(MODULE_ARCHIVES) $(LDLIBS) $(CFLAGS)
 
 $(common_ARCHIVE) :
 	make -C common/ all
@@ -49,7 +49,6 @@ $(ds_ARCHIVE) :
 	make -C ds/ all
 
 $(test_ARCHIVE) :
-	echo "----- $(INCLUDES)"
 	make -C test/ all
 
 .PHONY: clean help
@@ -58,7 +57,8 @@ clean:
 	make -C test/ clean
 #	make -C ds/ clean
 	find ${PROJ_PATH} -name "*.[ao]" -exec rm -v {} \;
-	rm -f $(PROJ_PATH)/gmon.out
+	find ${PROJ_PATH} -name "*.out" -exec rm -v {} \;
+
 
 
 help:
