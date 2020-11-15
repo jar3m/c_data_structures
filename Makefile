@@ -24,6 +24,7 @@ MODULE_ARCHIVES += $(algo_ARCHIVE)
 endif
 
 ifeq ($(MODULE), test)
+MODULE_ARCHIVES += $(ds_ARCHIVE)
 MODULE_ARCHIVES += $(test_ARCHIVE)
 endif
 
@@ -55,7 +56,7 @@ $(test_ARCHIVE) :
 
 clean:
 	make -C test/ clean
-#	make -C ds/ clean
+	make -C ds/ clean
 	find ${PROJ_PATH} -name "*.[ao]" -exec rm -v {} \;
 	find ${PROJ_PATH} -name "*.out" -exec rm -v {} \;
 
