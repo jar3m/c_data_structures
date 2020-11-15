@@ -8,3 +8,10 @@
 #include <pthread.h>
 #include <signal.h>
 #include <sys/time.h>
+
+
+#ifndef CUSTOM_MALLOC
+	#define os_alloc(nmemb, size)				calloc((nmemb), (size))
+	#define os_free(mem_addr)						free((mem_addr))
+
+#endif
