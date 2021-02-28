@@ -33,10 +33,13 @@ typedef enum data_types {
 }e_data_types;
 
 
-typedef void* t_data;
+typedef struct elem {
+	int data;
+	struct elem *nxt;
+	struct elem *prv;
+} t_elem;
 
-typedef struct element {
-	void *elem;
-} t_element;
+
+typedef void* t_data;
 
 

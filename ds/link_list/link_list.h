@@ -9,13 +9,6 @@ typedef enum {
 	eCIRCULAR_LINKLIST,
 }e_lltype;
 
-typedef struct elem {
-	int data;
-	struct elem *nxt;
-	struct elem *prv;
-} t_elem;
-
-
 typedef struct linklist {
 	e_lltype type;
 
