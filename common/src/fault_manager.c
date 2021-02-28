@@ -1,12 +1,25 @@
-#include <fault_manager.h>
+#include "common.h"
+#include <execinfo.h>
+
 static struct sigaction action = {0};
 
 void dummy_fault_handler()
 {
 
-	// closing_logger_manager
-	// closing_memory_manager
+	void *array[10];
+	size_t size;
+
+	//get void*'s for all entries on the stack
+	size = backtrace(array, 10);
+
+	// print out all the frames to stderr
+	backtrace_symbols_fd(array, size, STDERR_FILENO);
 	// gracefulexit
+	// closing_logger_manager
+	
+	// closing_memory_manager
+	mem_finit();
+
 	printf("gracefullexit\n");
 }
 

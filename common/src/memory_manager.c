@@ -24,18 +24,18 @@ void mem_finit(void)
 
 }
 
-void *tag_alloc(size_t nmemb, size_t size, char *file, int line)
+t_data tag_alloc(size_t nmemb, size_t size, char *file, int line)
 {
 	//TODO:add resource lock
 	t_mem_record *new_mem = os_alloc(1, sizeof(t_mem_record));
 	if (new_mem == NULL) {
 		printf("Memory allocation for tracker failed\n");
 	}
-  new_mem->nmemb = nmemb;
+	new_mem->nmemb = nmemb;
 	new_mem->block_size = size;
 	new_mem->file = file;
 	new_mem->line = line;
-  new_mem->next = NULL;
+	new_mem->next = NULL;
 
 	new_mem->mem = os_alloc(nmemb, size);
 	if (new_mem->mem == NULL) {
@@ -76,7 +76,7 @@ void untag_alloc(void *mem_addr, char *file, int line)
 				memer.free_count++;
 			}
 		
-		os_free(mem_list);
+			os_free(mem_list);
 		}
 	}
 }

@@ -38,7 +38,7 @@ export
 
 all: $(MODULE_ARCHIVES)
 	@echo "All archives ($(MODULE_ARCHIVES)) created"
-	$(CC) $(INCLUDES) $^ -o foo.out $(MODULE_ARCHIVES) $(LDLIBS) $(CFLAGS)
+	$(CC) $(INCLUDES) $^ -rdynamic -o foo.out $(MODULE_ARCHIVES) $(LDLIBS) $(CFLAGS)
 
 $(common_ARCHIVE) :
 	make -C common/ all

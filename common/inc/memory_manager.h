@@ -1,7 +1,7 @@
 #pragma once 
 
 #define get_mem(nmemb, size) tag_alloc(nmemb, size,  __FILE__, __LINE__)
-#define del_mem(mem_addr) untag_alloc(mem_addr, __FILE__, __LINE__) 
+#define free_mem(mem_addr) untag_alloc(mem_addr, __FILE__, __LINE__) 
 
 typedef struct memory_record 
 {

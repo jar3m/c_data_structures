@@ -1,6 +1,6 @@
 #pragma once
+#include "common.h"
 
-typedef void* t_data;
 
 
 typedef enum {
@@ -11,8 +11,8 @@ typedef enum {
 
 typedef struct elem {
 	int data;
-	struct llelem *nxt;
-	struct llelem *prv;
+	struct elem *nxt;
+	struct elem *prv;
 } t_elem;
 
 
@@ -20,8 +20,8 @@ typedef struct linklist {
 	e_lltype type;
 
 	int count;
-	t_llelem *head;
-	t_llelem *tail;
+	t_elem *head;
+	t_elem *tail;
 } t_linklist;
 
 
