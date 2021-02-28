@@ -19,10 +19,12 @@ BUILD_TYPE=executable
 SEGFAULT_BACKTRACE=false
 #include submodules of Data structures
 LINK_LIST=true
+STACK=false
 
 .show:
 	@echo "PROJ_PATH= $(PROJ_PATH)"
 	@echo "LIB_NAME=$(LIB_NAME)"
 	@echo "MODULE= $(MODULE)"
 	@echo "BUILD_TYPE=$(BUILD_TYPE)"
-	@echo "link= $(LINK_LIST)"
+	@echo "LINK_LIST= $(LINK_LIST)"
+	@echo "STACKS= $(STACK)"

@@ -26,9 +26,11 @@ int main(int argc, char *argv[])
 	LOG_TRACE_IN("COMMON", "Hello World\n");
 	LOG_TRACE_OUT("COMMON", "Hello World\n");
 
+#if LINK_LIST == true
 	t_data l = create_link_list(eSINGLE_LINKLIST);
 	print_link_list(l);
 	destroy_link_list(l);
+#endif
 	mem_finit();
 
 	return 0;

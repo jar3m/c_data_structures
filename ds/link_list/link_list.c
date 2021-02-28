@@ -20,8 +20,9 @@ t_data create_link_list (e_lltype type)
 void destroy_link_list (t_data d)
 {	
 	t_linklist *l = (t_linklist*)d;
-	t_elem *tmp,*ptr = ((t_linklist*)l)->head;
+	t_elem *tmp,*ptr;
 
+	ptr = l->head;
 	// delete all node in llist
 	while(ptr) {
 		tmp = ptr;	
@@ -48,7 +49,6 @@ void destroy_link_list (t_data d)
 void print_link_list (t_data d)
 {
 	t_linklist *l = (t_linklist*)d;
-
 	t_elem *ptr = l->head;
 
 	LOG_INFO("LINKLIST", "");

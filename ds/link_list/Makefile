@@ -3,7 +3,6 @@ link_list_OBJ=link_list.o
 
 OBJS=$(link_list_OBJ)
 
-
 all: $(OBJS)
 #	rm -f  $(OBJS)
 #	ar rcs $(link_list_ARCHIVE) $(OBJS)
