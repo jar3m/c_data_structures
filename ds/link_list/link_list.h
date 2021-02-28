@@ -26,8 +26,10 @@ typedef struct linklist {
 
 
 //API
+t_data create_link_list(e_lltype type); 
+void destroy_link_list (t_data d);
+void print_link_list (t_data d);
 #if 0
-t_data create_link_list(e_lltype type); //me
 destroy_link_list(t_data); //me
 add_link_list(t_data, int);	//rang
 del_link_list(t_data, int);//rang	

@@ -10,7 +10,7 @@ t_data create_link_list (e_lltype type)
 	l->type = type;
 	l->count = 0;
 	l->tail = l->head = NULL;
-
+	
 	return (t_data)l;
 }
 
@@ -48,14 +48,14 @@ void destroy_link_list (t_data d)
 void print_link_list (t_data d)
 {
 	t_linklist *l = (t_linklist*)d;
-	printf("%x\n",l->head);
-//	t_elem *ptr = l->head;
-#if 0
-	LOG_INFO("LINKLIST", ":%x\n",ptr);
+
+	t_elem *ptr = l->head;
+
+	LOG_INFO("LINKLIST", "");
 	while (ptr) {
 		LOG_INFO(" ","%d", ptr->data);
 		ptr = ptr->nxt;
 	}
 	LOG_INFO(" ","\n");
-#endif
+
 }
