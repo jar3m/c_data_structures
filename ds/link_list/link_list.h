@@ -2,7 +2,7 @@
 #include "common.h"
 
 typedef void(*f_append)(t_data,int);
-typedef void(*f_prepend)(t_data,int);
+typedef void(*f_add)(t_data,int);
 
 typedef enum {
 	eSINGLE_LINKLIST,
@@ -19,7 +19,7 @@ typedef struct linklist {
 	t_elem *head;
 	t_elem *tail;
 	f_append append;
-	f_prepend prepend;
+	f_add add;
 } t_linklist;
 
 
