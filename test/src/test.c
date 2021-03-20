@@ -5,16 +5,17 @@ int main(int argc, char *argv[])
 {
 	size_t size = 0;
 	int *ptr[100];
+	int i ;	
 
 	mem_init();
 	logger_init();
 	fault_manager_init(NULL);
-	for (int i = 0; i < 100; i ++) {
+	for (i = 0; i < 100; i ++) {
 		ptr[i] = (int *)get_mem(1, sizeof(int));
 		size += sizeof(*(ptr[i]));
 	}
 	printf("size of allocated memory = %lu\n" , size);
-	for (int i = 0; i < 100; i++) {
+	for (i = 0; i < 100; i++) {
 		free_mem(ptr[i]);
 	}
 
@@ -26,12 +27,26 @@ int main(int argc, char *argv[])
 	LOG_TRACE_IN("COMMON", "Hello World\n");
 	LOG_TRACE_OUT("COMMON", "Hello World\n");
 
-#if LINK_LIST == true
-	t_data l = create_link_list(eSINGLE_LINKLIST);
-	print_link_list(l);
-	destroy_link_list(l);
-#endif
+	t_data l1 = create_link_list("SLL",eSINGLE_LINKLIST);
+	t_data l2 = create_link_list("DLL",eDOUBLE_LINKLIST);
+	t_data l3 = create_link_list("SCLL",eSINGLE_CIRCULAR_LINKLIST);
+	t_data l4 = create_link_list("DCLL",eDOUBLE_CIRCULAR_LINKLIST);
+	for (i = 0; i < 3; i++) {
+		((t_linklist*)l1)->append(l1, i);
+		((t_linklist*)l2)->append(l2, i);
+		((t_linklist*)l3)->append(l3, i);
+		((t_linklist*)l4)->append(l4, i);
+	}
+	print_link_list(l1);
+	print_link_list(l2);
+	print_link_list(l3);
+	print_link_list(l4);
+	destroy_link_list(l1);
+	destroy_link_list(l2);
+	destroy_link_list(l3);
+	destroy_link_list(l4);
 	mem_finit();
+
 
 	return 0;
 
