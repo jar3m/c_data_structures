@@ -43,3 +43,5 @@ typedef struct elem {
 typedef void* t_data;
 
 t_elem* get_node(int data);
+
+typedef void (*f_print)(t_data);

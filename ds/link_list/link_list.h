@@ -20,6 +20,7 @@ typedef struct linklist {
 	t_elem *tail;
 	f_append append;
 	f_add add;
+	f_print print;
 } t_linklist;
 
 
