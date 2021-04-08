@@ -16,6 +16,8 @@ typedef enum {
 
 typedef struct stack {
 	char *name;
+	int max_size;
+	e_stacktype type;
 	t_linklist data;
 
 	f_push push;
