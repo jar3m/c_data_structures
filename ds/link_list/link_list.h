@@ -3,6 +3,7 @@
 
 typedef void(*f_append)(t_data,int);
 typedef void(*f_add)(t_data,int);
+typedef void (*f_del)(t_data, int);
 
 typedef enum {
 	eSINGLE_LINKLIST,
@@ -20,6 +21,7 @@ typedef struct linklist {
 	t_elem *tail;
 	f_append append;
 	f_add add;
+	f_del del;
 } t_linklist;
 
 

@@ -32,6 +32,28 @@ int main(int argc, char *argv[])
 	t_data l3 = create_link_list("SCLL",eSINGLE_CIRCULAR_LINKLIST);
 	t_data l4 = create_link_list("DCLL",eDOUBLE_CIRCULAR_LINKLIST);
 	for (i = 0; i < 3; i++) {
+	  ((t_linklist*)l1)->append(l1, i);
+		((t_linklist*)l2)->append(l2, i);
+		((t_linklist*)l3)->append(l3, i);
+		((t_linklist*)l4)->append(l4, i);
+	}
+	print_link_list(l1);
+	print_link_list(l2);
+	print_link_list(l3);
+	print_link_list(l4);
+	LOG_INFO("TEST", "deleting nodes in link list\n");
+  for (i = 0; i < 3; i++) {
+	  ((t_linklist*)l1)->del(l1, i);
+	  ((t_linklist*)l2)->del(l2, i);
+	  ((t_linklist*)l3)->del(l3, i);
+	  ((t_linklist*)l4)->del(l4, i);
+	}
+
+	print_link_list(l1);
+	print_link_list(l2);
+	print_link_list(l3);
+	print_link_list(l4);
+	for (i = 0; i < 3; i++) {
 		((t_linklist*)l1)->append(l1, i);
 		((t_linklist*)l2)->append(l2, i);
 		((t_linklist*)l3)->append(l3, i);
