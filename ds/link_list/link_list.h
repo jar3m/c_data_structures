@@ -22,6 +22,7 @@ typedef struct linklist {
 	f_append append;
 	f_add add;
 	f_del del;
+	f_print print;
 } t_linklist;
 
 
@@ -29,11 +30,3 @@ typedef struct linklist {
 t_data create_link_list(char *name, e_lltype type); 
 void destroy_link_list (t_data d);
 void print_link_list (t_data d);
-#if 0
-del_link_list(t_data, int);//rang	
-get_elem(t_data, int);	//may
-index(data)	//may
-count	//rang
-swap	//rang
-reverse//may
-#endif
