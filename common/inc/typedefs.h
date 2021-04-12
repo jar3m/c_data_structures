@@ -1,23 +1,13 @@
 #pragma once
 
-#define	CAST(X,T)		((T)(X))
-
-#define	GREATER(X, Y, T)		(((T)(X)) >  ((T)(Y)))
-#define GREAT_EQUAL(X, Y, T)	(((T)(X)) <= ((T)(Y)))
-#define	LESSER(X, Y, T)			(((T)(X)) <  ((T)(Y)))
-#define LESS_EQUAL(X, Y, T)		(((T)(X)) <= ((T)(Y)))
-#define	EQUAL(X, Y, T)			(((T)(X)) == ((T)(Y)))
-#define	NOT_EQUAL(X, Y, T)		(((T)(X)) != ((T)(Y)))
-
-
-typedef char			t_int8;
+typedef char		t_int8;
 typedef unsigned char	t_uint8;
-typedef short			t_int16;
+typedef short		t_int16;
 typedef unsigned short	t_uint16;
-typedef int				t_int32;
+typedef int		t_int32;
 typedef unsigned int	t_uint32;
-typedef float			t_float;
-typedef double			t_double;
+typedef float		t_float;
+typedef double		t_double;
 
 
 typedef enum data_types {
@@ -32,6 +22,7 @@ typedef enum data_types {
 	eUSER,
 }e_data_types;
 
+typedef void* t_gen;
 
 typedef struct elem {
 	int data;
@@ -40,6 +31,10 @@ typedef struct elem {
 } t_elem;
 
 
-typedef void* t_data;
 
 t_elem* get_node(int data);
+
+typedef void (*f_print)(t_gen);
+typedef bool (*f_empty)(t_gen);
+typedef bool (*f_full)(t_gen);
+typedef int (*f_len)(t_gen);
