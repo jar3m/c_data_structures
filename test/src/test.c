@@ -27,26 +27,26 @@ int main(int argc, char *argv[])
 	LOG_TRACE_IN("COMMON", "Hello World\n");
 	LOG_TRACE_OUT("COMMON", "Hello World\n");
 
-	t_data l1 = create_link_list("SLL",eSINGLE_LINKLIST);
-	t_data l2 = create_link_list("DLL",eDOUBLE_LINKLIST);
-	t_data l3 = create_link_list("SCLL",eSINGLE_CIRCULAR_LINKLIST);
-	t_data l4 = create_link_list("DCLL",eDOUBLE_CIRCULAR_LINKLIST);
+	t_gen l1 = create_link_list("SLL",eSINGLE_LINKLIST);
+	t_gen l2 = create_link_list("DLL",eDOUBLE_LINKLIST);
+	t_gen l3 = create_link_list("SCLL",eSINGLE_CIRCULAR_LINKLIST);
+	t_gen l4 = create_link_list("DCLL",eDOUBLE_CIRCULAR_LINKLIST);
 	for (i = 0; i < 3; i++) {
-	  ((t_linklist*)l1)->append(l1, i);
-		((t_linklist*)l2)->append(l2, i);
-		((t_linklist*)l3)->append(l3, i);
-		((t_linklist*)l4)->append(l4, i);
+		((t_linklist*)l1)->add(l1, i);
+		((t_linklist*)l2)->add(l2, i);
+		((t_linklist*)l3)->add(l3, i);
+		((t_linklist*)l4)->add(l4, i);
 	}
 	print_link_list(l1);
 	print_link_list(l2);
 	print_link_list(l3);
 	print_link_list(l4);
 	LOG_INFO("TEST", "deleting nodes in link list\n");
-  for (i = 0; i < 3; i++) {
-	  ((t_linklist*)l1)->del(l1, i);
-	  ((t_linklist*)l2)->del(l2, i);
-	  ((t_linklist*)l3)->del(l3, i);
-	  ((t_linklist*)l4)->del(l4, i);
+	for (i = 0; i < 3; i++) {
+		((t_linklist*)l1)->del(l1, i);
+		((t_linklist*)l2)->del(l2, i);
+		((t_linklist*)l3)->del(l3, i);
+		((t_linklist*)l4)->del(l4, i);
 	}
 
 	print_link_list(l1);

@@ -24,7 +24,7 @@ void mem_finit(void)
 
 }
 
-t_data tag_alloc(size_t nmemb, size_t size, char *file, int line)
+t_gen tag_alloc(size_t nmemb, size_t size, char *file, int line)
 {
 	//TODO:add resource lock
 	t_mem_record *new_mem = os_alloc(1, sizeof(t_mem_record));
@@ -73,6 +73,7 @@ void untag_alloc(void *mem_addr, char *file, int line)
 
 			if (mem_addr)	{
 				os_free(mem_addr);
+				mem_addr = NULL;
 				memer.free_count++;
 			}
 		

@@ -16,7 +16,7 @@ BUILD_TYPE=executable
 #BUILD_TYPE=library
 
 #flags
-SEGFAULT_BACKTRACE=false
+SEGFAULT_BACKTRACE=true
 #include submodules of Data structures
 LINK_LIST=true
 STACK=false
