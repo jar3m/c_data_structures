@@ -4,7 +4,7 @@ static t_mem_manager memer;
 
 void mem_init() 
 { 
-  memer.mem_record = NULL;
+	memer.mem_record = NULL;
 	memer.alloc_count = 0;
 	memer.free_count = 0;
 }
@@ -12,10 +12,11 @@ void mem_init()
 void mem_finit(void) 
 {
 	t_mem_record *iter = NULL;
-  mem_alloc_report();
+	mem_alloc_report();
 	if (memer.mem_record != NULL) {
 		for (iter = memer.mem_record ; iter != NULL; iter = iter->next) {
-		  printf("cleaning up allocated memory space %p\n", iter);
+			printf("cleaning up allocated memory space @{%s:%d} [%lu Byte(s)] - %p\n", 
+					iter->file, iter->line, iter->block_size, iter);
 			os_free(iter);
 		}
 	}
@@ -51,7 +52,7 @@ t_gen tag_alloc(size_t nmemb, size_t size, char *file, int line)
 	return (new_mem->mem);
 
 }
-		
+
 
 
 
@@ -63,7 +64,7 @@ void untag_alloc(void *mem_addr, char *file, int line)
 
 	for (mem_list = memer.mem_record; mem_list != NULL; prev_addr = mem_list, mem_list = mem_list->next) {
 		if (mem_addr == mem_list->mem) {
-			
+
 			if (mem_addr == memer.mem_record->mem) {
 				memer.mem_record = mem_list->next;
 			}
@@ -76,7 +77,7 @@ void untag_alloc(void *mem_addr, char *file, int line)
 				mem_addr = NULL;
 				memer.free_count++;
 			}
-		
+
 			os_free(mem_list);
 		}
 	}
