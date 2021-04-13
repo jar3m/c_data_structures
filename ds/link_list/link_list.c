@@ -1,19 +1,19 @@
  #include "link_list.h"
 
-void add_begin_sll(t_gen d,int data);
-void add_begin_dll(t_gen d,int data);
-void add_begin_scll(t_gen d,int data); 
-void add_begin_dcll(t_gen d,int data);
+void add_begin_sll(t_gen d,t_gen data);
+void add_begin_dll(t_gen d,t_gen data);
+void add_begin_scll(t_gen d,t_gen data); 
+void add_begin_dcll(t_gen d,t_gen data);
 
-void add_end_sll(t_gen d,int data);
-void add_end_dll(t_gen d,int data);
-void add_end_scll(t_gen d,int data); 
-void add_end_dcll(t_gen d,int data);
+void add_end_sll(t_gen d,t_gen data);
+void add_end_dll(t_gen d,t_gen data);
+void add_end_scll(t_gen d,t_gen data); 
+void add_end_dcll(t_gen d,t_gen data);
 
-void del_node_sll(t_gen d, int data);
-void del_node_dll(t_gen d, int data);
-void del_node_scll(t_gen d, int data); 
-void del_node_dcll(t_gen d, int data);
+t_gen del_node_sll(t_gen d, t_gen data);
+t_gen del_node_dll(t_gen d, t_gen data);
+t_gen del_node_scll(t_gen d, t_gen data); 
+t_gen del_node_dcll(t_gen d, t_gen data);
 
 int len_of_link_list(t_gen d);
 void print_link_list (t_gen d);
@@ -26,7 +26,7 @@ f_del del[] = {del_node_sll, del_node_dll, del_node_scll, del_node_dcll};
 /*! \brief Brief description.
  *  Create an instance of link list
  * */
-t_gen create_link_list (char *name, e_lltype type)
+t_gen create_link_list (char *name, e_lltype type, e_data_types data_type)
 {
 	t_linklist *l = (t_linklist*)get_mem(1, sizeof(t_linklist));
 	
@@ -42,14 +42,37 @@ t_gen create_link_list (char *name, e_lltype type)
 	l->del = del[type];
 	l->len = len_of_link_list;
 	l->print = print_link_list;
-
+	l->free = FREE_MEM;
+	switch(data_type)
+	{
+		case eINT8:
+			//char list;
+			l->cmpr = compare_char;
+			l->swap = swap_char;
+			break;
+		case eINT32:
+			//int list;
+			l->cmpr = compare_int;
+			l->swap = swap_int;
+			break;
+		case eFLOAT:
+			//float list;
+			l->cmpr = compare_float;
+			l->swap = swap_float;
+			break;
+		case eSTRING:
+			//string list;
+			l->cmpr = compare_string;
+			l->swap = swap_string;
+			break;
+	}
 	return (t_gen)l;
 }
 
 /*! \brief Brief description.
  *  Add Beggining for singly LL
  * */
-void add_begin_sll(t_gen d, int data)
+void add_begin_sll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
 	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
@@ -72,7 +95,7 @@ void add_begin_sll(t_gen d, int data)
 /*! \brief Brief description.
  *  Add Beggining for doubly LL
  * */
-void add_begin_dll(t_gen d, int data)
+void add_begin_dll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
 	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
@@ -101,7 +124,7 @@ void add_begin_dll(t_gen d, int data)
 /*! \brief Brief description.
  *  Add Beggining for Singly Circular LL
  * */
-void add_begin_scll(t_gen d,int data)
+void add_begin_scll(t_gen d,t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
 	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
@@ -128,7 +151,7 @@ void add_begin_scll(t_gen d,int data)
 /*! \brief Brief description.
  *  Add Beggining for Doubly Circular LL
  **/
-void add_begin_dcll(t_gen d,int data)
+void add_begin_dcll(t_gen d,t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
 	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
@@ -156,7 +179,7 @@ void add_begin_dcll(t_gen d,int data)
 /*! \brief Brief description.
  *  Add End for Singly LL
  * */
-void add_end_sll(t_gen d,int data) 
+void add_end_sll(t_gen d,t_gen data) 
 {
 	t_linklist *l = (t_linklist*)d;
 	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
@@ -180,7 +203,7 @@ void add_end_sll(t_gen d,int data)
 /*! \brief Brief description.
  *  Add End for Doublly LL
  * */
-void add_end_dll(t_gen d,int data) 
+void add_end_dll(t_gen d,t_gen data) 
 {
 	t_linklist *l = (t_linklist*)d;
 	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
@@ -206,7 +229,7 @@ void add_end_dll(t_gen d,int data)
 /*! \brief Brief description.
  *  Add End for Singly Circular LL
  * */
-void add_end_scll(t_gen d,int data) 
+void add_end_scll(t_gen d,t_gen data) 
 {
 	t_linklist *l = (t_linklist*)d;
 	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
@@ -232,7 +255,7 @@ void add_end_scll(t_gen d,int data)
 /*! \brief Brief description.
  *  Add End for Doubly Circular LL
  * */
-void add_end_dcll(t_gen d,int data) 
+void add_end_dcll(t_gen d,t_gen data) 
 {
 	t_linklist *l = (t_linklist*)d;
 	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
@@ -276,6 +299,7 @@ void destroy_link_list (t_gen d)
 		l->count--;
 		// free node
 		tmp->nxt = tmp->prv = NULL;
+		free_mem(tmp->data);
 		free_mem(tmp);	
 		if(ptr == end) {
 			break;
@@ -294,37 +318,40 @@ void destroy_link_list (t_gen d)
 
 /*! \brief Brief description.
  *   Delete node with matching data in singly LL
+ *   and return the instance
  * */
-void del_node_sll(t_gen d, int data)
+t_gen del_node_sll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
 	t_elem *cur = l->head, *prv;
+	t_gen tmp = NULL;
 
 	// empty list
 	if (l->head == NULL) {
-		LOG_WARN("LINK_LIST", "No nodes exist\n");
-		return;
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
 	}
 	
 	// Head node is to be deleted and new head is updated
-	if (cur->data == data) {
+	if (l->cmpr(cur->data, data) == eEQUAL) {
 		l->head = cur->nxt;
 		cur->nxt = NULL;
 		free_mem(cur);
+		tmp = cur->data;
 		l->count--;
 		// Reset Tail to NULL if list empty
 		l->tail = l->head? l->tail : NULL;
-		return;
+		return tmp;
 	}
 
 	// Find the node to be deleted
-	while (cur->data != data) {
+	while (l->cmpr(cur->data, data) != eEQUAL) {
 		prv = cur;
 		cur = cur->nxt;
 		// Node to be deleted not found
 		if (cur == NULL) {
-			LOG_INFO("LINK_LIST", "No node %d found within the link list\n", data);
-			return;
+			LOG_INFO("LINK_LIST", "%s: No node %d found within the link list\n",l->name, data);
+			return tmp;
 		}
 	}
 	
@@ -337,28 +364,32 @@ void del_node_sll(t_gen d, int data)
 	l->count--;
 	// Free node
 	cur->nxt = NULL;
+	tmp = cur->data;
 	free_mem(cur);
 
+	return tmp;
 }
 
 
 
 /*! \brief Brief description.
  *   Delete node with matching data in Doublly LL
+ *   and return the instance
  * */
-void del_node_dll(t_gen d, int data)
+t_gen del_node_dll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
 	t_elem *cur = l->head;
+	t_gen tmp = NULL;
 
 	// empty list
 	if (l->head == NULL) {
-		LOG_WARN("LINK_LIST", "No nodes exist\n");
-		return;
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
 	}
 
 	// Head node is to be deleted and new head is updated
-	if (cur->data == data) {
+	if (l->cmpr(cur->data, data) == eEQUAL) {
 		l->head = cur->nxt;
 		if (l->head != NULL) {
 			l->head->prv = NULL;
@@ -367,17 +398,18 @@ void del_node_dll(t_gen d, int data)
 		// Reset Tail to NULL if list empty
 		l->tail = l->head? l->tail : NULL;
 		cur->nxt = cur->prv = NULL;
+		tmp = cur->data;
 		free_mem(cur);
-		return;
+		return tmp;
 	}
 
 	// Find the node to be deleted
-	while (cur->data != data) {
+	while (l->cmpr(cur->data, data) != eEQUAL) {
 		cur = cur->nxt;
 		// Node to be deleted not found
 		if(cur == NULL) {
-			LOG_INFO("LINK_LIST", "No node %d found within the link list\n", data);
-			return;
+			LOG_INFO("LINK_LIST", "%s: No node %d found within the link list\n",l->name, data);
+			return tmp;
 		}
 	}
 
@@ -394,28 +426,32 @@ void del_node_dll(t_gen d, int data)
 	// Free node
 	l->count--;
 	cur->nxt = cur->prv = NULL;
+	tmp = cur->data;
 	free_mem(cur);
 
+	return tmp;
 }
 
 
 
 /*! \brief Brief description.
  *   Delete node with matching data in Singly Circular LL
+ *   and return the instance
  * */
-void del_node_scll(t_gen d, int data)
+t_gen del_node_scll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
 	t_elem *cur = l->head, *prv;
+	t_gen tmp = NULL;
 
 	// empty list
 	if (l->head == NULL) {
-		LOG_WARN("LINK_LIST", "No curs exist\n");
-		return;
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
 	}
 
 	// Head node is to be deleted and new head is updated
-	if (cur->data == data) {
+	if (l->cmpr(cur->data, data) == eEQUAL) {
 		// Unlink cur node and update fwd link for tail
 		l->tail->nxt = l->head = cur->nxt;
 		l->count--;
@@ -424,19 +460,20 @@ void del_node_scll(t_gen d, int data)
 			l->tail = l->head = NULL;
 		}
 		cur->nxt = NULL;
+		tmp = cur->data;
 		free_mem(cur);
-		return;
+		return tmp;
 	}
 
 	// Find the node to be deleted
-	while (cur->data != data) {
+	while (l->cmpr(cur->data, data) != eEQUAL) {
 		prv = cur;
 		cur = cur->nxt;
 
 		// Node to be deleted not found
 		if (cur == l->head) {
-			LOG_INFO("LINK_LIST", "No node %d found within the link list\n", data);
-			return;
+			LOG_INFO("LINK_LIST", "%s: No node %d found within the link list\n",l->name, data);
+			return tmp;
 		}
 	}
 
@@ -449,28 +486,32 @@ void del_node_scll(t_gen d, int data)
 	}
 	// Free node
 	cur->nxt = NULL;
+	tmp = cur->data;
 	free_mem(cur);
 
+	return tmp;
 }
 
 
 
 /*! \brief Brief description.
  *   Delete node with matching data in Doubly Circular LL
+ *   and return the instance
  * */
-void del_node_dcll(t_gen d, int data)
+t_gen del_node_dcll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
 	t_elem *cur = l->head;
+	t_gen tmp;
 
 	// empty list
 	if (l->head == NULL) {
-		LOG_WARN("LINK_LIST", "No nodes exist\n");
-		return;
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
 	}
 
 	// Head node is to be deleted and new head is updated
-	if (cur->data == data) {
+	if (l->cmpr(cur->data, data) == eEQUAL) {
 		l->head = cur->nxt;
 		// Unlink cur node and update fwd and rev link
 		l->head->prv = l->tail;
@@ -481,16 +522,17 @@ void del_node_dcll(t_gen d, int data)
 			l->tail = l->head = NULL;
 		}
 		cur->nxt = cur->prv = NULL;
+		tmp = cur->data;
 		free_mem(cur);
-		return;
+		return tmp;
 	}
 
 	// Find the node to be deleted
-	while (cur->data != data) {
+	while (l->cmpr(cur->data, data) != eEQUAL) {
 		cur = cur->nxt;
 		if(cur == l->head) {
-			LOG_INFO("LINK_LIST", "No node %d found within the link list\n", data);
-			return;
+			LOG_INFO("LINK_LIST", "%s: No node %d found within the link list\n",l->name, data);
+			return tmp;
 		}
 	}
 
@@ -507,8 +549,9 @@ void del_node_dcll(t_gen d, int data)
 	l->count--;
 	// Free node
 	cur->nxt = cur->prv = NULL;
+	tmp = cur->data;
 	free_mem(cur);
-
+	return tmp;
 }
 
 /*! \brief Brief description.
@@ -536,7 +579,7 @@ void print_link_list (t_gen d)
 	end = l->tail? l->tail->nxt :l->tail;
 	while (ptr) {
 //		printf(" %d", ptr->data);
-		printf("[ %lx %d %lx]", (long)ptr->prv, ptr->data, (long)ptr->nxt);
+		printf("[ %lx %lx]", (long)ptr->prv, (long)ptr->nxt);
 		ptr = ptr->nxt;
 		if (ptr == end) {
 			break;
