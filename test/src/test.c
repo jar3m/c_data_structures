@@ -1,5 +1,6 @@
 #include "common.h"
 #include "link_list.h"
+#include "stack.h"
 
 int main(int argc, char *argv[])
 {
@@ -81,6 +82,11 @@ int main(int argc, char *argv[])
 	destroy_link_list(l2);
 	destroy_link_list(l3);
 	destroy_link_list(l4);
+	
+	t_gen s1 = create_stack("llstack", 10, eLL_STACK, eINT8);
+	t_gen s2 = create_stack("arrstack", 10, eARRAY_STACK, eINT8);
+	destroy_stack(s1);
+	destroy_stack(s2);
 	mem_finit();
 
 
