@@ -42,28 +42,31 @@ t_gen create_link_list (char *name, e_lltype type, e_data_types data_type)
 	l->del = del[type];
 	l->len = len_of_link_list;
 	l->print = print_link_list;
-	l->free = FREE_MEM;
 	switch(data_type)
 	{
 		case eINT8:
 			//char list;
 			l->cmpr = compare_char;
 			l->swap = swap_char;
+			l->free = FREE_MEM;
 			break;
 		case eINT32:
 			//int list;
 			l->cmpr = compare_int;
 			l->swap = swap_int;
+			l->free = FREE_MEM;
 			break;
 		case eFLOAT:
 			//float list;
 			l->cmpr = compare_float;
 			l->swap = swap_float;
+			l->free = FREE_MEM;
 			break;
 		case eSTRING:
 			//string list;
 			l->cmpr = compare_string;
 			l->swap = swap_string;
+			l->free = FREE_MEM;
 			break;
 	}
 	return (t_gen)l;
@@ -299,7 +302,7 @@ void destroy_link_list (t_gen d)
 		l->count--;
 		// free node
 		tmp->nxt = tmp->prv = NULL;
-		free_mem(tmp->data);
+		l->free(tmp->data, __FILE__, __LINE__);
 		free_mem(tmp);	
 		if(ptr == end) {
 			break;
@@ -325,7 +328,6 @@ t_gen del_node_sll(t_gen d, t_gen data)
 	t_linklist *l = (t_linklist *)d;
 	t_elem *cur = l->head, *prv;
 	t_gen tmp = NULL;
-
 	// empty list
 	if (l->head == NULL) {
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
@@ -336,8 +338,8 @@ t_gen del_node_sll(t_gen d, t_gen data)
 	if (l->cmpr(cur->data, data) == eEQUAL) {
 		l->head = cur->nxt;
 		cur->nxt = NULL;
-		free_mem(cur);
 		tmp = cur->data;
+		free_mem(cur);
 		l->count--;
 		// Reset Tail to NULL if list empty
 		l->tail = l->head? l->tail : NULL;
@@ -381,7 +383,7 @@ t_gen del_node_dll(t_gen d, t_gen data)
 	t_linklist *l = (t_linklist *)d;
 	t_elem *cur = l->head;
 	t_gen tmp = NULL;
-
+	
 	// empty list
 	if (l->head == NULL) {
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
