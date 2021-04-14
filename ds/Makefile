@@ -6,10 +6,12 @@ ds_ARCHIVE=$(PROJ_PATH)/ds/bin/ds.a
 export
 
 ifeq ($(LINK_LIST), true)
+INCLUDES += -I $(PROJ_PATH)/ds/link_list/
 sub_ARCHIVE += $(link_list_ARCHIVE)
 endif
 
 ifeq ($(STACK), true)
+INCLUDES += -I $(PROJ_PATH)/ds/stacks/
 sub_ARCHIVE += $(stack_ARCHIVE)
 endif
 
