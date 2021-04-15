@@ -4,7 +4,6 @@
 typedef void(*f_append)(t_gen,t_gen);
 typedef void(*f_add)(t_gen,t_gen);
 typedef t_gen(*f_del)(t_gen, t_gen);
-typedef void(*f_free)(t_gen, char*, int);
 
 typedef enum {
 	eSINGLE_LINKLIST,

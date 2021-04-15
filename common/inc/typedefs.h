@@ -52,3 +52,4 @@ typedef int (*f_len)(t_gen);
 typedef e_cmpr (*f_cmpr)(t_gen,t_gen);
 typedef void (*f_assign)(t_gen,t_gen);
 typedef void (*f_swap)(t_gen,t_gen);
+typedef void(*f_free)(t_gen, char*, int);
