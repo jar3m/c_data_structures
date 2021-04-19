@@ -1,6 +1,7 @@
 
 link_list_ARCHIVE=$(PROJ_PATH)/ds/link_list/link_list.o
 stack_ARCHIVE=$(PROJ_PATH)/ds/stack/stack.o
+queue_ARCHIVE=$(PROJ_PATH)/ds/queue/queue.o
 ds_ARCHIVE=$(PROJ_PATH)/ds/bin/ds.a
 
 export
@@ -15,6 +16,11 @@ INCLUDES += -I $(PROJ_PATH)/ds/stacks/
 sub_ARCHIVE += $(stack_ARCHIVE)
 endif
 
+ifeq ($(QUEUE), true)
+INCLUDES += -I $(PROJ_PATH)/ds/queue/
+sub_ARCHIVE += $(queue_ARCHIVE)
+endif
+
 all: $(ds_ARCHIVE)
 	@echo "building $(ds_ARCHIVE) from $(sub_ARCHIVE)"
 
@@ -27,6 +33,9 @@ $(link_list_ARCHIVE) :
 
 $(stack_ARCHIVE) :
 	make -C stack/ all
+
+$(queue_ARCHIVE) :
+	make -C queue/ all
 
 clean:
 	rm -rf $(ds_ARCHIVE) $(sub_ARCHIVE)
