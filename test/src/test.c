@@ -1,5 +1,6 @@
 #include "common.h"
 #include "link_list.h"
+#include "stack.h"
 
 int main(int argc, char *argv[])
 {
@@ -30,6 +31,7 @@ int main(int argc, char *argv[])
 	char c,*cp,*sp,str[][64] = {"I", "See", "Everyting"};
 	float f,*fp;
 	int *ip;
+#if 1
 	t_gen l1 = create_link_list("INT DLL",eDOUBLE_LINKLIST, eINT32);
 	t_gen l2 = create_link_list("CHAR SLL",eSINGLE_LINKLIST, eINT8);
 	t_gen l3 = create_link_list("FLOAT SCLL",eSINGLE_CIRCULAR_LINKLIST, eFLOAT);
@@ -81,6 +83,33 @@ int main(int argc, char *argv[])
 	destroy_link_list(l2);
 	destroy_link_list(l3);
 	destroy_link_list(l4);
+#endif	
+	t_gen s1 = create_stack("Up Stack", 10, eARRAY_STACK, eINT32);
+	t_gen s2 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, eINT32);
+	for(i = 0; i < 10; i++) {
+		((t_stack*)s1)->push(s1, assign_int(i));
+		((t_stack*)s2)->push(s2, assign_int(i));
+	}
+	print_stack(s1);
+	print_stack(s2);
+	for(i = 0; i < 4; i++) {
+		ip = ((t_stack*)s1)->pop(s1);
+		printf("%d\n", *ip);
+		free_mem(ip);
+		ip = ((t_stack*)s2)->pop(s2);
+		printf("%d\n", *ip);
+		free_mem(ip);
+	}
+	print_stack(s1);
+	print_stack(s2);
+	for(i = 4; i > 0; i--) {
+		((t_stack*)s1)->push(s1, assign_int(i));
+		((t_stack*)s2)->push(s2, assign_int(i));
+	}
+	print_stack(s1);
+	print_stack(s2);
+	destroy_stack(s1);
+	destroy_stack(s2);
 	mem_finit();
 
 
