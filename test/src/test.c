@@ -1,6 +1,7 @@
 #include "common.h"
 #include "link_list.h"
 #include "stack.h"
+#include "queue.h"
 
 int main(int argc, char *argv[])
 {
@@ -83,7 +84,7 @@ int main(int argc, char *argv[])
 	destroy_link_list(l2);
 	destroy_link_list(l3);
 	destroy_link_list(l4);
-#endif	
+
 	t_gen s1 = create_stack("Up Stack", 10, eARRAY_STACK, eINT32);
 	t_gen s2 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, eINT32);
 	for(i = 0; i < 10; i++) {
@@ -110,6 +111,29 @@ int main(int argc, char *argv[])
 	print_stack(s2);
 	destroy_stack(s1);
 	destroy_stack(s2);
+#endif
+	t_gen q1 = create_queue("Queue1", 10, eARRAY_QUEUE_CIRC, eINT32);
+	t_gen q2 = create_queue("Queue 2", 10, eARRAY_QUEUE_CIRC, eINT32);
+
+	for(i = 0; i < 10; i++) {
+		((t_queue*)q1)->enq(q1, assign_int(i));
+		((t_queue*)q2)->enq(q2, assign_int(i));
+	}
+	print_queue(q1);
+	print_queue(q2);
+	for(i = 0; i < 10; i++) {
+		ip = ((t_queue*)q1)->deq(q1);
+		free_mem(ip);
+	}
+	print_queue(q1);
+	print_queue(q2);
+	for(i = 0; i < 4; i++) {
+		((t_queue*)q1)->enq(q1, assign_int(i));
+	}
+	print_queue(q1);
+	print_queue(q2);
+	destroy_queue(q1);
+	destroy_queue(q2);
 	mem_finit();
 
 
