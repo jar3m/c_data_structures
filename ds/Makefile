@@ -2,6 +2,7 @@
 link_list_ARCHIVE=$(PROJ_PATH)/ds/link_list/link_list.o
 stack_ARCHIVE=$(PROJ_PATH)/ds/stack/stack.o
 queue_ARCHIVE=$(PROJ_PATH)/ds/queue/queue.o
+heap_ARCHIVE=$(PROJ_PATH)/ds/heap/heap.o
 ds_ARCHIVE=$(PROJ_PATH)/ds/bin/ds.a
 
 export
@@ -21,10 +22,15 @@ INCLUDES += -I $(PROJ_PATH)/ds/queue/
 sub_ARCHIVE += $(queue_ARCHIVE)
 endif
 
+ifeq ($(HEAP), true)
+INCLUDES += -I $(PROJ_PATH)/ds/heap/
+sub_ARCHIVE += $(heap_ARCHIVE)
+endif
+
 all: $(ds_ARCHIVE)
-	@echo "building $(ds_ARCHIVE) from $(sub_ARCHIVE)"
 
 $(ds_ARCHIVE): $(sub_ARCHIVE)
+	@echo "building $(ds_ARCHIVE) from $(sub_ARCHIVE)"
 	ar rcs $(ds_ARCHIVE) $(sub_ARCHIVE)
 #	cp $(sub_ARCHIVE) $(ds_ARCHIVE)
 
@@ -36,6 +42,9 @@ $(stack_ARCHIVE) :
 
 $(queue_ARCHIVE) :
 	make -C queue/ all
+
+$(heap_ARCHIVE) :
+	make -C heap/ all
 
 clean:
 	rm -rf $(ds_ARCHIVE) $(sub_ARCHIVE)

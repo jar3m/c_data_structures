@@ -1,7 +1,7 @@
 #include "common.h"
 #include "generic_def.h"
 
-CMPR(char, compare_char)
+CMPR(char,compare_char)
 CMPR(int, compare_int)
 CMPR(float, compare_float)
 
@@ -32,8 +32,6 @@ t_gen assign_string(char *x)
 	return tmp;
 }	
 
-
-
 SWAP(char, swap_char)
 SWAP(int, swap_int)
 SWAP(float, swap_float)
@@ -47,3 +45,21 @@ void print_str(t_gen str)
 {
 	printf("%s", (char*)str);
 }
+
+CMPR_IDX(char,compare_idx_char)
+CMPR_IDX(int,compare_idx_int)
+CMPR_IDX(float,compare_idx_float)
+
+SWP_IDX(char,swap_idx_char)
+SWP_IDX(int,swap_idx_int)
+SWP_IDX(float,swap_idx_float)
+
+COPY_IDX(char, copy_idx_char)
+COPY_IDX(int, copy_idx_int)
+COPY_IDX(float, copy_idx_float)
+
+GET_IDX(char, get_idx_char)
+GET_IDX(int, get_idx_int)
+GET_IDX(float, get_idx_float)
+
+
