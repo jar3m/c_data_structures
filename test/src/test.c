@@ -2,37 +2,22 @@
 #include "link_list.h"
 #include "stack.h"
 #include "queue.h"
+#include "heap.h"
 
 int main(int argc, char *argv[])
 {
-	size_t size = 0;
-	int *ptr[100];
 	int i ;	
 
 	mem_init();
 	logger_init();
 	fault_manager_init(NULL);
-	for (i = 0; i < 100; i ++) {
-		ptr[i] = (int *)get_mem(1, sizeof(int));
-		size += sizeof(*(ptr[i]));
-	}
-	printf("size of allocated memory = %lu\n" , size);
-	for (i = 0; i < 100; i++) {
-		free_mem(ptr[i]);
-	}
 
-
-	LOG_ERROR("COMMON", "Hello World\n");
-	LOG_WARN("COMMON", "Hello World\n");		
-	LOG_INFO("COMMON", "Hello World\n");		
-	LOG_DEBUG("COMMON", "Hello World\n");		
-	LOG_TRACE_IN("COMMON", "Hello World\n");
-	LOG_TRACE_OUT("COMMON", "Hello World\n");
-
+#if 1
 	char c,*cp,*sp,str[][64] = {"I", "See", "Everyting"};
 	float f,*fp;
 	int *ip;
-#if 1
+
+	LOG_INFO("COMMON", "------ LINK LIST TEST -----\n");		
 	t_gen l1 = create_link_list("INT DLL",eDOUBLE_LINKLIST, eINT32);
 	t_gen l2 = create_link_list("CHAR SLL",eSINGLE_LINKLIST, eINT8);
 	t_gen l3 = create_link_list("FLOAT SCLL",eSINGLE_CIRCULAR_LINKLIST, eFLOAT);
@@ -85,6 +70,7 @@ int main(int argc, char *argv[])
 	destroy_link_list(l3);
 	destroy_link_list(l4);
 
+	LOG_INFO("COMMON", "------ STACK TEST -----\n");		
 	t_gen s1 = create_stack("Up Stack", 10, eARRAY_STACK, eINT32);
 	t_gen s2 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, eINT32);
 	for(i = 0; i < 10; i++) {
@@ -111,7 +97,8 @@ int main(int argc, char *argv[])
 	print_stack(s2);
 	destroy_stack(s1);
 	destroy_stack(s2);
-#endif
+
+	LOG_INFO("COMMON", "------ QUEUE TEST -----\n");		
 	t_gen q1 = create_queue("Queue1", 10, eARRAY_QUEUE_CIRC, eINT32);
 	t_gen q2 = create_queue("Queue 2", 10, eARRAY_QUEUE_CIRC, eINT32);
 
@@ -134,6 +121,32 @@ int main(int argc, char *argv[])
 	print_queue(q2);
 	destroy_queue(q1);
 	destroy_queue(q2);
+#endif
+	LOG_INFO("COMMON", "------ HEAP TEST -----\n");		
+	int arr[10] = {1,53,32,1,43,3,23,32,11,209};
+	char carr[10] = {'&', '^', 'j', 'a', 'r', 'e', 'm', '*', '%', '!'};
+	t_gen h1 = create_heap("INT HEAP", arr,10, eMIN_HEAP, eINT32);
+	t_gen h2 = create_heap("CHAR HEAP", carr,10, eMAX_HEAP, eINT8);
+	
+	for (i = 0; i< 10; i++)
+		printf("%d ",arr[i]);
+	printf("\n");
+	for (i = 0; i< 10; i++)
+		printf("%c ",carr[i]);
+	printf("\n");
+
+	((t_heap*)h1)->sort(h1);
+	((t_heap*)h2)->sort(h2);
+
+	for (i = 0; i< 10; i++)
+		printf("%d ",arr[i]);
+	printf("\n");
+	for (i = 0; i< 10; i++)
+		printf("%c ",carr[i]);
+	printf("\n");
+
+	destroy_heap(h1);
+	destroy_heap(h2);
 	mem_finit();
 
 

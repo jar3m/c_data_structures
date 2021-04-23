@@ -21,6 +21,7 @@ SEGFAULT_BACKTRACE=true
 LINK_LIST=true
 STACK=true
 QUEUE=true
+HEAP=true
 
 .show:
 	@echo "PROJ_PATH= $(PROJ_PATH)"
@@ -30,3 +31,4 @@ QUEUE=true
 	@echo "LINK_LIST= $(LINK_LIST)"
 	@echo "STACKS= $(STACK)"
 	@echo "QUEUES= $(QUEUE)"
+	@echo "HEAPS= $(HEAP)"

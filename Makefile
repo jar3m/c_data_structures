@@ -16,7 +16,6 @@ ds_ARCHIVE=$(PROJ_PATH)/ds/bin/ds.a
 algo_ARCHIVE=$(PROJ_PATH)/algo/bin/algo.a
 test_ARCHIVE=$(PROJ_PATH)/test/bin/test.a
 
-MODULE_ARCHIVES += $(common_ARCHIVE)
 
 ifeq ($(MODULE), ds)
 MODULE_ARCHIVES += $(ds_ARCHIVE)
@@ -27,15 +26,16 @@ MODULE_ARCHIVES += $(algo_ARCHIVE)
 endif
 
 ifeq ($(MODULE), test)
-MODULE_ARCHIVES += $(ds_ARCHIVE)
 MODULE_ARCHIVES += $(test_ARCHIVE)
+MODULE_ARCHIVES += $(ds_ARCHIVE)
 endif
 
 ifeq ($(MODULE), all)
-MODULE_ARCHIVES += $(algo_ARCHIVE)
-MODULE_ARCHIVES += $(ds_ARCHIVE)
 MODULE_ARCHIVES += $(test_ARCHIVE)
+MODULE_ARCHIVES += $(ds_ARCHIVE)
+MODULE_ARCHIVES += $(algo_ARCHIVE)
 endif
+MODULE_ARCHIVES += $(common_ARCHIVE)
 
 export
 

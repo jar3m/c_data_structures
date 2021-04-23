@@ -53,3 +53,8 @@ typedef e_cmpr (*f_cmpr)(t_gen,t_gen);
 typedef void (*f_assign)(t_gen,t_gen);
 typedef void (*f_swap)(t_gen,t_gen);
 typedef void(*f_free)(t_gen, char*, int);
+
+typedef e_cmpr (*f_cmp_idx)(t_gen,int, int);
+typedef void (*f_swp_idx)(t_gen,int, int);
+typedef void (*f_cpy_idx)(t_gen,int, int);
+typedef t_gen (*f_get_idx)(t_gen,int);
