@@ -48,10 +48,10 @@
 						arr[idx2] = tmp;\
 					}
 
-#define COPY_IDX(T, NAME)	void NAME(t_gen x, int idx1, int idx2)\
+#define COPY_IDX(T, NAME)	void NAME(t_gen x, int idx1, t_gen data)\
 					{	\
 						T *arr = ((T*)(x));\
-						arr[idx1] = arr[idx2];\
+						arr[idx1] = *((T*)(data));\
 					}
 
 #define GET_IDX(T, NAME)	t_gen NAME(t_gen x, int idx1)\
@@ -85,9 +85,9 @@ void swap_idx_char(t_gen,int,int);
 void swap_idx_int(t_gen,int,int);
 void swap_idx_float(t_gen,int,int);
 
-void copy_idx_char(t_gen,int,int);
-void copy_idx_int(t_gen,int,int);
-void copy_idx_float(t_gen,int,int);
+void copy_idx_char(t_gen,int,t_gen);
+void copy_idx_int(t_gen,int,t_gen);
+void copy_idx_float(t_gen,int,t_gen);
 
 t_gen get_idx_char(t_gen,int);
 t_gen get_idx_int(t_gen,int);
