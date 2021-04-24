@@ -47,7 +47,7 @@ t_gen create_stack (char *name, int max_size, e_stacktype stype, e_data_types dt
 		break;
 		case eARRAY_STACK:
 		case eARRAY_STACK_DOWN:
-			s->data = get_mem(1, sizeof(t_gen) * max_size);
+			s->data = get_mem(max_size, sizeof(t_gen));
 		break;
         }
 
