@@ -56,5 +56,5 @@ typedef void(*f_free)(t_gen, char*, int);
 
 typedef e_cmpr (*f_cmp_idx)(t_gen,int, int);
 typedef void (*f_swp_idx)(t_gen,int, int);
-typedef void (*f_cpy_idx)(t_gen,int, int);
+typedef void (*f_cpy_idx)(t_gen,int, t_gen);
 typedef t_gen (*f_get_idx)(t_gen,int);

@@ -1,25 +1,33 @@
 #include "heap.h"
 
 void heap_insert(t_gen d,t_gen data);
-t_gen heap_delete(t_gen d);
+t_gen heap_delete_root(t_gen d);
 void heap_build(t_gen d);
 void heap_sort(t_gen d);
+int heap_len(t_gen d);
 
+/*! \brief Brief description.
+ *  Create an instance of heap
+ * */
 t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, e_data_types dtype)
 {
 	t_heap *h = get_mem(1, sizeof(t_heap));
 
+	// Initailze heap Params
 	h->name = name;
 	h->type = htype;
 	h->data = data;
 	h->size = size;
 	h->count = 0;
 	
+	// Initailze heap routines
 	h->insert = heap_insert;
-	h->del = heap_delete;
+	h->del = heap_delete_root;
 	h->build = heap_build;
 	h->sort = heap_sort;
+	h->len = heap_len;
 
+	// Initailze datatype based operations req for prop working of heap
 	switch (dtype)
 	{
 		case eINT8:
@@ -47,6 +55,10 @@ t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, e_data_typ
 	}
 }
 
+/*! \brief Brief description.
+ *  Preserve heap property on insert
+ *  by heapifying from bottom to root
+ * */
 void heapify_up(t_heap *h, int idx)
 {
 	int parent;
@@ -66,6 +78,9 @@ void heapify_up(t_heap *h, int idx)
 	}
 }
 
+/*! \brief Brief description.
+ *  Insert an element to heap
+ * */
 void heap_insert(t_gen d,t_gen data)
 {
 	t_heap *h = (t_heap*)d;
@@ -75,11 +90,14 @@ void heap_insert(t_gen d,t_gen data)
 		return;
 	}
 	
-//	h->copy_idx(h->data, data, h->count);
+	h->copy_idx(h->data, h->count, data);
 	heapify_up(h, h->count);
 	h->count++;
 }
 
+/*! \brief Brief description.
+ *  Rearrange a heap to maintain the heap property
+ */
 void heapify(t_heap *h, int idx)
 {
 	int parent,lchild,rchild;
@@ -111,6 +129,9 @@ void heapify(t_heap *h, int idx)
 	}	
 }
 
+/*! \brief Brief description.
+ *  Build a heap given a array
+ */
 void heap_build(t_gen d)
 {
 	t_heap *h = (t_heap*)d;
@@ -123,7 +144,10 @@ void heap_build(t_gen d)
 }
 
 
-t_gen heap_delete(t_gen d)
+/*! \brief Brief description.
+ *  Delete the root from heap
+ */
+t_gen heap_delete_root(t_gen d)
 {
 	t_heap *h = (t_heap*)d;
 	t_gen data = NULL;
@@ -132,15 +156,23 @@ t_gen heap_delete(t_gen d)
 		LOG_WARN("HEAP", "%s: HEAP EMPTY\n",h->name);
 		return data;
 	}
-
+	
+	// Root to be deleted is swapped with last node in heap
+	// temp store root at last heap location
 	h->count--;
 	h->swap_idx(h->data, 0, h->count);
+	// heapify to preserve heap prop
 	heapify(h, 0);
 	
-	data = h->get_idx(h->data, h->count-1);
+	//Ref to previous heap root is returned
+	data = h->get_idx(h->data, h->count);
+	
 	return data;
 }
 
+/*! \brief Brief description.
+ *  Heap sort the data
+ */
 void heap_sort(t_gen d)
 {
 	t_heap *h = (t_heap*)d;
@@ -149,12 +181,28 @@ void heap_sort(t_gen d)
 	// build heap
 	h->build(h);
 
+	// Move the current root to last
+	// sorted but in traverse in reverse order
 	for(;h->count;) {
-		h->del(h);
+		// Root to be deleted is swapped with last node in heap
+		h->count--;
+		h->swap_idx(h->data, 0, h->count);
+		// heapify to preserve heap prop
+		heapify(h, 0);
 	}
-
 }
 
+/*! \brief Brief description.
+ *  heap count
+ */
+int heap_len(t_gen h)
+{
+	return ((t_heap*)h)->count;
+}
+
+/*! \brief Brief description.
+ *  Destroy the instance of the heap
+ */
 void destroy_heap(t_gen d)
 {
 	t_heap *h = (t_heap*)d;
