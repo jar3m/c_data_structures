@@ -34,7 +34,7 @@ typedef struct heap {
 	f_cpy_idx copy_idx;
 	f_swp_idx swap_idx;
 	f_get_idx get_idx;
-}t_heap;
+} t_heap;
 
 /// Heap interface API
 t_gen create_heap(char *name, t_gen data,int size, e_heaptype htype, e_data_types dtype);
