@@ -1,9 +1,11 @@
 include Defs.make
 
 CC=gcc
+CFLAGS+=$(DS_FLAGS) 
+LDLIBS= -lm -pg 
+
 TEST_FILE_DIRECTORY="$(PROJ_PATH)/test/src"
 
-LDLIBS= -lm -pg 
 ifeq ($(SEGFAULT_BACKTRACE), true)
 LDLIBS+=-rdynamic
 endif

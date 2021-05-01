@@ -22,6 +22,11 @@ LINK_LIST=true
 STACK=true
 QUEUE=true
 HEAP=true
+TREE=true
+
+#data struct define
+DS_FLAGS = -DLINK_LIST=$(LINK_LIST) -DSTACK=$(STACK) \
+	   -DQUEUE=$(QUEUE) -DHEAP=$(HEAP) -DTREE=$(TREE)
 
 .show:
 	@echo "PROJ_PATH= $(PROJ_PATH)"
@@ -32,3 +37,4 @@ HEAP=true
 	@echo "STACKS= $(STACK)"
 	@echo "QUEUES= $(QUEUE)"
 	@echo "HEAPS= $(HEAP)"
+	@echo "TREES= $(TREE)"
