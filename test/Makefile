@@ -5,6 +5,7 @@ INCLUDES += -I $(PROJ_PATH)/ds/link_list/
 INCLUDES += -I $(PROJ_PATH)/ds/stack/
 INCLUDES += -I $(PROJ_PATH)/ds/queue/
 INCLUDES += -I $(PROJ_PATH)/ds/heap/
+INCLUDES += -I $(PROJ_PATH)/ds/tree/
 export
 
 CFLAGS += -g -Wall 

@@ -3,6 +3,7 @@
 #include "stack.h"
 #include "queue.h"
 #include "heap.h"
+#include "tree.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,11 +13,10 @@ int main(int argc, char *argv[])
 	logger_init();
 	fault_manager_init(NULL);
 
-#if 1
 	char c,*cp,*sp,str[][64] = {"I", "See", "Everyting"};
 	float f,*fp;
 	int *ip;
-
+#if 1
 	LOG_INFO("COMMON", "------ LINK LIST TEST -----\n");		
 	t_gen l1 = create_link_list("INT DLL",eDOUBLE_LINKLIST, eINT32);
 	t_gen l2 = create_link_list("CHAR SLL",eSINGLE_LINKLIST, eINT8);
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 	for(i = 4; i > 0; i--) {
 		((t_stack*)s1)->push(s1, assign_int(i));
 		c= 'c' + i;
-		((t_stack*)s2)->push(s2, assign_int(c));
+		((t_stack*)s2)->push(s2, assign_char(c));
 		f= (float)i+0.222 / 2.0f;
 		((t_stack*)s3)->push(s3, assign_float(f));
 	}
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 	print_queue(q2);
 	destroy_queue(q1);
 	destroy_queue(q2);
-#endif
+
 	LOG_INFO("COMMON", "------ HEAP TEST -----\n");		
 	float arr1[10]={0};
 	int arr[10] = {1,53,32,43,3,23,11,209};
@@ -183,9 +183,54 @@ int main(int argc, char *argv[])
 	destroy_heap(h1);
 	destroy_heap(h2);
 	destroy_heap(h3);
+#endif
+	LOG_INFO("COMMON", "------ TREE TEST -----\n");		
+	t_gen t1 = create_tree("tree1", eBST, eINT8);
+	t_gen t2 = create_tree("tree2", eBST, eFLOAT);
+	t_gen t3 = create_tree("tree3", eBST, eSTRING);
+	
+	for(i = 0; i < 3; i++) {
+		c= 'c' + i;
+		((t_tree*)t1)->insert(t1, assign_char(c));
+		f= (float)i+0.222 / 2.0f;
+		((t_tree*)t2)->insert(t2, assign_float(f));
+		((t_tree*)t3)->insert(t3, assign_string(str[i]));
+	}
+	for(i = 3; i < 23; i++) {
+		c= 'c' + i;
+		((t_tree*)t1)->insert(t1, assign_char(c));
+		f= (float)i+0.222 / 2.0f;
+	}
+	// find in tree
+	c = 'z';
+	if (((t_tree*)t1)->find(t1, &c) == NULL) {
+		printf("%c not present in tree\n", c);
+	} else {
+		printf("%c present in tree\n", c);
+	}
+
+	c = 'm';
+	if (((t_tree*)t1)->find(t1, &c) == NULL) {
+		printf("%c not present in tree\n", c);
+	} else {
+		printf("%c present in tree\n", c);
+	}
+
+	// Min  Max in tree
+	printf("%c %c\n", *(char*)((t_tree*)t1)->max(t1), *(char*)((t_tree*)t1)->min(t1)); 
+	printf("%f %f\n", *(float*)((t_tree*)t2)->max(t2),*(float*)((t_tree*)t2)->min(t2)); 
+	printf("%s %s\n", (char*)((t_tree*)t3)->max(t3), (char*)((t_tree*)t3)->min(t3)); 
+	print_tree(t1);
+	print_tree(t2);
+	print_tree(t3);
+
+	destroy_tree(t1);
+	destroy_tree(t2);
+	destroy_tree(t3);
 
 	mem_finit();
 
 	return 0;
 
 }
+
