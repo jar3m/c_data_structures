@@ -27,6 +27,7 @@ typedef struct {
 	f_full full;
 	f_empty empty;
 	f_print print;
+	f_print print_data;
 } t_queue;
 
 

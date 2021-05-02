@@ -131,23 +131,26 @@ int main(int argc, char *argv[])
 	destroy_stack(s2);
 	destroy_stack(s3);
 #endif
-	t_gen q1 = create_queue("Queue1", 10, eARRAY_QUEUE_CIRC, eINT32);
-	t_gen q2 = create_queue("Queue 2", 10, eARRAY_QUEUE_CIRC, eINT32);
+	t_gen q1 = create_queue("Queue1", 10, eARRAY_QUEUE_CIRC, eINT8);
+	t_gen q2 = create_queue("Queue2", 10, eARRAY_QUEUE_CIRC, eFLOAT);
 
 	for(i = 0; i < 10; i++) {
-		((t_queue*)q1)->enq(q1, assign_int(i));
-		((t_queue*)q2)->enq(q2, assign_int(i));
+		c= 'c' + i;
+		((t_queue*)q1)->enq(q1, assign_char(c));
+		f= (float)i+0.222 / 2.0f;
+		((t_queue*)q2)->enq(q2, assign_float(f));
 	}
 	print_queue(q1);
 	print_queue(q2);
 	for(i = 0; i < 10; i++) {
-		ip = ((t_queue*)q1)->deq(q1);
-		free_mem(ip);
+		cp = ((t_queue*)q1)->deq(q1);
+		free_mem(cp);
 	}
 	print_queue(q1);
 	print_queue(q2);
 	for(i = 0; i < 4; i++) {
-		((t_queue*)q1)->enq(q1, assign_int(i));
+		c= 'c' + i;
+		((t_queue*)q1)->enq(q1, assign_char(c));
 	}
 	print_queue(q1);
 	print_queue(q2);

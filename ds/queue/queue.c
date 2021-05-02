@@ -47,6 +47,26 @@ t_gen create_queue (char *name, int max_size, e_queuetype qtype, e_data_types dt
 		break;
 	}
 
+	switch(dtype)
+	{
+		case eINT8:
+			//char list;
+			q->print_data = print_char;
+			break;
+		case eINT32:
+			//int list;
+			q->print_data = print_int;
+			break;
+		case eFLOAT:
+			//float list;
+			q->print_data = print_float;
+			break;
+		case eSTRING:
+			//string list;
+			q->print_data = print_str;
+			break;
+	}
+
 	return (t_gen)q;
 }
 
@@ -177,8 +197,10 @@ void print_queue(t_gen d)
 
 	printf("%s {max: %d} {size: %d} {front/rear: [%d:%d]} \n[",q->name,
 			q->max_size, q->count, q->front,q->rear);
-	for (i = q->front; i < q->rear; i ++) {
-		printf("%d ",*(int*)(q->data[i]));
+	for (i = q->front; (i != -1) && (i <= q->rear); i ++) {
+	//	printf("%d ",*(int*)(q->data[i]));
+		q->print_data(q->data[i]);
+		printf(", ");
 	}
 	printf("]\n");
 }
