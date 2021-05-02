@@ -51,6 +51,26 @@ t_gen create_stack (char *name, int max_size, e_stacktype stype, e_data_types dt
 		break;
         }
 
+	switch(dtype)
+	{
+		case eINT8:
+			//char list;
+			s->print_data = print_char;
+			break;
+		case eINT32:
+			//int list;
+			s->print_data = print_int;
+			break;
+		case eFLOAT:
+			//float list;
+			s->print_data = print_float;
+			break;
+		case eSTRING:
+			//string list;
+			s->print_data = print_str;
+			break;
+	}
+
         return (t_gen) s;
 }
 
@@ -210,8 +230,13 @@ void print_stack(t_gen d)
 
 	printf("%s {max: %d} {size: %d} {top: %d} \n[",s->name,
 			s->max_size, s->count,s->top);
-	for (i = 0; i < s->count; i ++) {
-		//printf("%d ",*(int*)(s->data[i]));
-	}
+	
+	i = (s->type != eARRAY_STACK_DOWN)? 0:(s->max_size-1);
+	do {
+		s->print_data(s->data[i]);
+		printf(", ");
+		(s->type != eARRAY_STACK_DOWN)? i++:i--;
+	} while(i != s->top);
+	s->print_data(s->data[i]);
 	printf("]\n");
 }

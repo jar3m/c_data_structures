@@ -29,7 +29,7 @@ typedef struct stack {
 	/// stack operations
 	f_push push;
 	f_pop pop;
-	f_print print;
+	f_print print_data;
 	f_full full;
 	f_empty empty;
 	f_len len;

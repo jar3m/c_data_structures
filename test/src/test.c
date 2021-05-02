@@ -93,31 +93,42 @@ int main(int argc, char *argv[])
 	destroy_link_list(l4);
 #endif	
 	t_gen s1 = create_stack("Up Stack", 10, eARRAY_STACK, eINT32);
-	t_gen s2 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, eINT32);
+	t_gen s2 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, eINT8);
+	t_gen s3 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, eFLOAT);
 	for(i = 0; i < 10; i++) {
 		((t_stack*)s1)->push(s1, assign_int(i));
-		((t_stack*)s2)->push(s2, assign_int(i));
+		c= 'c' + i;
+		((t_stack*)s2)->push(s2, assign_char(c));
+		f= (float)i+0.222 / 2.0f;
+		((t_stack*)s3)->push(s3, assign_float(f));
 	}
 	print_stack(s1);
 	print_stack(s2);
+	print_stack(s3);
 	for(i = 0; i < 4; i++) {
 		ip = ((t_stack*)s1)->pop(s1);
-		printf("%d\n", *ip);
 		free_mem(ip);
-		ip = ((t_stack*)s2)->pop(s2);
-		printf("%d\n", *ip);
-		free_mem(ip);
+		cp = ((t_stack*)s2)->pop(s2);
+		free_mem(cp);
+		fp = ((t_stack*)s3)->pop(s3);
+		free_mem(fp);
 	}
 	print_stack(s1);
 	print_stack(s2);
+	print_stack(s3);
 	for(i = 4; i > 0; i--) {
 		((t_stack*)s1)->push(s1, assign_int(i));
-		((t_stack*)s2)->push(s2, assign_int(i));
+		c= 'c' + i;
+		((t_stack*)s2)->push(s2, assign_int(c));
+		f= (float)i+0.222 / 2.0f;
+		((t_stack*)s3)->push(s3, assign_float(f));
 	}
 	print_stack(s1);
 	print_stack(s2);
+	print_stack(s3);
 	destroy_stack(s1);
 	destroy_stack(s2);
+	destroy_stack(s3);
 	mem_finit();
 
 
