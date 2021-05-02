@@ -11,6 +11,7 @@ t_gen queue_dequeue_arr(t_gen s);
 
 f_enq q_enq[] = {queue_enqueue_ll, queue_enqueue_arr};
 f_deq q_deq[] = {queue_dequeue_ll, queue_dequeue_arr};
+
 /*! \brief Brief description.
  *  Destroy queue instance 
 */
