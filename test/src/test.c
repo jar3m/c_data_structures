@@ -129,8 +129,8 @@ int main(int argc, char *argv[])
 	destroy_stack(s1);
 	destroy_stack(s2);
 	destroy_stack(s3);
-	mem_finit();
 
+	mem_finit();
 
 	return 0;
 
