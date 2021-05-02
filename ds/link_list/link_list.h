@@ -24,7 +24,7 @@ typedef struct linklist {
 	f_add add;
 	f_del del;
 	f_len len;
-	f_print print;
+	f_print print_data;
 	f_cmpr cmpr;
 	f_assign assign;
 	f_swap swap;

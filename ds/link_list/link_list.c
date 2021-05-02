@@ -41,31 +41,35 @@ t_gen create_link_list (char *name, e_lltype type, e_data_types data_type)
 	l->add = add[type];
 	l->del = del[type];
 	l->len = len_of_link_list;
-	l->print = print_link_list;
+
 	switch(data_type)
 	{
 		case eINT8:
 			//char list;
 			l->cmpr = compare_char;
 			l->swap = swap_char;
+			l->print_data = print_char;
 			l->free = FREE_MEM;
 			break;
 		case eINT32:
 			//int list;
 			l->cmpr = compare_int;
 			l->swap = swap_int;
+			l->print_data = print_int;
 			l->free = FREE_MEM;
 			break;
 		case eFLOAT:
 			//float list;
 			l->cmpr = compare_float;
 			l->swap = swap_float;
+			l->print_data = print_float;
 			l->free = FREE_MEM;
 			break;
 		case eSTRING:
 			//string list;
 			l->cmpr = compare_string;
 			l->swap = swap_string;
+			l->print_data = print_str;
 			l->free = FREE_MEM;
 			break;
 	}
@@ -580,8 +584,9 @@ void print_link_list (t_gen d)
 			(long)l->head,(long)l->tail, l->count);
 	end = l->tail? l->tail->nxt :l->tail;
 	while (ptr) {
-//		printf(" %d", ptr->data);
-		printf("[ %lx %lx]", (long)ptr->prv, (long)ptr->nxt);
+		printf("[ %lx ", (long)ptr->prv);
+		l->print_data(ptr->data);
+		printf(" %lx]", (long)ptr->nxt);
 		ptr = ptr->nxt;
 		if (ptr == end) {
 			break;

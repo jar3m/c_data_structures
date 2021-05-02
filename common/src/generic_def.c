@@ -1,4 +1,4 @@
-#include <string.h>
+#include "common.h"
 #include "generic_def.h"
 
 CMPR(char, compare_char)
@@ -38,3 +38,12 @@ SWAP(char, swap_char)
 SWAP(int, swap_int)
 SWAP(float, swap_float)
 SWAP(char*, swap_string)
+
+PRINT_GEN(char, print_char)
+PRINT_GEN(int, print_int)
+PRINT_GEN(float, print_float)
+
+void print_str(t_gen str)
+{
+	printf("%s", (char*)str);
+}
