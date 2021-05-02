@@ -29,13 +29,16 @@ typedef struct heap {
 	f_hbuild build;
 	f_hsort sort;
 	f_len len;
+	f_print print;
 	// routies for operating on data
 	f_cmp_idx cmpr_idx;
 	f_cpy_idx copy_idx;
 	f_swp_idx swap_idx;
 	f_get_idx get_idx;
+	f_print print_data;
 } t_heap;
 
 /// Heap interface API
 t_gen create_heap(char *name, t_gen data,int size, e_heaptype htype, e_data_types dtype);
 void destroy_heap(t_gen);
+void print_heap(t_gen);

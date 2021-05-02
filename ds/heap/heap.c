@@ -5,6 +5,7 @@ t_gen heap_delete_root(t_gen d);
 void heap_build(t_gen d);
 void heap_sort(t_gen d);
 int heap_len(t_gen d);
+void print_heap(t_gen d);
 
 /*! \brief Brief description.
  *  Create an instance of heap
@@ -26,6 +27,7 @@ t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, e_data_typ
 	h->build = heap_build;
 	h->sort = heap_sort;
 	h->len = heap_len;
+	h->print = print_heap;
 
 	// Initailze datatype based operations req for prop working of heap
 	switch (dtype)
@@ -36,6 +38,7 @@ t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, e_data_typ
 			h->swap_idx = swap_idx_char;
 			h->copy_idx = copy_idx_char;
 			h->get_idx  = get_idx_char;
+			h->print_data = print_char;
 			break;
 		case eINT32:
 			//int list;
@@ -43,6 +46,7 @@ t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, e_data_typ
 			h->swap_idx = swap_idx_int;
 			h->copy_idx = copy_idx_int;
 			h->get_idx  = get_idx_int;
+			h->print_data = print_int;
 			break;
 		case eFLOAT:
 			//float list;
@@ -50,9 +54,12 @@ t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, e_data_typ
 			h->swap_idx = swap_idx_float;
 			h->copy_idx = copy_idx_float;
 			h->get_idx  = get_idx_float;
+			h->print_data = print_float;
 			break;
 
 	}
+
+	return (t_gen)h;
 }
 
 /*! \brief Brief description.
@@ -208,4 +215,20 @@ void destroy_heap(t_gen d)
 	t_heap *h = (t_heap*)d;
 	
 	free_mem(h);
+}
+
+/*! \brief Brief description.
+ *  print_heap_info
+*/
+void print_heap(t_gen d)
+{
+	t_heap *h = (t_heap*)d; 
+	int i;
+
+	printf("%s {count: %d} {size: %d}\n[",h->name, h->count, h->size);
+	for (i = 0; i < h->size; i ++) {
+		h->print_data(h->get_idx(h->data, i));
+		printf(", ");
+	}
+	printf("]\n");
 }

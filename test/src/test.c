@@ -146,54 +146,39 @@ int main(int argc, char *argv[])
 	destroy_queue(q2);
 #endif
 	LOG_INFO("COMMON", "------ HEAP TEST -----\n");		
-	int arr1[10]={0},arr[10] = {1,53,32,43,3,23,11,209};
+	float arr1[10]={0};
+	int arr[10] = {1,53,32,43,3,23,11,209};
 	char carr[10] = {'&', '^', 'j', 'a', 'r', 'e', 'm', '*', '%', '!'};
 	t_gen h1 = create_heap("INT HEAP", arr,10, eMIN_HEAP, eINT32);
 	t_gen h2 = create_heap("CHAR HEAP", carr,10, eMAX_HEAP, eINT8);
-	t_gen h3 = create_heap("int1 HEAP", arr1,10, eMIN_HEAP, eINT32);
+	t_gen h3 = create_heap("float HEAP", arr1,10, eMIN_HEAP, eFLOAT);
 	
-	for (i = 0; i< 10; i++)
-		printf("%d ",arr[i]);
-	printf("\n");
-	for (i = 0; i< 10; i++)
-		printf("%c ",carr[i]);
-	printf("\n");
-	for (i = 0; i< 10; i++)
-		printf("%d ",arr1[i]);
-	printf("\n");
 	// Insert element
-	 i = -1;
-	((t_heap*)h3)->insert(h3,&i);
-	 i = -10;
-	((t_heap*)h3)->insert(h3,&i);
-	 i = 1002;
-	((t_heap*)h3)->insert(h3,&i);
-
+	 f = -1.2234f;
+	((t_heap*)h3)->insert(h3,&f);
+	 f = -10.3242f;
+	((t_heap*)h3)->insert(h3,&f);
+	 f = 1000.2f;
+	((t_heap*)h3)->insert(h3,&f);
+	
 	printf("Sorting\n");
 	// heap sort data;
 	((t_heap*)h1)->sort(h1);
 	((t_heap*)h2)->sort(h2);
-	for (i = 0; i< 10; i++)
-		printf("%d ",arr[i]);
-	printf("\n");
-	for (i = 0; i< 10; i++)
-		printf("%c ",carr[i]);
-	printf("\n");
+
+	print_heap(h1);
+	print_heap(h2);
+	print_heap(h3);
 
 	// heapify array
 	((t_heap*)h1)->build(h1);
 	((t_heap*)h2)->build(h2);
 	printf("Heapify'd array\n");
-	for (i = 0; i< 10; i++)
-		printf("%d ",arr[i]);
-	printf("\n");
-	for (i = 0; i< 10; i++)
-		printf("%c ",carr[i]);
-	printf("\n");
-	printf("%d\n",*(int*)(((t_heap*)h3)->del(h3)));
-	for (i = 0; i< 10; i++)
-		printf("%d ",arr1[i]);
-	printf("\n");
+	printf("%f\n", *(float*)(((t_heap*)h3)->del(h3)));
+	printf("%f\n", *(float*)(((t_heap*)h3)->del(h3)));
+	print_heap(h1);
+	print_heap(h2);
+	print_heap(h3);
 
 	destroy_heap(h1);
 	destroy_heap(h2);
