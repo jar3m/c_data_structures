@@ -7,6 +7,7 @@ void heap_sort(t_gen d);
 int heap_len(t_gen d);
 void print_heap(t_gen d);
 
+
 /*! \brief Brief description.
  *  Create an instance of heap
  * */
@@ -225,7 +226,7 @@ void print_heap(t_gen d)
 	t_heap *h = (t_heap*)d; 
 	int i;
 
-	printf("%s {count: %d} {size: %d}\n[",h->name, h->count, h->size);
+	printf("%s: {count: %d} {size: %d}\n[",h->name, h->count, h->size);
 	for (i = 0; i < h->size; i ++) {
 		h->print_data(h->get_idx(h->data, i));
 		printf(", ");

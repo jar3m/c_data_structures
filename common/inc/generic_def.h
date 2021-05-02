@@ -101,7 +101,6 @@ void swap_int(t_gen,t_gen);
 void swap_float(t_gen,t_gen);
 void swap_string(t_gen,t_gen);
 
-
 void print_char(t_gen);
 void print_float(t_gen);
 void print_int(t_gen);
@@ -122,4 +121,3 @@ void copy_idx_float(t_gen,int,t_gen);
 t_gen get_idx_char(t_gen,int);
 t_gen get_idx_int(t_gen,int);
 t_gen get_idx_float(t_gen,int);
-
