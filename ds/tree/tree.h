@@ -33,10 +33,13 @@ typedef struct tree {
 	f_ins insert;
 	f_del del;
 	f_find find;
-	f_pred predcessor;
-	f_succ successor;
+	f_pred pred;
+	f_succ succ;
 	f_min_max min;
 	f_min_max max;
+	f_print inorder;
+	f_print preorder;
+	f_print postorder;
 	f_print print;
 	
 	f_cmpr cmpr;

@@ -190,39 +190,75 @@ int main(int argc, char *argv[])
 	t_gen t3 = create_tree("tree3", eBST, eSTRING);
 	
 	for(i = 0; i < 3; i++) {
-		c= 'c' + i;
-		((t_tree*)t1)->insert(t1, assign_char(c));
+		((t_tree*)t1)->insert(t1, assign_char(carr[i]));
 		f= (float)i+0.222 / 2.0f;
 		((t_tree*)t2)->insert(t2, assign_float(f));
 		((t_tree*)t3)->insert(t3, assign_string(str[i]));
 	}
-	for(i = 3; i < 23; i++) {
-		c= 'c' + i;
-		((t_tree*)t1)->insert(t1, assign_char(c));
+	for(i = 9; i >= 3; i--) {
+		((t_tree*)t1)->insert(t1, assign_char(carr[i]));
 		f= (float)i+0.222 / 2.0f;
+		((t_tree*)t2)->insert(t2, assign_float(f));
 	}
 	// find in tree
-	c = 'z';
-	if (((t_tree*)t1)->find(t1, &c) == NULL) {
-		printf("%c not present in tree\n", c);
+	char str1[10] = "some";
+	if (((t_tree*)t3)->find(t3, s1) == NULL) {
+		printf("%s not present in tree\n", str1);
 	} else {
-		printf("%c present in tree\n", c);
+		printf("%s present in tree\n", str1);
 	}
 
-	c = 'm';
-	if (((t_tree*)t1)->find(t1, &c) == NULL) {
-		printf("%c not present in tree\n", c);
+	char *str2 = assign_string("I");
+	if (((t_tree*)t3)->find(t3, s2) == NULL) {
+		printf("%s not present in tree\n", str2);
 	} else {
-		printf("%c present in tree\n", c);
+		printf("%s present in tree\n", str2);
 	}
-
+	free_mem(str2);
+	
 	// Min  Max in tree
-	printf("%c %c\n", *(char*)((t_tree*)t1)->max(t1), *(char*)((t_tree*)t1)->min(t1)); 
-	printf("%f %f\n", *(float*)((t_tree*)t2)->max(t2),*(float*)((t_tree*)t2)->min(t2)); 
-	printf("%s %s\n", (char*)((t_tree*)t3)->max(t3), (char*)((t_tree*)t3)->min(t3)); 
-	print_tree(t1);
-	print_tree(t2);
-	print_tree(t3);
+	printf("\nmin & max\n");
+	t_tree_node *max, *min, *pred, *succ;
+	max = ((t_tree*)t1)->max(((t_tree*)t1)->root);
+	min = ((t_tree*)t1)->min(((t_tree*)t1)->root);
+	printf("%c %c\n", *(char*) max->key, *(char*)min->key); 
+	max = ((t_tree*)t2)->max(((t_tree*)t2)->root);
+	min = ((t_tree*)t2)->min(((t_tree*)t2)->root);
+	printf("%f %f\n", *(float*)max->key,*(float*)min->key); 
+	max = ((t_tree*)t3)->max(((t_tree*)t3)->root);
+	min = ((t_tree*)t3)->min(((t_tree*)t3)->root);
+	printf("%s %s\n", (char*)max->key, (char*) min->key); 
+
+	// Succ & pred in tree
+	printf("\nPred & Succ\n");
+	c = 'm';
+	pred = ((t_tree*)t1)->pred(t1,&c);
+	succ = ((t_tree*)t1)->succ(t1,&c);
+	printf("%c %c\n", *(char*) pred->key, *(char*)succ->key); 
+
+	f = 2.111000f;
+	pred = ((t_tree*)t2)->pred(t2,&f);
+	succ = ((t_tree*)t2)->succ(t2,&f);
+	printf("%f %f\n", *(float*) pred->key, *(float*)succ->key); 
+	
+	pred = ((t_tree*)t3)->pred(t3,str[0]);
+	succ = ((t_tree*)t3)->succ(t3,str[0]);
+	printf("%s %s\n", (char*) pred->key, (char*)succ->key); 
+	
+	((t_tree*)t1)->inorder(t1);
+	((t_tree*)t2)->inorder(t2);
+	((t_tree*)t3)->inorder(t3);
+	((t_tree*)t1)->preorder(t1);
+	((t_tree*)t2)->preorder(t2);
+	((t_tree*)t3)->preorder(t3);
+	// deleting nodes
+	for(i = 9; i >= 0; i--) {
+		cp = ((t_tree*)t1)->del(t1, &carr[i]);
+		free_mem(cp);
+		f= (float)i+0.222 / 2.0f;
+		fp = ((t_tree*)t2)->del(t2, &f);
+		free_mem(fp);
+	}
 
 	destroy_tree(t1);
 	destroy_tree(t2);
