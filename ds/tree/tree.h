@@ -6,6 +6,7 @@ typedef struct tree_node {
 	t_gen key;
 	struct tree_node *lchild;
 	struct tree_node *rchild;
+	int height;
 } t_tree_node;
 
 /// Types of trees

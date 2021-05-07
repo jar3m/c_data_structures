@@ -2,8 +2,8 @@
 #include "stack.h"
 #include "queue.h"
 
-void tree_insert_node(t_gen,t_gen);
-t_gen tree_delete_node(t_gen,t_gen);
+void tree_insert_node_bst(t_gen,t_gen);
+t_gen tree_delete_node_bst(t_gen,t_gen);
 t_gen tree_find_node(t_gen,t_gen);
 t_gen tree_node_predecessor(t_gen,t_gen);
 t_gen tree_node_successor(t_gen,t_gen);
@@ -13,6 +13,12 @@ void tree_inorder(t_gen);
 void tree_preorder(t_gen);
 void tree_postorder(t_gen);
 void print_tree(t_gen);
+
+void tree_insert_node_avl(t_gen,t_gen);
+t_gen tree_delete_node_avl(t_gen,t_gen);
+
+f_ins tree_insert[] = {tree_insert_node_bst,tree_insert_node_avl};
+f_del tree_del[] = {tree_delete_node_bst,tree_delete_node_avl};
 
 /*! \brief Brief description.
  *  Create an instance of tree
@@ -28,8 +34,8 @@ t_gen create_tree(char *name, e_treetype ttype, e_data_types dtype)
 	t->root = NULL;
 	
 	// Initailze tree routines
-	t->insert = tree_insert_node;
-	t->del = tree_delete_node;
+	t->insert = tree_insert[ttype]; 
+	t->del = tree_del[ttype];
 	t->find = tree_find_node;
 	t->pred = tree_node_predecessor;
 	t->succ = tree_node_successor;
@@ -76,10 +82,12 @@ t_gen create_tree(char *name, e_treetype ttype, e_data_types dtype)
 	return (t_gen)t;
 }
 
+
+
 /*! \brief Brief description.
- *   Add element to tree
+ *   Add element to a bst tree
  */
-void tree_insert_node(t_gen d,t_gen data)
+void tree_insert_node_bst(t_gen d,t_gen data)
 {
 	t_tree *t = (t_tree*)d;
 	t_tree_node *new;
@@ -333,9 +341,9 @@ t_gen tree_node_successor(t_gen d,t_gen data)
 }
 
 /*! \brief Brief description.
- *  Delete a node in the tree 
+ *  Delete a node in a bst tree 
 */
-t_gen tree_delete_node(t_gen d,t_gen data)
+t_gen tree_delete_node_bst(t_gen d,t_gen data)
 {
 	t_tree *t = (t_tree*)d;
 	t_tree_node *tmp, *prv, *cur = t->root;
@@ -614,4 +622,271 @@ void print_tree(t_gen d)
 		printf("\n");
 		destroy_queue(q);
 	}
+}
+
+/*! \brief Brief description.
+ *   get height of node subtree 
+ */
+int tree_height (t_gen n)
+{
+	t_tree_node *root = (t_tree_node*)n;
+	int lh, rh;
+	int height;
+	
+	lh = (root->lchild == NULL)? -1: root->lchild->height; 
+	rh = (root->rchild == NULL)? -1: root->rchild->height; 
+	
+	height = (lh >rh)? lh: rh;
+
+	return 1 + height;
+
+}
+
+/*! \brief Brief description.
+ *   get slope of node subtree
+ */
+int tree_slope(t_gen n)
+{
+	t_tree_node *root = (t_tree_node*)n;
+	int lh, rh;
+
+	lh = (root->lchild == NULL)? 0: root->lchild->height; 
+	rh = (root->rchild == NULL)? 0: root->rchild->height; 
+
+	return (lh - rh); 
+}
+
+/*! \brief Brief description.
+ *   rotate subtree right
+ */
+void tree_rotate_right(t_gen n)
+{
+	t_tree_node *root = (t_tree_node*)n;
+	t_tree_node *TLL, *TLR, *TR;
+	t_gen x, y;
+
+	// update all ptrs;
+	x = root->key;
+	y = root->lchild->key;
+	TLL = root->lchild->lchild;
+	TLR = root->lchild->rchild;
+	TR = root->rchild;
+
+	// rotate right
+	root->key = y;
+	root->rchild = root->lchild;
+	root->rchild->key = x;
+	root->lchild = TLL;
+	root->rchild->lchild = TLR;
+	root->rchild->rchild = TR;
+}
+
+
+/*! \brief Brief description.
+ *   rotate subtree left
+ */
+void tree_rotate_left(t_gen n)
+{
+	t_tree_node *root = (t_tree_node*)n;
+	t_tree_node *TLL, *TLRL, *TLRR;
+	t_gen y, z;
+
+	// update all ptrs;
+	y = root->key;
+	z = root->rchild->key;
+	TLL = root->lchild;
+	TLRL = root->rchild->lchild;
+	TLRR = root->rchild->rchild;
+
+	// rotate left
+	root->key = z;
+	root->lchild = root->rchild;
+	root->lchild->key = y;
+	root->lchild->lchild = TLL;
+	root->lchild->rchild = TLRL;
+	root->rchild = TLRR;
+}
+
+/*! \brief Brief description.
+ *   rebalance subtree
+ */
+void tree_rebalance(t_gen n)
+{
+	t_tree_node *root = (t_tree_node*)n;
+
+	if (tree_slope(root) == 2) {
+		if (tree_slope(root->lchild) == -1) {
+			tree_rotate_left(root->lchild);
+		}
+		tree_rotate_right(root);
+	}
+		
+	if (tree_slope(root) == -2) {
+		if (tree_slope(root->rchild) == 1) {
+			tree_rotate_right(root->rchild);
+		}
+		tree_rotate_left(root);
+	}
+		
+}
+
+/*! \brief Brief description.
+ *   Add element to an avl tree
+ */
+void tree_insert_node_avl(t_gen d,t_gen data)
+{
+	t_tree *t = (t_tree*)d;
+	t_tree_node *new;
+	t_tree_node *parent = NULL, *cur;
+	e_cmpr res;
+	t_stack *s;
+
+	// key already present
+	if (t->find(t, data) != NULL) {
+		LOG_WARN("TREES", "%s: Key not present\n");
+		return;
+	} 
+
+	t->count++;
+	// Create Node and add data
+	new = get_mem(1, sizeof(t_tree_node));
+	new->key = data;
+	new->lchild = new->rchild = NULL;
+	new->height = 0;
+
+	// tree is empty
+	if (t->root == NULL) {
+		t->root = new;
+		return;
+	}
+
+	// stack to be used to find rebalance and update height
+	s = create_stack("Stk_inorder", t->count, eARRAY_STACK, eUINT32);
+
+	cur = t->root;
+	// get position in tree to insert node
+	while (cur != NULL) {
+		parent = cur;
+		// if new node < cur node 
+		// new node to be inserted in left subtree
+		// else insert in right subtree
+		res = t->cmpr(new->key, cur->key);
+		if (res == eLESS) {
+			cur = cur->lchild;
+		} else {
+			cur = cur->rchild;
+		}
+
+		// push parent to stack 
+		s->push(s, parent);
+	}
+	
+	// If the new key is less then the leaf node key
+	// Assign the new node to be its left child
+	// else Assign the new node to be its right child
+	res = t->cmpr(new->key, parent->key);
+	if (res == eLESS) {
+		parent->lchild = new;
+	} else {
+		parent->rchild = new;
+	}
+
+	// check for rebalance and update height
+	while (s->empty(s) != true) {
+		cur  = s->pop(s);
+		// rebalance the paraent
+		tree_rebalance(cur);
+		cur->height = tree_height(cur);	
+	}
+
+	destroy_stack(s);
+}
+
+
+/*! \brief Brief description.
+ *  Delete a node in an avl tree 
+*/
+t_gen tree_delete_node_avl(t_gen d,t_gen data)
+{
+	t_tree *t = (t_tree*)d;
+	t_tree_node *tmp, *prv, *cur = t->root;
+	e_cmpr res;
+	t_gen ret = NULL;
+	
+	// Empty tree
+	if (cur == NULL) {
+		LOG_WARN("TREES", "%s: TREE Empty\n",t->name);
+		return ret;
+	} 
+
+	t->count++;
+	tmp = prv = NULL;
+	// check if node present and get parent
+	while (cur) {
+		res = t->cmpr(data, cur->key);
+		if (res == eEQUAL) {
+			break;
+		}
+		
+		prv = cur;
+		if (res == eLESS) {
+			cur = cur->lchild;
+		} else {
+			cur = cur->rchild;
+		}
+	}
+
+	// key not present
+	if (cur == NULL) {
+		LOG_WARN("TREES", "%s: Key not present\n",t->name);
+		return ret;
+	} 
+
+	// store the key to be returned	
+	ret = cur->key;
+
+	// node to be  has just one child
+	if (cur->lchild == NULL || cur->rchild == NULL) {
+		// get the non-null child to be replaced with deleted node
+		tmp =  (cur->lchild != NULL)? cur->lchild : cur->rchild;
+		
+		// root is deleted update root
+		if (prv == NULL) {
+			t->root = tmp;
+		}
+		//  get where the new node is to updated ,i.e. l or r child
+		else if (cur == prv->lchild) {
+			prv->lchild = tmp;
+		}
+		 else {
+			prv->rchild = tmp;
+		}
+	}
+	 
+	else {
+		prv = NULL;
+		// compute successor and get parent of it
+		tmp = cur->rchild;
+		while (tmp->lchild) {
+			prv = tmp;
+			tmp = tmp->lchild;
+		}
+
+		// Swap node to be deleted with succ 
+		if (prv != NULL) {
+			prv->lchild = tmp->rchild;
+		} 
+		else {
+			cur->rchild = tmp->rchild;
+		}
+		
+		cur->key = tmp->key;
+		cur = tmp;
+	}
+	// Delete node
+	cur->lchild = cur->rchild = NULL;
+	cur->key = NULL;
+	free_mem(cur);
+
+	return ret;
 }
