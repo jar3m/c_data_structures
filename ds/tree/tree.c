@@ -4,6 +4,8 @@
 
 void tree_insert_node_bst(t_gen,t_gen);
 t_gen tree_delete_node_bst(t_gen,t_gen);
+int tree_height_bst (t_gen n);
+
 t_gen tree_find_node(t_gen,t_gen);
 t_gen tree_node_predecessor(t_gen,t_gen);
 t_gen tree_node_successor(t_gen,t_gen);
@@ -13,12 +15,15 @@ void tree_inorder(t_gen);
 void tree_preorder(t_gen);
 void tree_postorder(t_gen);
 void print_tree(t_gen);
+int tree_node_count(t_gen n);
 
 void tree_insert_node_avl(t_gen,t_gen);
 t_gen tree_delete_node_avl(t_gen,t_gen);
+int tree_height_avl(t_gen n);
 
 f_ins tree_insert[] = {tree_insert_node_bst,tree_insert_node_avl};
 f_del tree_del[] = {tree_delete_node_bst,tree_delete_node_avl};
+f_len tree_height[] = {tree_height_bst, tree_height_avl};
 
 /*! \brief Brief description.
  *  Create an instance of tree
@@ -45,7 +50,8 @@ t_gen create_tree(char *name, e_treetype ttype, e_data_types dtype)
 	t->inorder = tree_inorder;
 	t->preorder = tree_preorder;
 	t->postorder = tree_postorder;
-
+	t->height = tree_height[ttype];
+	t->node_count = tree_node_count;
 	// Initailze datatype based operations req for prop working of tree
 	switch(dtype)
 	{
@@ -83,6 +89,14 @@ t_gen create_tree(char *name, e_treetype ttype, e_data_types dtype)
 }
 
 
+/*! \brief Brief description.
+ *   get_num_nodes in tree;
+ */
+int tree_node_count(t_gen d)
+{
+
+	return ((t_tree*)d)->count;
+}
 
 /*! \brief Brief description.
  *   Add element to a bst tree
@@ -153,6 +167,7 @@ t_gen tree_find_node(t_gen d, t_gen data)
 		// node to be searched in left subtree
 		// else search in right subtree
 		res = t->cmpr(data, cur->key);
+		
 		if (res == eEQUAL) {
 			break;
 		} else if (res == eLESS) {
@@ -429,6 +444,52 @@ t_gen tree_delete_node_bst(t_gen d,t_gen data)
 }
 
 /*! \brief Brief description.
+ *   get height of bst
+ */
+int tree_height_bst (t_gen n)
+{
+	t_tree_node *cur = (t_tree_node*)n;
+	int height = 0,size;
+	t_queue *q;
+	
+	if (cur == NULL) {
+		return height;
+	}
+
+	// TODO: Queue count how to do??
+	q = create_queue("Qdel_tree", 40, eARRAY_QUEUE_CIRC, eUSER);
+
+	// enqueue the root node
+	q->enq(q, cur);
+	while (q->empty(q) != true) {
+		// nodes in current level
+		size = q->len(q);
+		// loop till queue is empty
+		while (size--) {
+			// get the node at cur level
+			cur =  q->deq(q);
+
+			// enqueue all the children at cur lvl
+			if (cur->lchild != NULL) {
+				q->enq(q, cur->lchild);
+			}
+
+			if (cur->rchild != NULL) {
+				q->enq(q, cur->rchild);
+			}
+		}
+		
+		// Increment height
+		height++;
+	}
+	
+	destroy_queue(q);
+
+	return height;
+
+}
+
+/*! \brief Brief description.
  *  Destroy the instance of the tree 
  */
 void destroy_tree(t_gen d)
@@ -585,49 +646,65 @@ void  tree_inorder(t_gen d)
 }
 
 /*! \brief Brief description.
- *  print tree info
+ *  print tree info level by level
  */
 void print_tree(t_gen d)
 {
 	t_tree *t = (t_tree*)d;
 	t_tree_node *cur = t->root;
 	t_queue *q;
-	
+	int level = 0,size;
 	// Empty tree
 	if (cur == NULL) {
 		LOG_WARN("TREES", "%s: TREE Empty\n",t->name);
-	} else {
-		q = create_queue("Qtree_print", t->count, eARRAY_QUEUE_CIRC, eUSER);
-		
-		printf("%s: %d nodes \n", t->name,t->count);
-		// enqueue the root node
-		q->enq(q, cur);
+		return;
+	}
+	printf("%s: %d nodes lvl based print \n", t->name,t->count);
+
+	q = create_queue("Qdel_tree", t->count, eARRAY_QUEUE_CIRC, eUSER);
+
+	// enqueue the root node
+	q->enq(q, cur);
+	while (q->empty(q) != true) {
+		printf(" %d :",level);
+		// nodes in current level
+		size = q->len(q);
 		// loop till queue is empty
-		while (q->empty(q) != true) {
-			// delete each node in the queue one by one after pushing their
-			// non-empty left and right child to the queue
+		while (size--) {
+			// get the node at cur level
 			cur =  q->deq(q);
 
+			printf("[");
+			t->print_data(cur->key);
+			printf(":");
+			// enqueue all the children at cur lvl
 			if (cur->lchild != NULL) {
 				q->enq(q, cur->lchild);
+				printf(" ");
+				t->print_data(cur->lchild->key);
 			}
 
 			if (cur->rchild != NULL) {
 				q->enq(q, cur->rchild);
+				printf(" ");
+				t->print_data(cur->rchild->key);
 			}
-
-			t->print_data(cur->key);
-			printf(" ");
+			// print all nodes at cur lvl
+			printf("] ");
 		}
 		printf("\n");
-		destroy_queue(q);
+		// Increment level
+		level++;
 	}
+	
+	destroy_queue(q);
+
 }
 
 /*! \brief Brief description.
- *   get height of node subtree 
+ *   get height of avl subtree 
  */
-int tree_height (t_gen n)
+int tree_height_avl (t_gen n)
 {
 	t_tree_node *root = (t_tree_node*)n;
 	int lh, rh;
@@ -796,7 +873,7 @@ void tree_insert_node_avl(t_gen d,t_gen data)
 		cur  = s->pop(s);
 		// rebalance the paraent
 		tree_rebalance(cur);
-		cur->height = tree_height(cur);	
+		cur->height = tree_height_avl(cur);	
 	}
 
 	destroy_stack(s);
@@ -900,7 +977,7 @@ t_gen tree_delete_node_avl(t_gen d,t_gen data)
 		cur  = s->pop(s);
 		// rebalance the paraent
 		tree_rebalance(cur);
-		cur->height = tree_height(cur);	
+		cur->height = tree_height_avl(cur);	
 	}
 
 	destroy_stack(s);

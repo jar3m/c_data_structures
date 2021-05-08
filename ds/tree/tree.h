@@ -18,7 +18,6 @@ typedef enum {
 // tree specific routines
 typedef t_gen(*f_pred)(t_gen, t_gen);
 typedef t_gen(*f_succ)(t_gen, t_gen);
-typedef t_gen(*f_min_max)(t_gen);
 
 
 /// Heap struct defn
@@ -39,7 +38,8 @@ typedef struct tree {
 	f_succ succ;
 	f_gen min;
 	f_gen max;
-	f_gen height;
+	f_len height;
+	f_len node_count;
 	f_print inorder;
 	f_print preorder;
 	f_print postorder;

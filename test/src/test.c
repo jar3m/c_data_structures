@@ -188,33 +188,35 @@ int main(int argc, char *argv[])
 	t_gen t1 = create_tree("tree1", eBST, eINT8);
 	t_gen t2 = create_tree("tree2", eAVL, eFLOAT);
 	t_gen t3 = create_tree("tree3", eAVL, eSTRING);
+	t_gen t4 = create_tree("tree4", eBST, eFLOAT);
 	
 	for(i = 0; i < 3; i++) {
 		((t_tree*)t1)->insert(t1, assign_char(carr[i]));
 		f= (float)i+0.222 / 2.0f;
 		((t_tree*)t2)->insert(t2, assign_float(f));
 		((t_tree*)t3)->insert(t3, assign_string(str[i]));
+		((t_tree*)t4)->insert(t4, assign_float(f));
 	}
 	for(i = 9; i >= 3; i--) {
 		((t_tree*)t1)->insert(t1, assign_char(carr[i]));
 		f= (float)i+0.222 / 2.0f;
 		((t_tree*)t2)->insert(t2, assign_float(f));
+		((t_tree*)t4)->insert(t4, assign_float(f));
 	}
 	// find in tree
 	char str1[10] = "some";
-	if (((t_tree*)t3)->find(t3, s1) == NULL) {
+	if (((t_tree*)t3)->find(t3, str1) == NULL) {
 		printf("%s not present in tree\n", str1);
 	} else {
 		printf("%s present in tree\n", str1);
 	}
 
-	char *str2 = assign_string("I");
-	if (((t_tree*)t3)->find(t3, s2) == NULL) {
+	char str2[10] = "I";
+	if (((t_tree*)t3)->find(t3, str2) == NULL) {
 		printf("%s not present in tree\n", str2);
 	} else {
 		printf("%s present in tree\n", str2);
 	}
-	free_mem(str2);
 	
 	// Min  Max in tree
 	printf("\nmin & max\n");
@@ -245,12 +247,21 @@ int main(int argc, char *argv[])
 	succ = ((t_tree*)t3)->succ(t3,str[0]);
 	printf("%s %s\n", (char*) pred->key, (char*)succ->key); 
 	
+	pred = ((t_tree*)t2)->root;
+	succ = ((t_tree*)t4)->root;
+	printf("Tree height avl/bst %d %d\n",
+			((t_tree*)t2)->height(pred), ((t_tree*)t4)->height(succ));
 	((t_tree*)t1)->inorder(t1);
 	((t_tree*)t2)->inorder(t2);
 	((t_tree*)t3)->inorder(t3);
 	((t_tree*)t1)->preorder(t1);
 	((t_tree*)t2)->preorder(t2);
 	((t_tree*)t3)->preorder(t3);
+
+	((t_tree*)t1)->print(t1);
+	((t_tree*)t2)->print(t2);
+	((t_tree*)t3)->print(t3);
+	((t_tree*)t4)->print(t4);
 	// deleting nodes
 	for(i = 9; i >= 0; i--) {
 		cp = ((t_tree*)t1)->del(t1, &carr[i]);
@@ -263,6 +274,7 @@ int main(int argc, char *argv[])
 	destroy_tree(t1);
 	destroy_tree(t2);
 	destroy_tree(t3);
+	destroy_tree(t4);
 
 	mem_finit();
 
