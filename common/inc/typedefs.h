@@ -43,6 +43,7 @@ typedef struct elem {
 
 
 /// common routines supported by all data structures
+typedef t_gen(*f_gen)(t_gen);
 typedef void (*f_print)(t_gen);
 typedef bool (*f_empty)(t_gen);
 typedef bool (*f_full)(t_gen);

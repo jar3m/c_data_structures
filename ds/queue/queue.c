@@ -4,12 +4,12 @@ bool queue_full(t_gen d);
 bool queue_empty(t_gen d);
 int queue_size(t_gen d);
 
-t_gen queue_enqueue_ll(t_gen s, t_gen data);
+void queue_enqueue_ll(t_gen s, t_gen data);
 t_gen queue_dequeue_ll(t_gen s);
-t_gen queue_enqueue_arr(t_gen s, t_gen data);
+void queue_enqueue_arr(t_gen s, t_gen data);
 t_gen queue_dequeue_arr(t_gen s);
 
-f_enq q_enq[] = {queue_enqueue_ll, queue_enqueue_arr};
+f_ins q_enq[] = {queue_enqueue_ll, queue_enqueue_arr};
 f_deq q_deq[] = {queue_dequeue_ll, queue_dequeue_arr};
 
 /*! \brief Brief description.
@@ -100,14 +100,13 @@ void destroy_queue (t_gen s)
 /*! \brief Brief description.
  *  add element in queue
 */
-t_gen queue_enqueue_arr(t_gen s, t_gen data)
+void queue_enqueue_arr(t_gen s, t_gen data)
 {
 	t_queue *q = (t_queue*)s;
 
 	// return if queue full
 	if (q->full(q) == true) {
 		LOG_WARN("QUEUES", "%s: Queue Full\n",q->name);
-		return NULL;
 	}
 
 	// queue empty (added first element)
@@ -118,7 +117,6 @@ t_gen queue_enqueue_arr(t_gen s, t_gen data)
 	q->data[q->rear] = data;
 	q->count++;
 	
-	return data;
 }
 
 /*! \brief Brief description.
@@ -153,7 +151,7 @@ t_gen queue_dequeue_arr(t_gen s)
 /*! \brief Brief description.
  *  add element in queue
 */
-t_gen queue_enqueue_ll(t_gen s, t_gen data)
+void queue_enqueue_ll(t_gen s, t_gen data)
 {
 }
 

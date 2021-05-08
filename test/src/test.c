@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
 	destroy_heap(h3);
 #endif
 	LOG_INFO("COMMON", "------ TREE TEST -----\n");		
-	t_gen t1 = create_tree("tree1", eAVL, eINT8);
+	t_gen t1 = create_tree("tree1", eBST, eINT8);
 	t_gen t2 = create_tree("tree2", eAVL, eFLOAT);
 	t_gen t3 = create_tree("tree3", eAVL, eSTRING);
 	
@@ -259,6 +259,7 @@ int main(int argc, char *argv[])
 		fp = ((t_tree*)t2)->del(t2, &f);
 		free_mem(fp);
 	}
+
 	destroy_tree(t1);
 	destroy_tree(t2);
 	destroy_tree(t3);

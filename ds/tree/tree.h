@@ -31,18 +31,21 @@ typedef struct tree {
 	//tree root
 	t_gen root;
 	
+	// tree roputines
 	f_ins insert;
 	f_del del;
 	f_find find;
 	f_pred pred;
 	f_succ succ;
-	f_min_max min;
-	f_min_max max;
+	f_gen min;
+	f_gen max;
+	f_gen height;
 	f_print inorder;
 	f_print preorder;
 	f_print postorder;
 	f_print print;
 	
+	// routies for operating on data
 	f_cmpr cmpr;
 	f_swap swap;
 	f_free free;

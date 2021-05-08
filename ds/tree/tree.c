@@ -810,14 +810,18 @@ t_gen tree_delete_node_avl(t_gen d,t_gen data)
 {
 	t_tree *t = (t_tree*)d;
 	t_tree_node *tmp, *prv, *cur = t->root;
-	e_cmpr res;
 	t_gen ret = NULL;
+	e_cmpr res;
+	t_stack *s;
 	
 	// Empty tree
 	if (cur == NULL) {
 		LOG_WARN("TREES", "%s: TREE Empty\n",t->name);
 		return ret;
 	} 
+
+	// stack to be used to find rebalance and update height
+	s = create_stack("Stk_inorder", t->count, eARRAY_STACK, eUINT32);
 
 	t->count++;
 	tmp = prv = NULL;
@@ -834,11 +838,14 @@ t_gen tree_delete_node_avl(t_gen d,t_gen data)
 		} else {
 			cur = cur->rchild;
 		}
+		// push parent to stack 
+		s->push(s, prv);
 	}
 
 	// key not present
 	if (cur == NULL) {
 		LOG_WARN("TREES", "%s: Key not present\n",t->name);
+		destroy_stack(s);
 		return ret;
 	} 
 
@@ -888,5 +895,14 @@ t_gen tree_delete_node_avl(t_gen d,t_gen data)
 	cur->key = NULL;
 	free_mem(cur);
 
+	// check for rebalance and update height
+	while (s->empty(s) != true) {
+		cur  = s->pop(s);
+		// rebalance the paraent
+		tree_rebalance(cur);
+		cur->height = tree_height(cur);	
+	}
+
+	destroy_stack(s);
 	return ret;
 }
