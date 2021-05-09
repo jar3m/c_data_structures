@@ -3,6 +3,7 @@
 bool is_stack_full(t_gen d);
 bool is_stack_empty(t_gen d);
 int stack_size(t_gen d);
+t_gen stack_peek(t_gen d);
 
 t_gen push_stack_arr_up(t_gen d, t_gen data);
 t_gen pop_stack_arr_up(t_gen s);
@@ -39,6 +40,7 @@ t_gen create_stack (char *name, int max_size, e_stacktype stype, e_data_types dt
 	// Bind stack routines and create stack space based on stack type
 	s->push = stack_push[stype];	
 	s->pop = stack_pop[stype];	
+	s->peek = stack_peek;	
 
         switch (stype) 
 	{
@@ -141,6 +143,25 @@ t_gen push_stack_arr_up(t_gen d, t_gen data)
 	// Incr top and push to stack
 	s->data[++(s->top)] =  data;
 	s->count++;
+
+	return data;
+}
+
+/*! \brief Brief description.
+ *  return the top element from up growing stack
+*/
+t_gen stack_peek(t_gen d)
+{
+	t_stack *s = (t_stack*)d; 
+	t_gen data = NULL;
+
+	if (s->count == 0) {
+		LOG_WARN("STACKS", "%s: Stack empty\n",s->name);
+		return data;
+	}
+	
+	// get and return the elem on top of the stack
+	data = s->data[(s->top)];
 
 	return data;
 }

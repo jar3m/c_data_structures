@@ -257,6 +257,10 @@ int main(int argc, char *argv[])
 	((t_tree*)t1)->preorder(t1);
 	((t_tree*)t2)->preorder(t2);
 	((t_tree*)t3)->preorder(t3);
+	((t_tree*)t1)->postorder(t1);
+	((t_tree*)t2)->postorder(t2);
+	((t_tree*)t3)->postorder(t3);
+	((t_tree*)t4)->postorder(t4);
 
 	((t_tree*)t1)->print(t1);
 	((t_tree*)t2)->print(t2);

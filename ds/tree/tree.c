@@ -502,14 +502,15 @@ void destroy_tree(t_gen d)
 	if (cur == NULL) {
 		LOG_WARN("TREES", "%s: TREE Empty\n",t->name);
 	} else {
-		q = create_queue("Qdel_tree", t->count, eARRAY_QUEUE_CIRC, eUSER);
+		q = create_queue("Qdel_tree", t->count,
+				eARRAY_QUEUE_CIRC, eUSER);
 		// enqueue the root node
 		q->enq(q, cur);
 
 		// loop till queue is empty
 		while (q->empty(q) != true) {
-			// delete each node in the queue one by one after pushing their
-			// non-empty left and right child to the queue
+			// delete nodes in the queue one by one after pushing 
+			// their non-empty left and right child to the queue
 			cur =  q->deq(q);
 
 			if (cur->lchild != NULL) {
@@ -536,7 +537,7 @@ void destroy_tree(t_gen d)
 void  tree_postorder(t_gen d)
 {
 	t_tree *t = (t_tree*)d;
-	t_tree_node *cur = t->root;
+	t_tree_node *tmp, *cur = t->root;
 	t_stack *s;
 	 
 	// Empty tree
@@ -546,25 +547,40 @@ void  tree_postorder(t_gen d)
 	}
 	printf("%s: %d nodes postorder traversal\n", t->name, t->count);
 	
-	s = create_stack("Stk_inorder", t->count, eARRAY_STACK, eUINT32);
-//	do {
-//		while (cur) {
-//			// push root node
-//			s->push(s, cur->lchild);
-//		// pop and print the node
-//		cur = s->pop(s);
-//		t->print_data(cur->key);
-//		printf(" ");
-//	
-//		// push right and left child of node
-//		if (cur->lchild != NULL) {
-//			s->push(s, cur->lchild);
-//		}
-//		if (cur->rchild != NULL) {
-//			s->push(s, cur->rchild);
-//		}
-//	} while (s->empty(s) != true);
-//	printf("\n");
+	s = create_stack("Stk_postorder", t->count, eARRAY_STACK, eUINT32);
+	do {
+		// Move to left most node
+		while (cur) {
+			// push root rchild and root to stack
+			if (cur->rchild != NULL) {	
+				s->push(s, cur->rchild);
+			}			
+			s->push(s, cur);
+			cur = cur->lchild;
+		}
+		// pop and print the node
+		cur = s->pop(s);
+	
+		//  If popped item has right child and the right child is not
+		// processed, then make sure right child processed before root
+		tmp = (s->empty(s) != true)? s->peek(s): NULL;
+		
+		if (cur->rchild != NULL && tmp == cur->rchild) {
+			// remove right child from stack
+			s->pop(s);
+			// push root back to stack
+			s->push(s, cur);
+			// update root to rchild to process it
+			cur = cur->rchild;
+		}
+		else {
+			// print data and update root as NULL
+			t->print_data(cur->key);
+			printf(" ");
+			cur = NULL;
+		}
+	} while (s->empty(s) != true);
+	printf("\n");
 	
 	destroy_stack(s);
 
