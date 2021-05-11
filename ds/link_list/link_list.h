@@ -1,8 +1,6 @@
 #pragma once
 #include "common.h"
 
-typedef void(*f_append)(t_gen,t_gen);
-typedef void(*f_add)(t_gen,t_gen);
 typedef t_gen(*f_del)(t_gen, t_gen);
 
 typedef enum {
@@ -20,8 +18,8 @@ typedef struct linklist {
 	t_elem *head;
 	t_elem *tail;
 	
-	f_append append;
-	f_add add;
+	f_ins append;
+	f_ins add;
 	f_del del;
 	f_len len;
 	f_print print_data;
