@@ -43,10 +43,15 @@ typedef struct elem {
 
 
 /// common routines supported by all data structures
+typedef t_gen(*f_gen)(t_gen);
 typedef void (*f_print)(t_gen);
 typedef bool (*f_empty)(t_gen);
 typedef bool (*f_full)(t_gen);
 typedef int (*f_len)(t_gen);
+
+typedef void(*f_ins)(t_gen,t_gen);
+typedef t_gen(*f_del)(t_gen, t_gen);
+typedef t_gen(*f_find)(t_gen, t_gen);
 
 /// Basic operations required for generic data type support
 typedef e_cmpr (*f_cmpr)(t_gen,t_gen);
