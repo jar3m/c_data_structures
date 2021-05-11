@@ -19,8 +19,8 @@ int len_of_link_list(t_gen d);
 void print_link_list (t_gen d);
 
 /// Look Up function call for add, append and del depending on type of list
-f_add add[] = {add_begin_sll,add_begin_dll,add_begin_scll,add_begin_dcll};
-f_append append[] = {add_end_sll,add_end_dll,add_end_scll,add_end_dcll};
+f_ins add[] = {add_begin_sll,add_begin_dll,add_begin_scll,add_begin_dcll};
+f_ins append[] = {add_end_sll,add_end_dll,add_end_scll,add_end_dcll};
 f_del del[] = {del_node_sll, del_node_dll, del_node_scll, del_node_dcll};
 
 /*! \brief Brief description.

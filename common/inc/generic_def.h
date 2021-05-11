@@ -52,6 +52,38 @@
 					printf(FMT_SPF(y), *((T*)x)); \
 				}
 
+#define CMPR_IDX(T, NAME)	e_cmpr NAME(t_gen x, int idx1, int idx2)\
+					{	\
+						e_cmpr ret = eEQUAL;\
+						T *arr = ((T*)(x));\
+						T tmp = arr[idx1] -arr[idx2];\
+						if (tmp < 0)	\
+							ret = eLESS;\
+						else if (tmp > 0)\
+							ret = eGREAT;\
+						return ret;\
+					}
+
+#define SWP_IDX(T, NAME)	void NAME(t_gen x, int idx1, int idx2)\
+					{	\
+						T *arr = ((T*)(x));\
+						T tmp = arr[idx1] ;\
+						arr[idx1] = arr[idx2];\
+						arr[idx2] = tmp;\
+					}
+
+#define COPY_IDX(T, NAME)	void NAME(t_gen x, int idx1, t_gen data)\
+					{	\
+						T *arr = ((T*)(x));\
+						arr[idx1] = *((T*)(data));\
+					}
+
+#define GET_IDX(T, NAME)	t_gen NAME(t_gen x, int idx1)\
+					{	\
+						T *arr = ((T*)(x));\
+						t_gen tmp = &arr[idx1] ;\
+						return tmp;\
+					}
 
 /// Below routines defined as reference for basic datatypes
 e_cmpr compare_char(t_gen,t_gen);
@@ -73,3 +105,19 @@ void print_char(t_gen);
 void print_float(t_gen);
 void print_int(t_gen);
 void print_str(t_gen);
+
+e_cmpr compare_idx_char(t_gen,int,int);
+e_cmpr compare_idx_int(t_gen,int,int);
+e_cmpr compare_idx_float(t_gen,int,int);
+
+void swap_idx_char(t_gen,int,int);
+void swap_idx_int(t_gen,int,int);
+void swap_idx_float(t_gen,int,int);
+
+void copy_idx_char(t_gen,int,t_gen);
+void copy_idx_int(t_gen,int,t_gen);
+void copy_idx_float(t_gen,int,t_gen);
+
+t_gen get_idx_char(t_gen,int);
+t_gen get_idx_int(t_gen,int);
+t_gen get_idx_float(t_gen,int);
