@@ -8,10 +8,8 @@ typedef enum {
 } e_heaptype;
 
 // heap routines
-typedef void (*f_hins) (t_gen , t_gen);
 typedef t_gen (*f_hdel) (t_gen);
-typedef void (*f_hbuild) (t_gen);
-typedef void (*f_hsort) (t_gen);
+typedef void (*f_hgen) (t_gen);
 
 /// Heap struct defn
 typedef struct heap {
@@ -24,10 +22,10 @@ typedef struct heap {
 	t_gen *data;
 	
 	// heap  roputines
-	f_hins insert;
+	f_ins insert;
 	f_hdel del;
-	f_hbuild build;
-	f_hsort sort;
+	f_hgen build;
+	f_hgen sort;
 	f_len len;
 	f_print print;
 	// routies for operating on data
