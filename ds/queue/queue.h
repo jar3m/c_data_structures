@@ -3,7 +3,6 @@
 #include "common.h"
 #include "link_list.h"
 
-typedef t_gen (*f_enq)(t_gen s, t_gen data);
 typedef t_gen (*f_deq)(t_gen s);
 
 typedef enum {
@@ -20,14 +19,15 @@ typedef struct {
 	e_queuetype type;
 	t_gen *data;
 	
-	f_enq enq;
+	f_ins enq;
 	f_deq deq;
 	f_len len;
-	f_free free;
+	f_gen peek;
 	f_full full;
 	f_empty empty;
 	f_print print;
 	f_print print_data;
+	f_free free;
 } t_queue;
 
 
