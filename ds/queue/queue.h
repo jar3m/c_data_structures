@@ -22,6 +22,7 @@ typedef struct {
 	f_ins enq;
 	f_deq deq;
 	f_len len;
+	f_gen peek;
 	f_full full;
 	f_empty empty;
 	f_print print;

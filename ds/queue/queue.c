@@ -6,11 +6,15 @@ int queue_size(t_gen d);
 
 void queue_enqueue_ll(t_gen s, t_gen data);
 t_gen queue_dequeue_ll(t_gen s);
+t_gen queue_peek_ll(t_gen d);
+
 void queue_enqueue_arr(t_gen s, t_gen data);
 t_gen queue_dequeue_arr(t_gen s);
+t_gen queue_peek_arr(t_gen d);
 
 f_ins q_enq[] = {queue_enqueue_ll, queue_enqueue_arr};
 f_deq q_deq[] = {queue_dequeue_ll, queue_dequeue_arr};
+f_gen q_peek[] = {queue_peek_ll, queue_peek_arr};
 
 /*! \brief Brief description.
  *  Destroy queue instance 
@@ -35,6 +39,7 @@ t_gen create_queue (char *name, int max_size, e_queuetype qtype, e_data_types dt
 	
 	q->enq = q_enq[qtype];
 	q->deq = q_deq[qtype];
+	q->peek = q_peek[qtype];
 	q->front = q->rear = -1;
 	// create queue space
 	switch (qtype) 
@@ -149,6 +154,26 @@ t_gen queue_dequeue_arr(t_gen s)
 }
 
 /*! \brief Brief description.
+ *  peek front element in queue
+*/
+t_gen queue_peek_arr(t_gen s)
+{
+	t_queue *q = (t_queue*)s;
+	t_gen data;
+
+	// return if queue empty 
+	if (q->empty(q) == true) {
+		LOG_WARN("QUEUES", "%s: Queue Empty\n",q->name);
+		return NULL;
+	}
+
+	// get queue element 
+	data = q->data[q->front];
+
+	return data;
+}
+
+/*! \brief Brief description.
  *  add element in queue
 */
 void queue_enqueue_ll(t_gen s, t_gen data)
@@ -159,6 +184,13 @@ void queue_enqueue_ll(t_gen s, t_gen data)
  *  pop front element in queue
 */
 t_gen queue_dequeue_ll(t_gen s)
+{
+}
+
+/*! \brief Brief description.
+ *  peek front element in queue
+*/
+t_gen queue_peek_ll(t_gen s)
 {
 }
 
