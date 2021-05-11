@@ -48,7 +48,6 @@ typedef void (*f_print)(t_gen);
 typedef bool (*f_empty)(t_gen);
 typedef bool (*f_full)(t_gen);
 typedef int (*f_len)(t_gen);
-typedef int (*f_len)(t_gen);
 
 typedef void(*f_ins)(t_gen,t_gen);
 typedef t_gen(*f_del)(t_gen, t_gen);
