@@ -298,6 +298,7 @@ void destroy_link_list (t_gen d)
 	// delete all node in llist
 	ptr = l->head;
 
+	// exit for Circ or non circ linked list
 	end = l->tail? l->tail->nxt :l->tail;
 
 	while (ptr) {
