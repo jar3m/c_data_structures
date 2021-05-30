@@ -72,6 +72,13 @@ t_gen create_link_list (char *name, e_lltype type, e_data_types data_type)
 			l->print_data = print_str;
 			l->free = FREE_MEM;
 			break;
+		case eGEN:
+			//gen list;
+			l->cmpr = compare_gen;
+			l->swap = swap_gen;
+			l->print_data = print_gen;
+			l->free = FREE_MEM;
+			break;
 	}
 	return (t_gen)l;
 }

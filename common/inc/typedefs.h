@@ -22,6 +22,7 @@ typedef enum data_types {
 	eFLOAT,
 	eDOUBLE,
 	eSTRING,
+	eGEN,
 	eUSER,
 }e_data_types;
 
