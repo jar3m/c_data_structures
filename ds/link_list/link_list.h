@@ -21,6 +21,7 @@ typedef struct linklist {
 	f_ins append;
 	f_ins add;
 	f_del del;
+	f_del_idx del_idx;
 	f_len len;
 	f_print print_data;
 	f_cmpr cmpr;

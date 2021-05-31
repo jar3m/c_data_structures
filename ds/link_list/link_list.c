@@ -4,24 +4,33 @@ void add_begin_sll(t_gen d,t_gen data);
 void add_begin_dll(t_gen d,t_gen data);
 void add_begin_scll(t_gen d,t_gen data); 
 void add_begin_dcll(t_gen d,t_gen data);
+void add_begin_xor_dll(t_gen d,t_gen data);
 
 void add_end_sll(t_gen d,t_gen data);
 void add_end_dll(t_gen d,t_gen data);
 void add_end_scll(t_gen d,t_gen data); 
 void add_end_dcll(t_gen d,t_gen data);
+void add_end_xor_dll(t_gen d,t_gen data);
 
 t_gen del_node_sll(t_gen d, t_gen data);
 t_gen del_node_dll(t_gen d, t_gen data);
 t_gen del_node_scll(t_gen d, t_gen data); 
 t_gen del_node_dcll(t_gen d, t_gen data);
+t_gen del_node_xor_dll(t_gen d, t_gen data);
+
+t_gen del_node_sll_idx(t_gen d, int idx);
+t_gen del_node_dll_idx(t_gen d, int idx);
+t_gen del_node_scll_idx(t_gen d, int idx); 
+t_gen del_node_dcll_idx(t_gen d, int idx);
 
 int len_of_link_list(t_gen d);
 void print_link_list (t_gen d);
 
 /// Look Up function call for add, append and del depending on type of list
-f_ins add[] = {add_begin_sll,add_begin_dll,add_begin_scll,add_begin_dcll};
-f_ins append[] = {add_end_sll,add_end_dll,add_end_scll,add_end_dcll};
-f_del del[] = {del_node_sll, del_node_dll, del_node_scll, del_node_dcll};
+f_ins add[] = {add_begin_sll,add_begin_dll,add_begin_scll,add_begin_dcll, add_begin_xor_dll};
+f_ins append[] = {add_end_sll,add_end_dll,add_end_scll,add_end_dcll, add_end_xor_dll};
+f_del del[] = {del_node_sll, del_node_dll, del_node_scll, del_node_dcll, del_node_xor_dll};
+f_del_idx del_idx[] = {del_node_sll_idx, del_node_dll_idx, del_node_scll_idx, del_node_dcll_idx};
 
 /*! \brief Brief description.
  *  Create an instance of link list
@@ -40,6 +49,7 @@ t_gen create_link_list (char *name, e_lltype type, e_data_types data_type)
 	l->append = append[type];
 	l->add = add[type];
 	l->del = del[type];
+	l->del_idx = del_idx[type];
 	l->len = len_of_link_list;
 
 	switch(data_type)
@@ -568,6 +578,233 @@ t_gen del_node_dcll(t_gen d, t_gen data)
 	return tmp;
 }
 
+
+
+/*! \brief Brief description.
+ *   Delete node with matching index in singly LL
+ *   and return the instance
+ * */
+t_gen del_node_sll_idx(t_gen d, int idx)
+{
+	t_linklist *l = (t_linklist *)d;
+	t_elem *cur = l->head, *prv;
+	t_gen tmp = NULL;
+	// empty list
+	if (l->head == NULL) {
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
+	}
+	if (idx >= l->count) {
+	   LOG_WARN("LINK_LIST","%s: Index out of bounds\n", l->name);
+		 return tmp;
+	}
+	
+	for(int i = 0; i <= idx; i++) {
+		  prv = cur;
+		  cur = cur->nxt;
+	}
+	// Head node is to be deleted and new head is updated
+	if (idx == 0) {
+		l->head = cur->nxt;
+		// Reset Tail to NULL if list empty
+		l->tail = l->head? l->tail : NULL;
+	}
+
+  else {	
+	  // Unlink cur node and update link
+	  prv->nxt = cur->nxt;
+	  // If last node deleted update tail ref
+	  if (prv->nxt == NULL) {
+		  l->tail = prv;
+	  }
+	}
+	l->count--;
+	// Free node
+	cur->nxt = NULL;
+	tmp = cur->data;
+	free_mem(cur);
+
+	return tmp;
+}
+
+
+
+/*! \brief Brief description.
+ *   Delete node with matching index  in Doublly LL
+ *   and return the instance
+ * */
+t_gen del_node_dll_idx(t_gen d, int idx)
+{
+	t_linklist *l = (t_linklist *)d;
+	t_elem *cur = l->head;
+	t_gen tmp = NULL;
+	
+	// empty list
+	if (l->head == NULL) {
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
+	}
+
+	for(int i = 0; i <= idx ; i ++) {
+		  cur = cur->nxt;
+	}
+	  // Head node is to be deleted and new head is updated
+	if (idx == 0) {
+		l->head = cur->nxt;
+		if (l->head != NULL) {
+			l->head->prv = NULL;
+		}
+		// Reset Tail to NULL if list empty
+		l->tail = l->head? l->tail : NULL;
+	}
+
+
+	// Unlink cur node and update fwd link
+	else {
+	  cur->prv->nxt = cur->nxt;
+	  if (cur->nxt == NULL) {
+		  // If last node deleted update tail ref
+		  l->tail = cur->prv;
+	  } else {
+		  // Preserve rev link
+		  cur->nxt->prv = cur->prv;
+	  }
+	}
+
+	// Free node
+	l->count--;
+	cur->nxt = cur->prv = NULL;
+	tmp = cur->data;
+	free_mem(cur);
+
+	return tmp;
+}
+
+
+/*! \brief Brief description.
+ *   Delete node with matching index in Singly Circular LL
+ *   and return the instance
+ * */
+t_gen del_node_scll_idx(t_gen d, int idx)
+{
+	t_linklist *l = (t_linklist *)d;
+	t_elem *cur = l->head, *prv;
+	t_gen tmp = NULL;
+
+	// empty list
+	if (l->head == NULL) {
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
+	}
+
+	for(int i = 0; i <= idx && i <= l->count; i ++) {
+	  // Head node is to be deleted and new head is updated
+	  if (idx == 0) {
+		  // Unlink cur node and update fwd link for tail
+		  l->tail->nxt = l->head = cur->nxt;
+		  l->count--;
+		  // Reset Tail to NULL if list empty
+		  if (l->count == 0) {
+			  l->tail = l->head = NULL;
+		  }
+		  cur->nxt = NULL;
+		  tmp = cur->data;
+		  free_mem(cur);
+		  return tmp;
+	  }
+
+	  // Find the node to be deleted
+	  else {
+		  prv = cur;
+		  cur = cur->nxt;
+
+		  // Node to be deleted not found
+		  if (cur == l->head) {
+			  LOG_INFO("LINK_LIST", "%s: No node of index %d found within the link list\n",l->name, idx);
+			  return tmp;
+		  }
+	  }
+	}
+
+	l->count--;
+	// Unlink cur node and update fwd link
+	prv->nxt = cur->nxt;
+	// If last node deleted update tail ref
+	if (prv->nxt == l->head) {
+		l->tail = prv;
+	}
+	// Free node
+	cur->nxt = NULL;
+	tmp = cur->data;
+	free_mem(cur);
+
+	return tmp;
+}
+
+/*! \brief Brief description.
+ *   Delete node with matching index in Doubly Circular LL
+ *   and return the instance
+ * */
+t_gen del_node_dcll_idx(t_gen d, int idx)
+{
+	t_linklist *l = (t_linklist *)d;
+	t_elem *cur = l->head;
+	t_gen tmp;
+
+	// empty list
+	if (l->head == NULL) {
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
+	}
+
+
+	// Head node is to be deleted and new head is updated
+	for(int i = 0; i <= idx && i <= l->count; i ++) {
+	  if (idx == 0) {
+		  l->head = cur->nxt;
+		  // Unlink cur node and update fwd and rev link
+		  l->head->prv = l->tail;
+		  l->tail->nxt = l->head;
+		  l->count--;
+		  // Reset Tail to NULL if list empty
+		  if (l->count == 0) {
+			  l->tail = l->head = NULL;
+		  }
+		  cur->nxt = cur->prv = NULL;
+		  tmp = cur->data;
+		  free_mem(cur);
+		  return tmp;
+	  }
+
+	  // Find the node to be deleted
+	  //while (l->cmpr(cur->data, data) != eEQUAL) {
+		else {
+		  cur = cur->nxt;
+		  if(cur == l->head) {
+			  LOG_INFO("LINK_LIST", "%s: No node of index %d found within the link list\n",l->name, idx);
+			  return tmp;
+		  }
+	  }
+  }
+
+	// Unlink cur node and update fwd 
+	cur->prv->nxt = cur->nxt;
+	if (cur->nxt == l->head) {
+		// If last node deleted update tail ref
+		l->head->prv = l->tail = cur->prv;
+	} else {
+		cur->nxt->prv = cur->prv;
+	}
+
+	l->count--;
+	// Free node
+	cur->nxt = cur->prv = NULL;
+	tmp = cur->data;
+	free_mem(cur);
+	return tmp;
+
+}
+
 /*! \brief Brief description.
  *   Delete node with matching data in Doubly Circular LL
  * */
@@ -603,3 +840,87 @@ void print_link_list (t_gen d)
 	printf(" ]\n");
 
 }
+
+t_gen XOR(t_gen x, t_gen y) {
+  return (t_gen)((uintptr_t)(x) ^ (uintptr_t)(y));
+}
+
+/*! 
+*   XOR based doubly linked list
+*   both links are stored in a single pointer by XOR operation
+* */
+void add_begin_xor_dll(t_gen d, t_gen data)
+{
+  t_linklist *l = (t_linklist*)d;
+  t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+  node->data = data;
+ 
+  node->nxt = (t_elem*)XOR(l->head, NULL);
+
+  if (l->head != NULL)
+  {
+      // In order to get the address of the next node, XOR it with `NULL`
+      (l->head)->nxt = (t_elem *)XOR(node, XOR((l->head)->nxt, NULL));
+  }
+  
+  // update tail
+  if (l->head == NULL) {
+    l->tail = node;
+  }
+  // Update head to new node
+  l->head = node;
+  l->count++;
+ 
+}
+
+
+void add_end_xor_dll(t_gen d, t_gen data)
+{
+  t_linklist *l = (t_linklist*)d;
+  t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+
+  // Create a node and assign data
+  node->data = data;
+  node->nxt = (t_elem *)XOR(l->tail, NULL);
+
+  if (l->head == NULL) {
+    // List Empty upadte head 
+    //l->head = (t_elem *)XOR(node, l->head) ;
+		l->head = l->tail = node;
+  } else {
+    // Add new node as nxt of cur tail
+    l->tail->nxt = (t_elem *)XOR(node, XOR(l->tail->nxt, NULL));
+  }
+  // Add new node as tail
+  l->tail = node;
+  l->count++;
+}
+
+t_gen del_node_xor_dll(t_gen d, t_gen data)
+{
+	t_linklist *l = (t_linklist *)d;
+	t_elem *cur = l->tail;
+	t_gen tmp = NULL;
+	
+	// empty list
+	if (l->head == NULL) {
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
+  }
+  if (l->tail != NULL) {
+      tmp = cur->data;
+      t_elem *prev = (t_elem *)XOR(cur->nxt, NULL);
+      if (prev == NULL) {
+			  l->head = NULL;
+			}
+      else {
+			  prev->nxt = (t_elem *)XOR(cur, XOR(prev->nxt, NULL));
+			}
+      l->tail = prev;
+  } 
+  free(cur);
+
+	return tmp;
+
+}
+
