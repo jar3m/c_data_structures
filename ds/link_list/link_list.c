@@ -374,7 +374,7 @@ t_gen del_node_sll(t_gen d, t_gen data)
 		cur = cur->nxt;
 		// Node to be deleted not found
 		if (cur == NULL) {
-			LOG_INFO("LINK_LIST", "%s: No node %d found within the link list\n",l->name, data);
+			LOG_INFO("LINK_LIST", "%s: No node found within the link list\n",l->name);
 			return tmp;
 		}
 	}
@@ -432,7 +432,7 @@ t_gen del_node_dll(t_gen d, t_gen data)
 		cur = cur->nxt;
 		// Node to be deleted not found
 		if(cur == NULL) {
-			LOG_INFO("LINK_LIST", "%s: No node %d found within the link list\n",l->name, data);
+			LOG_INFO("LINK_LIST", "%s: No node found within the link list\n",l->name);
 			return tmp;
 		}
 	}
@@ -496,7 +496,7 @@ t_gen del_node_scll(t_gen d, t_gen data)
 
 		// Node to be deleted not found
 		if (cur == l->head) {
-			LOG_INFO("LINK_LIST", "%s: No node %d found within the link list\n",l->name, data);
+			LOG_INFO("LINK_LIST", "%s: No node found within the link list\n",l->name);
 			return tmp;
 		}
 	}
@@ -555,7 +555,7 @@ t_gen del_node_dcll(t_gen d, t_gen data)
 	while (l->cmpr(cur->data, data) != eEQUAL) {
 		cur = cur->nxt;
 		if(cur == l->head) {
-			LOG_INFO("LINK_LIST", "%s: No node %d found within the link list\n",l->name, data);
+			LOG_INFO("LINK_LIST", "%s: No node found within the link list\n",l->name);
 			return tmp;
 		}
 	}
@@ -731,7 +731,7 @@ t_gen del_node_scll_idx(t_gen d, int idx)
 	prv->nxt = cur->nxt;
 	// If last node deleted update tail ref
 	if (prv->nxt == l->head) {
-		l->tail = prv;
+			l = l->head? l->tail : NULL;l->tail = prv;
 	}
 	// Free node
 	cur->nxt = NULL;
@@ -806,7 +806,7 @@ t_gen del_node_dcll_idx(t_gen d, int idx)
 }
 
 /*! \brief Brief description.
- *   Delete node with matching data in Doubly Circular LL
+ *   return the length of the link list
  * */
 int len_of_link_list(t_gen d)
 {
@@ -816,7 +816,7 @@ int len_of_link_list(t_gen d)
 }
 
 /*! \brief Brief description.
- *   Delete node with matching data in Doubly Circular LL
+ *   print the elements of a link list
  * */
 void print_link_list (t_gen d)
 {
@@ -824,7 +824,7 @@ void print_link_list (t_gen d)
 	t_elem *ptr = l->head, *end;
 	int i;
 	
-	
+  if (l	
 	printf("%s {Head: %lx} {Tail: %lx} {count: %u} \n[",l->name,
 			(long)l->head,(long)l->tail, l->count);
 	end = l->tail? l->tail->nxt :l->tail;
@@ -841,9 +841,6 @@ void print_link_list (t_gen d)
 
 }
 
-t_gen XOR(t_gen x, t_gen y) {
-  return (t_gen)((uintptr_t)(x) ^ (uintptr_t)(y));
-}
 
 /*! 
 *   XOR based doubly linked list
@@ -855,12 +852,13 @@ void add_begin_xor_dll(t_gen d, t_gen data)
   t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
   node->data = data;
  
-  node->nxt = (t_elem*)XOR(l->head, NULL);
+  node->nxt = l->head ^ NULL;
 
   if (l->head != NULL)
   {
       // In order to get the address of the next node, XOR it with `NULL`
-      (l->head)->nxt = (t_elem *)XOR(node, XOR((l->head)->nxt, NULL));
+      //(l->head)->nxt = (t_elem *)XOR(node, XOR((l->head)->nxt, NULL));
+      l->head->nxt = (l->head->nxt ^ NULL) ^ node;
   }
   
   // update tail
@@ -881,7 +879,7 @@ void add_end_xor_dll(t_gen d, t_gen data)
 
   // Create a node and assign data
   node->data = data;
-  node->nxt = (t_elem *)XOR(l->tail, NULL);
+  node->nxt = (l->tail ^ NULL);
 
   if (l->head == NULL) {
     // List Empty upadte head 
@@ -889,7 +887,8 @@ void add_end_xor_dll(t_gen d, t_gen data)
 		l->head = l->tail = node;
   } else {
     // Add new node as nxt of cur tail
-    l->tail->nxt = (t_elem *)XOR(node, XOR(l->tail->nxt, NULL));
+    //l->tail->nxt = (t_elem *)XOR(node, XOR(l->tail->nxt, NULL));
+    l->tail->nxt = (l->tail->nxt ^ NULL) ^ node;
   }
   // Add new node as tail
   l->tail = node;
@@ -899,25 +898,55 @@ void add_end_xor_dll(t_gen d, t_gen data)
 t_gen del_node_xor_dll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->tail;
+	t_elem *cur = l->head;
+  t_elem *prev = NULL , *next = NULL;
 	t_gen tmp = NULL;
+
 	
 	// empty list
 	if (l->head == NULL) {
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
 		return tmp;
   }
-  if (l->tail != NULL) {
-      tmp = cur->data;
-      t_elem *prev = (t_elem *)XOR(cur->nxt, NULL);
-      if (prev == NULL) {
-			  l->head = NULL;
-			}
-      else {
-			  prev->nxt = (t_elem *)XOR(cur, XOR(prev->nxt, NULL));
-			}
-      l->tail = prev;
-  } 
+	
+	// Head node is to be deleted and new head is updated
+	if (l->cmpr(cur->data, data) == eEQUAL) {
+		l->head = cur->nxt ^ prev;
+		l->count--;
+		// Reset Tail to NULL if list empty
+		l->tail = l->head? l->tail : NULL;
+		cur->nxt =  NULL;
+		tmp = cur->data;
+		free_mem(cur);
+		return tmp;
+	}
+
+	// Find the node to be deleted
+	while (l->cmpr(cur->data, data) != eEQUAL) {
+	  next = cur->next ^ prev;
+		// Node to be deleted not found
+		if(next == NULL) {
+			LOG_INFO("LINK_LIST", "%s: No node found within the link list\n",l->name);
+			return tmp;
+    }
+    prev = cur;
+    cur = next;	
+	}
+
+  next = cur->nxt ^ prev;
+
+  prev->nxt = (prev->nxt ^ cur) ^ (next) ;
+
+  // Update tail when the last node is deleted
+  if (next == NULL) {
+    l->tail = prev;
+  }
+  else {
+    next->nxt = (next->nxt ^ cur) ^ prev;
+  }
+  l->count --;
+  tmp = cur->data;
+  cur->nxt = NULL; 
   free(cur);
 
 	return tmp;
