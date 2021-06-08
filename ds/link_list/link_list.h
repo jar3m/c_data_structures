@@ -8,6 +8,7 @@ typedef enum {
 	eDOUBLE_LINKLIST,
 	eSINGLE_CIRCULAR_LINKLIST,
 	eDOUBLE_CIRCULAR_LINKLIST,
+	eXOR_LINKLIST,
 }e_lltype;
 
 typedef struct linklist {
