@@ -52,6 +52,8 @@ t_gen create_link_list (char *name, e_lltype type, e_data_types data_type)
 	l->del = del[type];
 	l->del_idx = del_idx[type];
 	l->len = len_of_link_list;
+	l->destroy = destroy_link_list;
+	l->print = print_link_list;
 
 	switch(data_type)
 	{

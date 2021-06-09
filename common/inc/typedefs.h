@@ -55,6 +55,7 @@ typedef void(*f_ins)(t_gen,t_gen);
 typedef t_gen(*f_del)(t_gen, t_gen);
 typedef t_gen(*f_find)(t_gen, t_gen);
 typedef t_gen(*f_del_idx)(t_gen, int);
+typedef void(*f_destroy)(t_gen);
 
 /// Basic operations required for generic data type support
 typedef e_cmpr (*f_cmpr)(t_gen,t_gen);
