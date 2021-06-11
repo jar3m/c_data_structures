@@ -590,19 +590,20 @@ t_gen del_node_dcll(t_gen d, t_gen data)
 t_gen del_node_sll_idx(t_gen d, int idx)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head, *prv;
+	t_elem *cur = l->head, *prv = NULL;
 	t_gen tmp = NULL;
 	// empty list
 	if (l->head == NULL) {
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
 		return tmp;
 	}
+	
 	if (idx >= l->count) {
-	   LOG_WARN("LINK_LIST","%s: Index out of bounds\n", l->name);
-		 return tmp;
+	  LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
+		return tmp;
 	}
 	
-	for(int i = 0; i <= idx; i++) {
+	for(int i = 0; i < idx; i++) {
 		  prv = cur;
 		  cur = cur->nxt;
 	}
@@ -648,7 +649,12 @@ t_gen del_node_dll_idx(t_gen d, int idx)
 		return tmp;
 	}
 
-	for(int i = 0; i <= idx ; i ++) {
+	if (idx >= l->count) {
+	  LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
+		return tmp;
+	}
+
+	for(int i = 0; i < idx ; i ++) {
 		  cur = cur->nxt;
 	}
 	  // Head node is to be deleted and new head is updated
@@ -699,44 +705,49 @@ t_gen del_node_scll_idx(t_gen d, int idx)
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
 		return tmp;
 	}
-
-	for(int i = 0; i <= idx && i <= l->count; i ++) {
-	  // Head node is to be deleted and new head is updated
-	  if (idx == 0) {
-		  // Unlink cur node and update fwd link for tail
-		  l->tail->nxt = l->head = cur->nxt;
-		  l->count--;
-		  // Reset Tail to NULL if list empty
-		  if (l->count == 0) {
-			  l->tail = l->head = NULL;
-		  }
-		  cur->nxt = NULL;
-		  tmp = cur->data;
-		  free_mem(cur);
-		  return tmp;
-	  }
-
-	  // Find the node to be deleted
-	  else {
-		  prv = cur;
-		  cur = cur->nxt;
-
-		  // Node to be deleted not found
-		  if (cur == l->head) {
-			  LOG_INFO("LINK_LIST", "%s: No node of index %d found within the link list\n",l->name, idx);
-			  return tmp;
-		  }
-	  }
+	
+	if (idx >= l->count) {
+	  LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
+		return tmp;
 	}
 
-	l->count--;
-	// Unlink cur node and update fwd link
-	prv->nxt = cur->nxt;
-	// If last node deleted update tail ref
-	if (prv->nxt == l->head) {
-			l->tail = prv;
+	for(int i = 0; i < idx; i ++) {
+		prv = cur;
+		cur = cur->nxt;
+
+		// Node to be deleted not found
+		if (cur == l->head) {
+			LOG_INFO("LINK_LIST", "%s: No node of index %d found within the link list\n",l->name, idx);
+			return tmp;
+		}
 	}
+	
+	// Head node is to be deleted and new head is updated
+	if (idx == 0) {
+	// Unlink cur node and update fwd link for tail
+		l->tail->nxt = l->head = cur->nxt;
+		l->count--;
+		// Reset Tail to NULL if list empty
+		if (l->count == 0) {
+			l->tail = l->head = NULL;
+		}
+	  cur->nxt = NULL;
+	  tmp = cur->data;
+	  free_mem(cur);
+		return tmp;
+	}
+
+	else {
+	  // Unlink cur node and update fwd link
+	  prv->nxt = cur->nxt;
+	  // If last node deleted update tail ref
+	  if (prv->nxt == l->head) {
+			  l->tail = prv;
+	  }
+	}
+	
 	// Free node
+	l->count--;
 	cur->nxt = NULL;
 	tmp = cur->data;
 	free_mem(cur);
@@ -759,44 +770,47 @@ t_gen del_node_dcll_idx(t_gen d, int idx)
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
 		return tmp;
 	}
+	
+	if (idx >= l->count) {
+	  LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
+		return tmp;
+	}
 
+	for(int i = 0; i < idx; i ++) {
+		cur = cur->nxt;
+		if(cur == l->head) {
+			LOG_INFO("LINK_LIST", "%s: No node of index %d found within the link list\n",l->name, idx);
+			return tmp;
+		}
+	}
 
 	// Head node is to be deleted and new head is updated
-	for(int i = 0; i <= idx && i <= l->count; i ++) {
-	  if (idx == 0) {
-		  l->head = cur->nxt;
-		  // Unlink cur node and update fwd and rev link
-		  l->head->prv = l->tail;
-		  l->tail->nxt = l->head;
-		  l->count--;
-		  // Reset Tail to NULL if list empty
-		  if (l->count == 0) {
-			  l->tail = l->head = NULL;
-		  }
-		  cur->nxt = cur->prv = NULL;
-		  tmp = cur->data;
-		  free_mem(cur);
-		  return tmp;
-	  }
+	if (idx == 0) {
+		l->head = cur->nxt;
+		// Unlink cur node and update fwd and rev link
+		l->head->prv = l->tail;
+		l->tail->nxt = l->head;
+		l->count--;
+		// Reset Tail to NULL if list empty
+		if (l->count == 0) {
+			l->tail = l->head = NULL;
+		}
+		cur->nxt = cur->prv = NULL;
+		tmp = cur->data;
+		free_mem(cur);
+		
+		return tmp;
+	}
 
-	  // Find the node to be deleted
-	  //while (l->cmpr(cur->data, data) != eEQUAL) {
-		else {
-		  cur = cur->nxt;
-		  if(cur == l->head) {
-			  LOG_INFO("LINK_LIST", "%s: No node of index %d found within the link list\n",l->name, idx);
-			  return tmp;
-		  }
+	else {
+	  // Unlink cur node and update fwd 
+	  cur->prv->nxt = cur->nxt;
+	  if (cur->nxt == l->head) {
+		  // If last node deleted update tail ref
+		  l->head->prv = l->tail = cur->prv;
+	  } else {
+		  cur->nxt->prv = cur->prv;
 	  }
-  }
-
-	// Unlink cur node and update fwd 
-	cur->prv->nxt = cur->nxt;
-	if (cur->nxt == l->head) {
-		// If last node deleted update tail ref
-		l->head->prv = l->tail = cur->prv;
-	} else {
-		cur->nxt->prv = cur->prv;
 	}
 
 	l->count--;
@@ -804,6 +818,7 @@ t_gen del_node_dcll_idx(t_gen d, int idx)
 	cur->nxt = cur->prv = NULL;
 	tmp = cur->data;
 	free_mem(cur);
+	
 	return tmp;
 
 }

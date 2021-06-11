@@ -98,6 +98,47 @@ int main(int argc, char *argv[])
 	destroy_link_list(l3);
 	destroy_link_list(l4);
 //	destroy_link_list(l5);
+
+	for (i = 0; i < 3; i++) {
+		c= 'c' + i;
+		((t_linklist*)l2)->add(l2, assign_char(c));
+
+		((t_linklist*)l1)->add(l1, assign_int(i));
+
+		f= (float)i+0.222 / 2.0f;
+		((t_linklist*)l3)->add(l3, assign_float(f));
+
+		((t_linklist*)l4)->add(l4, assign_string(str[i]));
+//		((t_linklist*)l5)->add(l5, assign_float(f));
+	}
+	print_link_list(l1);
+	print_link_list(l2);
+	print_link_list(l3);
+	print_link_list(l4);
+//	print_link_list(l5);
+
+	for (i = 2; i >= 0; i--) {
+		cp = ((t_linklist*)l2)->del_idx(l2, i);
+		//printf("%c\n", *cp);
+		free_mem(cp);
+
+		ip = ((t_linklist*)l1)->del_idx(l1, i);
+		//printf("%d\n",*ip);
+		free_mem(ip);
+
+		f= (float)i+0.222 / 2.0f;
+		fp = ((t_linklist*)l3)->del_idx(l3, i);
+		//printf("%f\n", *fp);
+		free_mem(fp);
+
+		sp = ((t_linklist*)l4)->del_idx(l4, i);
+		//printf("%s\n",sp);
+		free_mem(sp);
+	}
+	print_link_list(l1);
+	print_link_list(l2);
+	print_link_list(l3);
+	print_link_list(l4);
 	mem_finit();
 
 
