@@ -9,11 +9,13 @@ t_gen push_stack_arr_up(t_gen d, t_gen data);
 t_gen pop_stack_arr_up(t_gen s);
 t_gen push_stack_arr_down(t_gen d, t_gen data);
 t_gen pop_stack_arr_down(t_gen d);
-t_gen push_stack_ll_up(t_gen d, t_gen data);
-t_gen pop_stack_ll_up(t_gen d);
+t_gen push_stack_ll(t_gen d, t_gen data);
+t_gen pop_stack_ll(t_gen d);
 
-f_push stack_push[] = {push_stack_ll_up, push_stack_arr_up, push_stack_arr_down};
-f_pop stack_pop[] = {pop_stack_ll_up, pop_stack_arr_up, pop_stack_arr_down};
+char * get_name(e_stacktype type); 
+
+f_push stack_push[] = {push_stack_ll, push_stack_arr_up, push_stack_arr_down};
+f_pop stack_pop[] = {pop_stack_ll, pop_stack_arr_up, pop_stack_arr_down};
 
 /*! \brief Brief description.
  *  Create an instance of stack
@@ -226,19 +228,45 @@ t_gen pop_stack_arr_down(t_gen d)
 }
 
 /*! \brief Brief description.
- *  Push an element into up growing ll stack
+ *  Push an element into a link list based stack
 */
-t_gen push_stack_ll_up(t_gen d, t_gen data)
+t_gen push_stack_ll(t_gen d, t_gen data)
 {	
-	return NULL;
+	t_stack *s = (t_stack*)d;
+	t_linklist * l = (t_linklist *)s->data;
+	
+	// Return id stack full
+	if (s->count >= s->max_size) {
+		LOG_WARN("STACKS", "%s: Stack Full\n",s->name);
+		return NULL;
+	}
+
+  // add in begining of the link list
+	l->add(l, data);
+	s->count++;
+
+	return data;
 }
 
 /*! \brief Brief description.
- *  Pop an element from up growing ll stack
+ *  Pop an element from a link list based stack
 */
-t_gen pop_stack_ll_up(t_gen d)
+t_gen pop_stack_ll(t_gen d)
 {	
-	return NULL;
+	t_stack *s = (t_stack*)d; 
+	t_gen data = NULL;
+	t_linklist * l = (t_linklist *)s->data;
+
+	if (s->count == 0) {
+		LOG_WARN("STACKS", "%s: Stack empty\n",s->name);
+		return data;
+	}
+
+  // deleting the head node of link list i.e top of stack
+  data = l->del_idx(l, 0);
+	s->count--;
+
+	return data;
 }
 
 /*! \brief Brief description.
@@ -246,18 +274,64 @@ t_gen pop_stack_ll_up(t_gen d)
 */
 void print_stack(t_gen d)
 {
-	t_stack *s = (t_stack*)d; 
+	t_stack *s = (t_stack*)d;
+	t_linklist *l = NULL;
 	int i;
 
-	printf("%s {max: %d} {size: %d} {top: %d} \n[",s->name,
-			s->max_size, s->count,s->top);
+	printf("%s {max: %d} {size: %d} {top: %d} {type: %s} \n[",s->name,
+			s->max_size, s->count, s->top, get_name(s->type));
 	
-	i = (s->type != eARRAY_STACK_DOWN)? 0:(s->max_size-1);
-	do {
+	if (s->type != eLL_STACK) {
+		i = (s->type != eARRAY_STACK_DOWN)? 0:(s->max_size-1);
+		do {
+			s->print_data(s->data[i]);
+			printf(", ");
+			(s->type != eARRAY_STACK_DOWN)? i++:i--;
+		} while(i != s->top);
 		s->print_data(s->data[i]);
-		printf(", ");
-		(s->type != eARRAY_STACK_DOWN)? i++:i--;
-	} while(i != s->top);
-	s->print_data(s->data[i]);
-	printf("]\n");
+		printf("]\n");
+	}
+	else {
+	  l = (t_linklist *)s->data;
+		l->print(l);
+	}
 }
+
+/*
+//a sneak peek into an element of the stack
+*/
+t_gen peek_stack(t_gen d,int idx)
+{
+  t_stack *s = (t_stack *)d;
+	
+
+	if (idx >= s->count) {
+	  if (s->count == 0) {
+		  LOG_WARN("STACKS", "The given stack is empty, attempting to peek on an empty stack :(");
+		}
+		else {  
+		  LOG_WARN("STACKS", "The given index is out of bounds, the actual size = %d\n", s->count);
+		}
+		return NULL;
+  }
+  return NULL;
+}
+
+/*
+//function to return the name of the stack
+//given the type
+*/
+char * get_name(e_stacktype type)
+{
+	switch(type) {
+		case eARRAY_STACK:
+			return "ARRAY_STACK_UP";
+		case eARRAY_STACK_DOWN:
+			return "ARRAY_STACK_DOWN";
+		case eLL_STACK:
+			return "LL_STACK";
+	}
+
+	return "UNDEFINED";
+}
+
