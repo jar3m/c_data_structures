@@ -93,11 +93,6 @@ int main(int argc, char *argv[])
 	print_link_list(l3);
 	print_link_list(l4);
 //	print_link_list(l5);
-	destroy_link_list(l1);
-	destroy_link_list(l2);
-	destroy_link_list(l3);
-	destroy_link_list(l4);
-//	destroy_link_list(l5);
 
 	for (i = 0; i < 3; i++) {
 		c= 'c' + i;
@@ -139,6 +134,13 @@ int main(int argc, char *argv[])
 	print_link_list(l2);
 	print_link_list(l3);
 	print_link_list(l4);
+
+	destroy_link_list(l1);
+	destroy_link_list(l2);
+	destroy_link_list(l3);
+	destroy_link_list(l4);
+//	destroy_link_list(l5);
+
 	mem_finit();
 
 
