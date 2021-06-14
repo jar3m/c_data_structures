@@ -90,21 +90,25 @@ e_cmpr compare_char(t_gen,t_gen);
 e_cmpr compare_int(t_gen,t_gen);
 e_cmpr compare_float(t_gen,t_gen);
 e_cmpr compare_string(t_gen,t_gen);
+e_cmpr compare_gen(t_gen,t_gen);
 
 t_gen assign_char(char);
 t_gen assign_int(int);
 t_gen assign_float(float);
 t_gen assign_string(char*);
+t_gen assign_gen(t_gen);
 
 void swap_char(t_gen,t_gen);
 void swap_int(t_gen,t_gen);
 void swap_float(t_gen,t_gen);
 void swap_string(t_gen,t_gen);
+void swap_gen(t_gen,t_gen);
 
 void print_char(t_gen);
 void print_float(t_gen);
 void print_int(t_gen);
 void print_str(t_gen);
+void print_gen(t_gen);
 
 e_cmpr compare_idx_char(t_gen,int,int);
 e_cmpr compare_idx_int(t_gen,int,int);

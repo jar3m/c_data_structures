@@ -5,6 +5,18 @@ CMPR(char,compare_char)
 CMPR(int, compare_int)
 CMPR(float, compare_float)
 
+e_cmpr compare_gen(t_gen x, t_gen y)
+{
+	int res = x - y;
+
+	if(res < 0) {
+		return eLESS;	
+	}
+	if(res > 0) {
+		return eGREAT;	
+	}
+	return eEQUAL;	
+}
 
 e_cmpr compare_string(t_gen x, t_gen y)
 {
@@ -36,10 +48,12 @@ SWAP(char, swap_char)
 SWAP(int, swap_int)
 SWAP(float, swap_float)
 SWAP(char*, swap_string)
+SWAP(t_gen, swap_gen)
 
 PRINT_GEN(char, print_char)
 PRINT_GEN(int, print_int)
 PRINT_GEN(float, print_float)
+PRINT_GEN(t_gen, print_gen)
 
 void print_str(t_gen str)
 {
