@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	LOG_TRACE_OUT("COMMON", "Hello World\n");
 
 	char c,*cp,*sp,str[][64] = {"I", "See", "Everyting"};
-	float f,*fp;
+	float f,*fp, fl;
 	int *ip;
 #if 1
 	t_gen l1 = create_link_list("INT DLL",eDOUBLE_LINKLIST, eINT32);
@@ -145,16 +145,20 @@ int main(int argc, char *argv[])
 	t_gen s1 = create_stack("Up Stack", 10, eARRAY_STACK, eINT32);
 	t_gen s2 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, eINT8);
 	t_gen s3 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, eFLOAT);
+	t_gen s4 = create_stack("Up Stack LL", 10, eLL_STACK, eFLOAT);
 	for(i = 0; i < 10; i++) {
 		((t_stack*)s1)->push(s1, assign_int(i));
 		c= 'c' + i;
 		((t_stack*)s2)->push(s2, assign_char(c));
 		f= (float)i+0.222 / 2.0f;
 		((t_stack*)s3)->push(s3, assign_float(f));
+		fl= (float)i+0.222 / 2.0f;
+		((t_stack*)s4)->push(s4, assign_float(fl));
 	}
 	print_stack(s1);
 	print_stack(s2);
 	print_stack(s3);
+	print_stack(s4);
 	for(i = 0; i < 4; i++) {
 		ip = ((t_stack*)s1)->pop(s1);
 		free_mem(ip);
@@ -162,23 +166,30 @@ int main(int argc, char *argv[])
 		free_mem(cp);
 		fp = ((t_stack*)s3)->pop(s3);
 		free_mem(fp);
+		fp = ((t_stack*)s4)->pop(s4);
+		free_mem(fp);
 	}
 	print_stack(s1);
 	print_stack(s2);
 	print_stack(s3);
+	print_stack(s4);
 	for(i = 4; i > 0; i--) {
 		((t_stack*)s1)->push(s1, assign_int(i));
 		c= 'c' + i;
 		((t_stack*)s2)->push(s2, assign_int(c));
 		f= (float)i+0.222 / 2.0f;
 		((t_stack*)s3)->push(s3, assign_float(f));
+		fl= (float)i+0.222 / 2.0f;
+		((t_stack*)s4)->push(s4, assign_float(fl));
 	}
 	print_stack(s1);
 	print_stack(s2);
 	print_stack(s3);
+	print_stack(s4);
 	destroy_stack(s1);
 	destroy_stack(s2);
 	destroy_stack(s3);
+	destroy_stack(s4);
 
 	mem_finit();
 

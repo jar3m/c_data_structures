@@ -40,5 +40,5 @@ typedef struct stack {
 t_gen create_stack (char *name, int max_size, e_stacktype stype,e_data_types dtype);
 void destroy_stack (t_gen s);
 void print_stack(t_gen s);
-t_elem* peek_stack(t_gen s,int idx);
+t_gen peek_stack(t_gen s,int idx);
 void print_stack(t_gen s);
