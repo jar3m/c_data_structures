@@ -36,11 +36,6 @@ typedef enum {
 /// Base Data type used for all data structure and data elements
 typedef void* t_gen;
 
-typedef struct elem {
-	t_gen data;
-	struct elem *nxt;
-	struct elem *prv;
-} t_elem;
 
 
 /// common routines supported by all data structures

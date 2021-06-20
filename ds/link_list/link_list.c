@@ -25,6 +25,11 @@ t_gen del_node_dcll_idx(t_gen d, int idx);
 
 int len_of_link_list(t_gen d);
 void print_link_list (t_gen d);
+void print_link_list_xor (t_gen d);
+void print_link_list_info (t_gen d);
+void print_link_list_xor_info (t_gen d);
+void destroy_link_list (t_gen d);
+void destroy_link_list_xor (t_gen d);
 t_gen xor(t_gen x, t_gen y);
 
 /// Look Up function call for add, append and del depending on type of list
@@ -32,11 +37,14 @@ f_ins add[] = {add_begin_sll,add_begin_dll,add_begin_scll,add_begin_dcll, add_be
 f_ins append[] = {add_end_sll,add_end_dll,add_end_scll,add_end_dcll, add_end_xor_dll};
 f_del del[] = {del_node_sll, del_node_dll, del_node_scll, del_node_dcll, del_node_xor_dll};
 f_del_idx del_idx[] = {del_node_sll_idx, del_node_dll_idx, del_node_scll_idx, del_node_dcll_idx};
+f_destroy destroy[] = {destroy_link_list, destroy_link_list, destroy_link_list, destroy_link_list, destroy_link_list_xor};
+f_print print[] = {print_link_list, print_link_list, print_link_list, print_link_list, print_link_list_xor};
+f_print printinfo[] = {print_link_list_info, print_link_list_info, print_link_list_info, print_link_list_info,print_link_list_xor_info};
 
 /*! \brief Brief description.
  *  Create an instance of link list
  * */
-t_gen create_link_list (char *name, e_lltype type, e_data_types data_type)
+t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 {
 	t_linklist *l = (t_linklist*)get_mem(1, sizeof(t_linklist));
 	
@@ -53,46 +61,14 @@ t_gen create_link_list (char *name, e_lltype type, e_data_types data_type)
 	l->del_idx = del_idx[type];
 	l->len = len_of_link_list;
 	l->destroy = destroy_link_list;
-	l->print = print_link_list;
+	l->print = print[type];
+	l->print_info = printinfo[type];
 
-	switch(data_type)
-	{
-		case eINT8:
-			//char list;
-			l->cmpr = compare_char;
-			l->swap = swap_char;
-			l->print_data = print_char;
-			l->free = FREE_MEM;
-			break;
-		case eINT32:
-			//int list;
-			l->cmpr = compare_int;
-			l->swap = swap_int;
-			l->print_data = print_int;
-			l->free = FREE_MEM;
-			break;
-		case eFLOAT:
-			//float list;
-			l->cmpr = compare_float;
-			l->swap = swap_float;
-			l->print_data = print_float;
-			l->free = FREE_MEM;
-			break;
-		case eSTRING:
-			//string list;
-			l->cmpr = compare_string;
-			l->swap = swap_string;
-			l->print_data = print_str;
-			l->free = FREE_MEM;
-			break;
-		case eGEN:
-			//gen list;
-			l->cmpr = compare_gen;
-			l->swap = swap_gen;
-			l->print_data = print_gen;
-			l->free = FREE_MEM;
-			break;
-	}
+	l->cmpr = prm->cmpr;
+	l->swap = prm->swap;
+	l->print_data = prm->print_data;
+	l->free = prm->free;
+
 	return (t_gen)l;
 }
 
@@ -102,7 +78,7 @@ t_gen create_link_list (char *name, e_lltype type, e_data_types data_type)
 void add_begin_sll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
-	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+	t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
 	
 	// Create a node and assign data
 	node->data = data;
@@ -125,7 +101,7 @@ void add_begin_sll(t_gen d, t_gen data)
 void add_begin_dll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
-	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+	t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
 	
 	// Create a node and assign data
 	node->data = data;
@@ -154,7 +130,7 @@ void add_begin_dll(t_gen d, t_gen data)
 void add_begin_scll(t_gen d,t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
-	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+	t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
 
 	// Create a node and assign data
 	node->data = data;
@@ -181,7 +157,7 @@ void add_begin_scll(t_gen d,t_gen data)
 void add_begin_dcll(t_gen d,t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
-	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+	t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
 
 	// Create a node and assign data
 	node->data = data;
@@ -209,7 +185,7 @@ void add_begin_dcll(t_gen d,t_gen data)
 void add_end_sll(t_gen d,t_gen data) 
 {
 	t_linklist *l = (t_linklist*)d;
-	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+	t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
 	
 	// Create a node and assign data
 	node->data = data;
@@ -233,7 +209,7 @@ void add_end_sll(t_gen d,t_gen data)
 void add_end_dll(t_gen d,t_gen data) 
 {
 	t_linklist *l = (t_linklist*)d;
-	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+	t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
 	
 	// Create a node and assign data
 	node->data = data;
@@ -259,7 +235,7 @@ void add_end_dll(t_gen d,t_gen data)
 void add_end_scll(t_gen d,t_gen data) 
 {
 	t_linklist *l = (t_linklist*)d;
-	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+	t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
 	
 	// Create a node and assign data
 	node->data = data;
@@ -285,7 +261,7 @@ void add_end_scll(t_gen d,t_gen data)
 void add_end_dcll(t_gen d,t_gen data) 
 {
 	t_linklist *l = (t_linklist*)d;
-	t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+	t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
 	
 	// Create a node and assign data
 	node->data = data;
@@ -307,51 +283,13 @@ void add_end_dcll(t_gen d,t_gen data)
 }
 
 /*! \brief Brief description.
- *   Destroy instance of the LL
- * */
-void destroy_link_list (t_gen d)
-{	
-	t_linklist *l = (t_linklist*)d;
-	t_elem *tmp,*ptr,*end;
-	int i;
-
-	// delete all node in llist
-	ptr = l->head;
-
-	// exit for Circ or non circ linked list
-	end = l->tail? l->tail->nxt :l->tail;
-
-	while (ptr) {
-		tmp = ptr;	
-		ptr = ptr->nxt;
-		l->count--;
-		// free node
-		tmp->nxt = tmp->prv = NULL;
-		l->free(tmp->data, __FILE__, __LINE__);
-		free_mem(tmp);	
-		if(ptr == end) {
-			break;
-		}
-	}
-	
-	if (l->count != 0) {
-		LOG_ERROR(l->name, "%d nodes remain\n", l->count);
-	}
-	// Reset count, head and tail ptrs
-	l->tail = l->head  = NULL;
-
-	free_mem(l);
-}
-
-
-/*! \brief Brief description.
  *   Delete node with matching data in singly LL
  *   and return the instance
  * */
 t_gen del_node_sll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head, *prv;
+	t_llnode *cur = l->head, *prv;
 	t_gen tmp = NULL;
 	// empty list
 	if (l->head == NULL) {
@@ -406,7 +344,7 @@ t_gen del_node_sll(t_gen d, t_gen data)
 t_gen del_node_dll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head;
+	t_llnode *cur = l->head;
 	t_gen tmp = NULL;
 	
 	// empty list
@@ -468,7 +406,7 @@ t_gen del_node_dll(t_gen d, t_gen data)
 t_gen del_node_scll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head, *prv;
+	t_llnode *cur = l->head, *prv;
 	t_gen tmp = NULL;
 
 	// empty list
@@ -528,7 +466,7 @@ t_gen del_node_scll(t_gen d, t_gen data)
 t_gen del_node_dcll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head;
+	t_llnode *cur = l->head;
 	t_gen tmp;
 
 	// empty list
@@ -590,7 +528,7 @@ t_gen del_node_dcll(t_gen d, t_gen data)
 t_gen del_node_sll_idx(t_gen d, int idx)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head, *prv = NULL;
+	t_llnode *cur = l->head, *prv = NULL;
 	t_gen tmp = NULL;
 	// empty list
 	if (l->head == NULL) {
@@ -640,7 +578,7 @@ t_gen del_node_sll_idx(t_gen d, int idx)
 t_gen del_node_dll_idx(t_gen d, int idx)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head;
+	t_llnode *cur = l->head;
 	t_gen tmp = NULL;
 	
 	// empty list
@@ -697,7 +635,7 @@ t_gen del_node_dll_idx(t_gen d, int idx)
 t_gen del_node_scll_idx(t_gen d, int idx)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head, *prv;
+	t_llnode *cur = l->head, *prv;
 	t_gen tmp = NULL;
 
 	// empty list
@@ -762,7 +700,7 @@ t_gen del_node_scll_idx(t_gen d, int idx)
 t_gen del_node_dcll_idx(t_gen d, int idx)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head;
+	t_llnode *cur = l->head;
 	t_gen tmp;
 
 	// empty list
@@ -833,45 +771,6 @@ int len_of_link_list(t_gen d)
 	return l->count;
 }
 
-/*! \brief Brief description.
- *   print the elements of a link list
- * */
-void print_link_list (t_gen d)
-{
-	t_linklist *l = (t_linklist*)d;
-	t_elem *ptr = l->head, *end, *prev = NULL, *cur= NULL;
-	int i;
-
-	printf("%s {Head: %lx} {Tail: %lx} {count: %u} \n[",l->name,
-			(long)l->head,(long)l->tail, l->count);
-	end = l->tail? l->tail->nxt :l->tail;
-	while (ptr) {
-		//printf("[ %lx ", (long)ptr->prv);
-		//l->print_data(ptr->data);
-		//printf(" %lx]", (long)ptr->nxt);
-	  if(l->type == eXOR_LINKLIST) {
-		  printf("[ %lx" , (long)prev);
-		  l->print_data(ptr->data);
-		  printf(" %lx]", (long)ptr);
-		  cur = xor(ptr->nxt, prev);
-			prev = ptr;
-			ptr = cur;
-		}
-		else {
-		  printf("[ %lx ", (long)ptr->prv);
-		  l->print_data(ptr->data);
-		  printf(" %lx]", (long)ptr->nxt);
-		  ptr = ptr->nxt;
-		  if (ptr == end) {
-			  break;
-		  }
-	  }
-	}
-	printf(" ]\n");
-
-}
-
-
 /*! 
 *   XOR function to safely complete xor operation between two pointers
 *   returns the xor'ed result as a t_gen type
@@ -887,7 +786,7 @@ t_gen xor(t_gen x, t_gen y) {
 void add_begin_xor_dll(t_gen d, t_gen data)
 {
   t_linklist *l = (t_linklist*)d;
-  t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+  t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
   node->data = data;
   //node->nxt = l->head ^ NULL 
   node->nxt = xor(l->head ,NULL);
@@ -913,7 +812,7 @@ void add_begin_xor_dll(t_gen d, t_gen data)
 void add_end_xor_dll(t_gen d, t_gen data)
 {
   t_linklist *l = (t_linklist*)d;
-  t_elem *node = (t_elem*)get_mem(1, sizeof(t_elem));
+  t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
 
   // Create a node and assign data
   node->data = data;
@@ -922,7 +821,7 @@ void add_end_xor_dll(t_gen d, t_gen data)
 
   if (l->head == NULL) {
     // List Empty upadte head 
-    //l->head = (t_elem *)XOR(node, l->head) ;
+    //l->head = (t_llnode *)XOR(node, l->head) ;
 		l->head = l->tail = node;
   } else {
     // Add new node as nxt of cur tail
@@ -937,8 +836,8 @@ void add_end_xor_dll(t_gen d, t_gen data)
 t_gen del_node_xor_dll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
-	t_elem *cur = l->head;
-  t_elem *prev = NULL , *next = NULL;
+	t_llnode *cur = l->head;
+  t_llnode *prev = NULL , *next = NULL;
 	t_gen tmp = NULL;
 
 	
@@ -996,4 +895,183 @@ t_gen del_node_xor_dll(t_gen d, t_gen data)
 	return tmp;
 
 }
+
+/*! \brief Brief description.
+ *   print the elems of link list
+ * */
+void print_link_list (t_gen d)
+{
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
+	int i;
+
+	printf("%s : [", l->name);
+	end = l->tail? l->tail->nxt :l->tail;
+	while (ptr) {
+		l->print_data(ptr->data);
+		printf(" ");
+		ptr = ptr->nxt;
+	
+		// exit if end of list
+		if (ptr == end) {
+			break;
+		}
+	}
+	printf("]\n");
+
+}
+
+/*! \brief Brief description.
+ *   print the elems of xor list
+ * */
+void print_link_list_xor (t_gen d)
+{
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
+	int i;
+
+	printf("%s : [", l->name);
+
+	end = l->tail? l->tail->nxt :l->tail;
+	while (ptr) {
+		l->print_data(ptr->data);
+		printf(" ");
+		cur = xor(ptr->nxt, prev);
+		prev = ptr;
+		ptr = cur;
+	}
+	printf("]\n");
+
+}
+
+
+
+/*! \brief Brief description.
+ *   print the elem in linklist with linkinfo
+ * */
+void print_link_list_info (t_gen d)
+{
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
+	int i;
+
+	printf("%s {Head: %lx} {Tail: %lx} {count: %u} \n[",l->name,
+			(long)l->head,(long)l->tail, l->count);
+	end = l->tail? l->tail->nxt :l->tail;
+	while (ptr) {
+		printf("[ %lx ", (long)ptr->prv);
+		l->print_data(ptr->data);
+		printf(" %lx]", (long)ptr->nxt);
+		ptr = ptr->nxt;
+	
+		// exit if end of list
+		if (ptr == end) {
+			break;
+		}
+	}
+	printf(" ]\n");
+
+}
+
+/*! \brief Brief description.
+ *   print the elem in xor linklist with linkinfo
+ * */
+void print_link_list_xor_info (t_gen d)
+{
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
+	int i;
+
+	printf("%s {Head: %lx} {Tail: %lx} {count: %u} \n[",l->name,
+			(long)l->head,(long)l->tail, l->count);
+	end = l->tail? l->tail->nxt :l->tail;
+	while (ptr) {
+		printf("[ %lx" , (long)prev);
+		l->print_data(ptr->data);
+		printf(" %lx]", (long)ptr);
+		cur = xor(ptr->nxt, prev);
+		prev = ptr;
+		ptr = cur;
+	}
+	printf(" ]\n");
+
+}
+
+
+/*! \brief Brief description.
+ *   Destroy instance of the LL
+ * */
+void destroy_link_list (t_gen d)
+{	
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *tmp,*ptr,*end;
+	int i;
+
+	// delete all node in llist
+	ptr = l->head;
+
+	// exit for Circ or non circ linked list
+	end = l->tail? l->tail->nxt :l->tail;
+
+	while (ptr) {
+		tmp = ptr;	
+		ptr = ptr->nxt;
+		l->count--;
+		// free node
+		tmp->nxt = tmp->prv = NULL;
+		l->free(tmp->data, __FILE__, __LINE__);
+		free_mem(tmp);	
+		if(ptr == end) {
+			break;
+		}
+	}
+	
+	if (l->count != 0) {
+		LOG_ERROR(l->name, "%d nodes remain\n", l->count);
+	}
+	// Reset count, head and tail ptrs
+	l->tail = l->head  = NULL;
+
+	free_mem(l);
+}
+
+
+// TODO: Harsha to look at it
+/*! \brief Brief description.
+ *   Destroy instance of the xor LL
+ * */
+void destroy_link_list_xor (t_gen d)
+{	
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *tmp,*ptr,*end;
+	int i;
+
+	// delete all node in llist
+	ptr = l->head;
+
+	// exit for Circ or non circ linked list
+	end = l->tail? l->tail->nxt :l->tail;
+
+	while (ptr) {
+		tmp = ptr;	
+		ptr = ptr->nxt;
+		l->count--;
+		// free node
+		tmp->nxt = tmp->prv = NULL;
+		l->free(tmp->data, __FILE__, __LINE__);
+		free_mem(tmp);	
+		if(ptr == end) {
+			break;
+		}
+	}
+	
+	if (l->count != 0) {
+		LOG_ERROR(l->name, "%d nodes remain\n", l->count);
+	}
+	// Reset count, head and tail ptrs
+	l->tail = l->head  = NULL;
+
+	free_mem(l);
+}
+
 

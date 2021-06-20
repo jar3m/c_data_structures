@@ -30,11 +30,18 @@ int main(int argc, char *argv[])
 	char c,*cp,*sp,str[][64] = {"I", "See", "Everyting"};
 	float f,*fp;
 	int *ip;
-	t_gen l1 = create_link_list("INT DLL",eDOUBLE_LINKLIST, eINT32);
-	t_gen l2 = create_link_list("CHAR SLL",eSINGLE_LINKLIST, eINT8);
-	t_gen l3 = create_link_list("FLOAT SCLL",eSINGLE_CIRCULAR_LINKLIST, eFLOAT);
-	t_gen l4 = create_link_list("STRING DCLL",eDOUBLE_CIRCULAR_LINKLIST, eSTRING);
-//	t_gen l5 = create_link_list("FLOAT XORLL",eXOR_LINKLIST, eFLOAT);
+	t_dparams dp;
+
+	init_data_params(&dp, eINT32);
+	t_gen l1 = create_link_list("INT DLL",eDOUBLE_LINKLIST, &dp);
+	init_data_params(&dp, eINT8);
+	t_gen l2 = create_link_list("CHAR SLL",eSINGLE_LINKLIST, &dp);
+	init_data_params(&dp, eFLOAT);
+	t_gen l3 = create_link_list("FLOAT SCLL",eSINGLE_CIRCULAR_LINKLIST, &dp);
+	init_data_params(&dp, eSTRING);
+	t_gen l4 = create_link_list("STRING DCLL",eDOUBLE_CIRCULAR_LINKLIST, &dp);
+	init_data_params(&dp, eFLOAT);
+//	t_gen l5 = create_link_list("FLOAT XORLL",eXOR_LINKLIST, &dp);
 	for (i = 0; i < 3; i++) {
 		c= 'c' + i;
 		((t_linklist*)l2)->add(l2, assign_char(c));
@@ -94,7 +101,7 @@ int main(int argc, char *argv[])
 	print_link_list(l4);
 //	print_link_list(l5);
 
-	for (i = 0; i < 3; i++) {
+	for (i = 3; i < 13; i++) {
 		c= 'c' + i;
 		((t_linklist*)l2)->add(l2, assign_char(c));
 
@@ -103,7 +110,6 @@ int main(int argc, char *argv[])
 		f= (float)i+0.222 / 2.0f;
 		((t_linklist*)l3)->add(l3, assign_float(f));
 
-		((t_linklist*)l4)->add(l4, assign_string(str[i]));
 //		((t_linklist*)l5)->add(l5, assign_float(f));
 	}
 	print_link_list(l1);

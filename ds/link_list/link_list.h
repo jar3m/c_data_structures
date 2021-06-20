@@ -13,15 +13,22 @@ typedef enum {
 }e_lltype;
 
 /// Link list struct definition
+typedef struct llnode {
+	t_gen data;
+	struct llnode *nxt;
+	struct llnode *prv;
+} t_llnode;
+
 typedef struct linklist {
 	// linklist info params
 	char *name;
 	e_lltype type;
 	int count;
+	e_data_types dtype;
 
 	// linklist head and tail ref
-	t_elem *head;
-	t_elem *tail;
+	t_llnode *head;
+	t_llnode *tail;
 	
 	// linklist routines
 	f_ins append;
@@ -31,6 +38,7 @@ typedef struct linklist {
 	f_del_idx del_idx;
 	f_len len;
 	f_print print;
+	f_print print_info;
 
 	// routies for operating on data
 	f_print print_data;
@@ -42,6 +50,6 @@ typedef struct linklist {
 
 
 //API
-t_gen create_link_list (char *name, e_lltype type, e_data_types data_type);
+t_gen create_link_list (char *name, e_lltype type, t_dparams *dprm);
 void destroy_link_list (t_gen d);
 void print_link_list (t_gen d);
