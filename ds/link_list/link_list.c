@@ -23,13 +23,28 @@ t_gen del_node_dll_idx(t_gen d, int idx);
 t_gen del_node_scll_idx(t_gen d, int idx); 
 t_gen del_node_dcll_idx(t_gen d, int idx);
 
-int len_of_link_list(t_gen d);
-void print_link_list (t_gen d);
-void print_link_list_xor (t_gen d);
-void print_link_list_info (t_gen d);
-void print_link_list_xor_info (t_gen d);
+int linklist_length(t_gen d);
+
+void linklist_print (t_gen d);
+void linklist_print_xor (t_gen d);
+void linklist_print_info (t_gen d);
+void linklist_print_info_xor (t_gen d);
+
 void destroy_link_list (t_gen d);
 void destroy_link_list_xor (t_gen d);
+
+t_gen linklist_get_head(t_gen);
+t_gen linklist_get_tail(t_gen);
+t_gen linklist_get_end(t_gen);
+t_gen linklist_get_next_node(t_gen, t_gen);
+t_gen linklist_get_prev_node(t_gen, t_gen);
+
+t_gen linklist_get_head_xor(t_gen);
+t_gen linklist_get_tail_xor(t_gen);
+t_gen linklist_get_end_xor(t_gen);
+t_gen linklist_get_next_node_xor(t_gen, t_gen);
+t_gen linklist_get_prev_node_xor(t_gen, t_gen);
+
 t_gen xor(t_gen x, t_gen y);
 
 /// Look Up function call for add, append and del depending on type of list
@@ -37,9 +52,6 @@ f_ins add[] = {add_begin_sll,add_begin_dll,add_begin_scll,add_begin_dcll, add_be
 f_ins append[] = {add_end_sll,add_end_dll,add_end_scll,add_end_dcll, add_end_xor_dll};
 f_del del[] = {del_node_sll, del_node_dll, del_node_scll, del_node_dcll, del_node_xor_dll};
 f_del_idx del_idx[] = {del_node_sll_idx, del_node_dll_idx, del_node_scll_idx, del_node_dcll_idx};
-f_destroy destroy[] = {destroy_link_list, destroy_link_list, destroy_link_list, destroy_link_list, destroy_link_list_xor};
-f_print print[] = {print_link_list, print_link_list, print_link_list, print_link_list, print_link_list_xor};
-f_print printinfo[] = {print_link_list_info, print_link_list_info, print_link_list_info, print_link_list_info,print_link_list_xor_info};
 
 /*! \brief Brief description.
  *  Create an instance of link list
@@ -59,10 +71,10 @@ t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 	l->add = add[type];
 	l->del = del[type];
 	l->del_idx = del_idx[type];
-	l->len = len_of_link_list;
-	l->destroy = destroy_link_list;
-	l->print = print[type];
-	l->print_info = printinfo[type];
+	l->len = linklist_length;
+	l->destroy = (type != eXOR_LINKLIST)? destroy_link_list: destroy_link_list_xor;
+	l->print = (type != eXOR_LINKLIST)? linklist_print: linklist_print_xor;
+	l->print_info = (type != eXOR_LINKLIST)? linklist_print_info: linklist_print_info_xor;
 
 	l->cmpr = prm->cmpr;
 	l->swap = prm->swap;
@@ -764,7 +776,7 @@ t_gen del_node_dcll_idx(t_gen d, int idx)
 /*! \brief Brief description.
  *   return the length of the link list
  * */
-int len_of_link_list(t_gen d)
+int linklist_length(t_gen d)
 {
 	t_linklist *l = (t_linklist*)d;
 
@@ -899,7 +911,7 @@ t_gen del_node_xor_dll(t_gen d, t_gen data)
 /*! \brief Brief description.
  *   print the elems of link list
  * */
-void print_link_list (t_gen d)
+void linklist_print (t_gen d)
 {
 	t_linklist *l = (t_linklist*)d;
 	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
@@ -924,7 +936,7 @@ void print_link_list (t_gen d)
 /*! \brief Brief description.
  *   print the elems of xor list
  * */
-void print_link_list_xor (t_gen d)
+void linklist_print_xor (t_gen d)
 {
 	t_linklist *l = (t_linklist*)d;
 	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
@@ -949,7 +961,7 @@ void print_link_list_xor (t_gen d)
 /*! \brief Brief description.
  *   print the elem in linklist with linkinfo
  * */
-void print_link_list_info (t_gen d)
+void linklist_print_info (t_gen d)
 {
 	t_linklist *l = (t_linklist*)d;
 	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
@@ -976,7 +988,7 @@ void print_link_list_info (t_gen d)
 /*! \brief Brief description.
  *   print the elem in xor linklist with linkinfo
  * */
-void print_link_list_xor_info (t_gen d)
+void linklist_print_info_xor (t_gen d)
 {
 	t_linklist *l = (t_linklist*)d;
 	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;

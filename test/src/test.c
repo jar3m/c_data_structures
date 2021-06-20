@@ -54,11 +54,11 @@ int main(int argc, char *argv[])
 		((t_linklist*)l4)->add(l4, assign_string(str[i]));
 //		((t_linklist*)l5)->add(l5, assign_float(f));
 	}
-	print_link_list(l1);
-	print_link_list(l2);
-	print_link_list(l3);
-	print_link_list(l4);
-//	print_link_list(l5);
+	linklist_print(l1);
+	linklist_print(l2);
+	linklist_print(l3);
+	linklist_print(l4);
+//	linklist_print(l5);
 	LOG_INFO("TEST", "deleting nodes in link list\n");
 	for (i = 0; i < 3; i++) {
 		c= 'c' + i;
@@ -78,11 +78,11 @@ int main(int argc, char *argv[])
 //		free(fp);
 	}
 
-	print_link_list(l1);
-	print_link_list(l2);
-	print_link_list(l3);
-	print_link_list(l4);
-//	print_link_list(l5);
+	linklist_print(l1);
+	linklist_print(l2);
+	linklist_print(l3);
+	linklist_print(l4);
+//	linklist_print(l5);
 	for (i = 0; i < 3; i++) {
 		c= 'c' + i;
 		((t_linklist*)l2)->append(l2, assign_char(c));
@@ -95,11 +95,11 @@ int main(int argc, char *argv[])
 		((t_linklist*)l4)->append(l4, assign_string(str[i]));
 //		((t_linklist*)l5)->append(l5, assign_float(f));
 	}
-	print_link_list(l1);
-	print_link_list(l2);
-	print_link_list(l3);
-	print_link_list(l4);
-//	print_link_list(l5);
+	linklist_print(l1);
+	linklist_print(l2);
+	linklist_print(l3);
+	linklist_print(l4);
+//	linklist_print(l5);
 
 	for (i = 3; i < 13; i++) {
 		c= 'c' + i;
@@ -112,11 +112,11 @@ int main(int argc, char *argv[])
 
 //		((t_linklist*)l5)->add(l5, assign_float(f));
 	}
-	print_link_list(l1);
-	print_link_list(l2);
-	print_link_list(l3);
-	print_link_list(l4);
-//	print_link_list(l5);
+	linklist_print(l1);
+	linklist_print(l2);
+	linklist_print(l3);
+	linklist_print(l4);
+//	linklist_print(l5);
 
 	for (i = 2; i >= 0; i--) {
 		cp = ((t_linklist*)l2)->del_idx(l2, i);
@@ -136,10 +136,10 @@ int main(int argc, char *argv[])
 		//printf("%s\n",sp);
 		free_mem(sp);
 	}
-	print_link_list(l1);
-	print_link_list(l2);
-	print_link_list(l3);
-	print_link_list(l4);
+	linklist_print(l1);
+	linklist_print(l2);
+	linklist_print(l3);
+	linklist_print(l4);
 
 	destroy_link_list(l1);
 	destroy_link_list(l2);

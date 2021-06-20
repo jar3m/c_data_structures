@@ -19,6 +19,7 @@ typedef struct llnode {
 	struct llnode *prv;
 } t_llnode;
 
+
 typedef struct linklist {
 	// linklist info params
 	char *name;
@@ -34,11 +35,18 @@ typedef struct linklist {
 	f_ins append;
 	f_ins add;
 	f_del del;
+	f_find find;
 	f_destroy destroy;
 	f_del_idx del_idx;
+	f_get_idx get_idx;
 	f_len len;
 	f_print print;
 	f_print print_info;
+	f_gen head_node;
+	f_gen tail_node;
+	f_gen end_node; 
+	f_gen2 next_node;
+	f_gen2 prev_node;
 
 	// routies for operating on data
 	f_print print_data;
@@ -52,4 +60,4 @@ typedef struct linklist {
 //API
 t_gen create_link_list (char *name, e_lltype type, t_dparams *dprm);
 void destroy_link_list (t_gen d);
-void print_link_list (t_gen d);
+void linklist_print (t_gen d);

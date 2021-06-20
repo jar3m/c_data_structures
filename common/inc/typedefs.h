@@ -39,26 +39,30 @@ typedef void* t_gen;
 
 
 /// common routines supported by all data structures
-typedef t_gen(*f_gen)(t_gen);
-typedef void (*f_print)(t_gen);
+typedef t_gen (*f_gen)(t_gen);
+typedef t_gen (*f_gen2)(t_gen, t_gen);
+typedef void (*f_vgen)(t_gen);
+typedef void (*f_vgen2)(t_gen, t_gen);
+typedef t_gen (*f_genidx)(t_gen, int);
+
 typedef bool (*f_empty)(t_gen);
 typedef bool (*f_full)(t_gen);
 typedef int (*f_len)(t_gen);
-typedef int (*f_len)(t_gen);
+typedef f_vgen f_print;
 
-typedef void(*f_ins)(t_gen,t_gen);
-typedef t_gen(*f_del)(t_gen, t_gen);
-typedef t_gen(*f_find)(t_gen, t_gen);
-typedef t_gen(*f_del_idx)(t_gen, int);
-typedef void(*f_destroy)(t_gen);
+typedef f_vgen2 f_ins;
+typedef f_gen2 f_del;
+typedef f_gen2 f_find;
+typedef f_vgen f_destroy;
+typedef f_genidx f_del_idx;
+typedef f_genidx f_get_idx;
 
 /// Basic operations required for generic data type support
 typedef e_cmpr (*f_cmpr)(t_gen,t_gen);
-typedef void (*f_assign)(t_gen,t_gen);
-typedef void (*f_swap)(t_gen,t_gen);
 typedef void(*f_free)(t_gen, char*, int);
+typedef f_vgen2 f_assign;
+typedef f_vgen2 f_swap;
 
 typedef e_cmpr (*f_cmp_idx)(t_gen,int, int);
 typedef void (*f_swp_idx)(t_gen,int, int);
 typedef void (*f_cpy_idx)(t_gen,int, t_gen);
-typedef t_gen (*f_get_idx)(t_gen,int);
