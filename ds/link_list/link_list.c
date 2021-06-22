@@ -36,14 +36,8 @@ void destroy_link_list_xor (t_gen d);
 t_gen linklist_get_head(t_gen);
 t_gen linklist_get_tail(t_gen);
 t_gen linklist_get_end(t_gen);
-t_gen linklist_get_next_node(t_gen, t_gen);
-t_gen linklist_get_prev_node(t_gen, t_gen);
-
-t_gen linklist_get_head_xor(t_gen);
-t_gen linklist_get_tail_xor(t_gen);
-t_gen linklist_get_end_xor(t_gen);
-t_gen linklist_get_next_node_xor(t_gen, t_gen);
-t_gen linklist_get_prev_node_xor(t_gen, t_gen);
+t_gen linklist_get_next(t_gen, t_gen);
+t_gen linklist_get_prev(t_gen, t_gen);
 
 t_gen xor(t_gen x, t_gen y);
 
@@ -67,13 +61,18 @@ t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 	l->tail = l->head = NULL;
 
 	// Select Functions based on type of list
-	l->append = append[type];
-	l->add = add[type];
-	l->del = del[type];
-	l->del_idx = del_idx[type];
-	l->len = linklist_length;
-	l->destroy = (type != eXOR_LINKLIST)? destroy_link_list: destroy_link_list_xor;
-	l->print = (type != eXOR_LINKLIST)? linklist_print: linklist_print_xor;
+	l->append    = append[type];
+	l->add       = add[type];
+	l->del       = del[type];
+	l->del_idx   = del_idx[type];
+	l->len 	     = linklist_length;
+	l->head_node = linklist_get_head;
+	l->tail_node = linklist_get_tail;
+	l->end_node  = linklist_get_end;
+	l->next_node = linklist_get_next;
+	l->prev_node = linklist_get_prev;
+	l->destroy   = (type != eXOR_LINKLIST)? destroy_link_list: destroy_link_list_xor;
+	l->print     = (type != eXOR_LINKLIST)? linklist_print: linklist_print_xor;
 	l->print_info = (type != eXOR_LINKLIST)? linklist_print_info: linklist_print_info_xor;
 
 	l->cmpr = prm->cmpr;
@@ -542,20 +541,21 @@ t_gen del_node_sll_idx(t_gen d, int idx)
 	t_linklist *l = (t_linklist *)d;
 	t_llnode *cur = l->head, *prv = NULL;
 	t_gen tmp = NULL;
+
 	// empty list
 	if (l->head == NULL) {
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
 		return tmp;
 	}
-	
+	// idx >count
 	if (idx >= l->count) {
-	  LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
+		LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
 		return tmp;
 	}
-	
+
 	for(int i = 0; i < idx; i++) {
-		  prv = cur;
-		  cur = cur->nxt;
+		prv = cur;
+		cur = cur->nxt;
 	}
 	// Head node is to be deleted and new head is updated
 	if (idx == 0) {
@@ -564,13 +564,13 @@ t_gen del_node_sll_idx(t_gen d, int idx)
 		l->tail = l->head? l->tail : NULL;
 	}
 
-  else {	
-	  // Unlink cur node and update link
-	  prv->nxt = cur->nxt;
-	  // If last node deleted update tail ref
-	  if (prv->nxt == NULL) {
-		  l->tail = prv;
-	  }
+	else {	
+		// Unlink cur node and update link
+		prv->nxt = cur->nxt;
+		// If last node deleted update tail ref
+		if (prv->nxt == NULL) {
+			l->tail = prv;
+		}
 	}
 	l->count--;
 	// Free node
@@ -592,22 +592,23 @@ t_gen del_node_dll_idx(t_gen d, int idx)
 	t_linklist *l = (t_linklist *)d;
 	t_llnode *cur = l->head;
 	t_gen tmp = NULL;
-	
+
 	// empty list
 	if (l->head == NULL) {
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
 		return tmp;
 	}
 
+	// idx >list count
 	if (idx >= l->count) {
-	  LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
+		LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
 		return tmp;
 	}
 
 	for(int i = 0; i < idx ; i ++) {
-		  cur = cur->nxt;
+		cur = cur->nxt;
 	}
-	  // Head node is to be deleted and new head is updated
+	// Head node is to be deleted and new head is updated
 	if (idx == 0) {
 		l->head = cur->nxt;
 		if (l->head != NULL) {
@@ -620,14 +621,14 @@ t_gen del_node_dll_idx(t_gen d, int idx)
 
 	// Unlink cur node and update fwd link
 	else {
-	  cur->prv->nxt = cur->nxt;
-	  if (cur->nxt == NULL) {
-		  // If last node deleted update tail ref
-		  l->tail = cur->prv;
-	  } else {
-		  // Preserve rev link
-		  cur->nxt->prv = cur->prv;
-	  }
+		cur->prv->nxt = cur->nxt;
+		if (cur->nxt == NULL) {
+			// If last node deleted update tail ref
+			l->tail = cur->prv;
+		} else {
+			// Preserve rev link
+			cur->nxt->prv = cur->prv;
+		}
 	}
 
 	// Free node
@@ -655,9 +656,9 @@ t_gen del_node_scll_idx(t_gen d, int idx)
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
 		return tmp;
 	}
-	
+	// idx >list count
 	if (idx >= l->count) {
-	  LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
+		LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
 		return tmp;
 	}
 
@@ -671,31 +672,31 @@ t_gen del_node_scll_idx(t_gen d, int idx)
 			return tmp;
 		}
 	}
-	
+
 	// Head node is to be deleted and new head is updated
 	if (idx == 0) {
-	// Unlink cur node and update fwd link for tail
+		// Unlink cur node and update fwd link for tail
 		l->tail->nxt = l->head = cur->nxt;
 		l->count--;
 		// Reset Tail to NULL if list empty
 		if (l->count == 0) {
 			l->tail = l->head = NULL;
 		}
-	  cur->nxt = NULL;
-	  tmp = cur->data;
-	  free_mem(cur);
+		cur->nxt = NULL;
+		tmp = cur->data;
+		free_mem(cur);
 		return tmp;
 	}
 
 	else {
-	  // Unlink cur node and update fwd link
-	  prv->nxt = cur->nxt;
-	  // If last node deleted update tail ref
-	  if (prv->nxt == l->head) {
-			  l->tail = prv;
-	  }
+		// Unlink cur node and update fwd link
+		prv->nxt = cur->nxt;
+		// If last node deleted update tail ref
+		if (prv->nxt == l->head) {
+			l->tail = prv;
+		}
 	}
-	
+
 	// Free node
 	l->count--;
 	cur->nxt = NULL;
@@ -721,6 +722,7 @@ t_gen del_node_dcll_idx(t_gen d, int idx)
 		return tmp;
 	}
 	
+	// idx > list count
 	if (idx >= l->count) {
 	  LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
 		return tmp;
@@ -783,85 +785,96 @@ int linklist_length(t_gen d)
 	return l->count;
 }
 
-/*! 
-*   XOR function to safely complete xor operation between two pointers
+/*! \brief Brief description.
+*   util fuction to complete xor operation between two pointers
 *   returns the xor'ed result as a t_gen type
 * */
-t_gen xor(t_gen x, t_gen y) {
-  return (t_gen)((uintptr_t)(x) ^ (uintptr_t)(y));
+t_gen xor(t_gen x, t_gen y) 
+{
+	return (t_gen)((uintptr_t)(x) ^ (uintptr_t)(y));
 }
 
-/*! 
-*   XOR based doubly linked list
-*   both links are stored in a single pointer by XOR operation
+/*! \brief Brief description.
+*   add begin in xor link list
 * */
 void add_begin_xor_dll(t_gen d, t_gen data)
 {
-  t_linklist *l = (t_linklist*)d;
-  t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
-  node->data = data;
-  //node->nxt = l->head ^ NULL 
-  node->nxt = xor(l->head ,NULL);
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *node;
+	
+	// create node and store data
+	node = (t_llnode*)get_mem(1, sizeof(t_llnode));
+	node->data = data;
+	//node->nxt = l->head ^ NULL 
+	node->nxt = xor(l->head ,NULL);
 
-  if (l->head != NULL)
-  {
-      // In order to get the address of the next node, XOR it with `NULL`
-			//l->head->nxt = (l->head->nxt ^ NULL) ^ node;
-      l->head->nxt = xor(node, xor(l->head->nxt, NULL));
-  }
-  
-  // update tail
-  if (l->head == NULL) {
-    l->tail = node;
-  }
-  // Update head to new node
-  l->head = node;
-  l->count++;
- 
+	if (l->head != NULL)
+	{
+		// In order to get the address of the next node, XOR it with `NULL`
+		//l->head->nxt = (l->head->nxt ^ NULL) ^ node;
+		l->head->nxt = xor(node, xor(l->head->nxt, NULL));
+	}
+
+	// update tail
+	if (l->head == NULL) {
+		l->tail = node;
+	}
+	// Update head to new node
+	l->head = node;
+	l->count++;
+
 }
 
 
+/*! \brief Brief description.
+*   add end in xor link list
+* */
 void add_end_xor_dll(t_gen d, t_gen data)
 {
-  t_linklist *l = (t_linklist*)d;
-  t_llnode *node = (t_llnode*)get_mem(1, sizeof(t_llnode));
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *node;
 
-  // Create a node and assign data
-  node->data = data;
-	//node->nxt = l->tail ^ NULL;
-  node->nxt = xor(l->tail, NULL);
+	// Create a node and assign data
+	node = (t_llnode*)get_mem(1, sizeof(t_llnode));
+	node->data = data;
 
-  if (l->head == NULL) {
-    // List Empty upadte head 
-    //l->head = (t_llnode *)XOR(node, l->head) ;
+	// node->nxt = l->tail ^ NULL;
+	node->nxt = xor(l->tail, NULL);
+
+	if (l->head == NULL) {
+		// List Empty upadte head 
+		//l->head = (t_llnode *)XOR(node, l->head) ;
 		l->head = l->tail = node;
-  } else {
-    // Add new node as nxt of cur tail
+	} else {
+		// Add new node as nxt of cur tail
 		//l->tail->nxt = (l->tail->nxt ^ NULL) ^ node;
-    l->tail->nxt = xor(node, xor(l->tail->nxt,  NULL));
-  }
-  // Add new node as tail
-  l->tail = node;
-  l->count++;
+		l->tail->nxt = xor(node, xor(l->tail->nxt,  NULL));
+	}
+	// Add new node as tail
+	l->tail = node;
+	l->count++;
 }
 
+/*! \brief Brief description.
+*   delete node with matching data in xor link list
+* */
 t_gen del_node_xor_dll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist *)d;
 	t_llnode *cur = l->head;
-  t_llnode *prev = NULL , *next = NULL;
+	t_llnode *prev = NULL , *next = NULL;
 	t_gen tmp = NULL;
 
-	
+
 	// empty list
 	if (l->head == NULL) {
 		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
 		return tmp;
-  }
-	
+	}
+
 	// Head node is to be deleted and new head is updated
 	if (l->cmpr(cur->data, data) == eEQUAL) {
-	  //l->head = cur->nxt ^ prev;
+		// l->head = cur->nxt ^ prev;
 		l->head = xor(cur->nxt, prev);
 		l->count--;
 		// Reset Tail to NULL if list empty
@@ -874,38 +887,130 @@ t_gen del_node_xor_dll(t_gen d, t_gen data)
 
 	// Find the node to be deleted
 	while (l->cmpr(cur->data, data) != eEQUAL) {
-	  //next = cur->nxt ^ prev;
-	  next = xor(cur->nxt, prev);
+		//next = cur->nxt ^ prev;
+		next = xor(cur->nxt, prev);
 		// Node to be deleted not found
 		if(next == NULL) {
 			LOG_INFO("LINK_LIST", "%s: No node found within the link list\n",l->name);
 			return tmp;
-    }
-    prev = cur;
-    cur = next;	
+		}
+		prev = cur;
+		cur = next;	
 	}
-  //  next = cur->nxt ^ prev;
 
-	//  prev->nxt = (prev->nxt ^ cur) ^ (next) ;
-  next = xor(cur->nxt, prev);
+	// next = cur->nxt ^ prev;
+	next = xor(cur->nxt, prev);
 
-  prev->nxt = xor(next, xor(prev->nxt, cur)) ;
+	// prev->nxt = (prev->nxt ^ cur) ^ (next) ;
+	prev->nxt = xor(next, xor(prev->nxt, cur)) ;
 
-  // Update tail when the last node is deleted
-  if (next == NULL) {
-    l->tail = prev;
-  }
-  else {
-	  //next->nxt = (next->nxt ^ cur) ^ prev;
-    next->nxt = xor(prev, xor(next->nxt, cur));
-  }
-  l->count --;
-  tmp = cur->data;
-  cur->nxt = NULL; 
-  free(cur);
+	// Update tail when the last node is deleted
+	if (next == NULL) {
+		l->tail = prev;
+	}
+	else {
+		// next->nxt = (next->nxt ^ cur) ^ prev;
+		next->nxt = xor(prev, xor(next->nxt, cur));
+	}
+	
+	// free node
+	l->count --;
+	tmp = cur->data;
+	cur->nxt = NULL; 
+	free(cur);
 
 	return tmp;
 
+}
+
+/*! \brief Brief description.
+ *   get the head node of link list
+ * */
+t_gen linklist_get_head(t_gen d)
+{
+	t_linklist *l = (t_linklist*)d;
+
+	return l->head;
+}
+
+/*! \brief Brief description.
+ *   get the tail node of link list
+ * */
+t_gen linklist_get_tail(t_gen d)
+{
+	t_linklist *l = (t_linklist*)d;
+
+	return l->tail;
+}
+
+/*! \brief Brief description.
+ *   get the end of link list
+ * */
+t_gen linklist_get_end(t_gen d)
+{
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *end = NULL;
+
+	// Return end of link list depending on type of link list
+	switch (l->type)
+	{
+		case eSINGLE_LINKLIST:
+		case eDOUBLE_LINKLIST:
+			end = NULL;
+			break;
+		case eSINGLE_CIRCULAR_LINKLIST:
+		case eDOUBLE_CIRCULAR_LINKLIST:
+			end = l->head;
+			break;
+		case eXOR_LINKLIST:
+			end = NULL;
+			break;
+	}
+	return end;
+}
+
+/*! \brief Brief description.
+ *   get the next node of given node in link list
+ * */
+t_gen linklist_get_next(t_gen d, t_gen n)
+{
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *node = (t_llnode*)n;
+
+	// return node -> next except for xor list
+	if (l->type != eXOR_LINKLIST) {
+		return node->nxt;
+	}
+
+	// TODO: Returning NULL for xor based ll 
+	return NULL;
+}
+
+/*! \brief Brief description.
+ *   get the prev node of given node in link list
+ * */
+t_gen linklist_get_prev(t_gen d, t_gen n)
+{
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *prev = NULL, *node = (t_llnode*)n;
+
+	// Return end of link list depending on type of link list
+	switch (l->type)
+	{
+		case eSINGLE_LINKLIST:
+		case eSINGLE_CIRCULAR_LINKLIST:
+			prev = NULL;
+			break;
+		case eDOUBLE_LINKLIST:
+		case eDOUBLE_CIRCULAR_LINKLIST:
+			prev = node->prv;
+			break;
+		case eXOR_LINKLIST:
+			prev = NULL;
+			break;
+	}
+
+	return prev;
 }
 
 /*! \brief Brief description.
@@ -914,15 +1019,20 @@ t_gen del_node_xor_dll(t_gen d, t_gen data)
 void linklist_print (t_gen d)
 {
 	t_linklist *l = (t_linklist*)d;
-	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
+	t_llnode *ptr, *end;
 	int i;
 
 	printf("%s : [", l->name);
-	end = l->tail? l->tail->nxt :l->tail;
+
+	// get head ptr of ll
+	ptr = l->head_node(l);
+	// exit for Circ or non circ linked list
+	end = l->end_node(l);
+
 	while (ptr) {
 		l->print_data(ptr->data);
 		printf(" ");
-		ptr = ptr->nxt;
+		ptr = l->next_node(l, ptr);
 	
 		// exit if end of list
 		if (ptr == end) {
@@ -964,18 +1074,23 @@ void linklist_print_xor (t_gen d)
 void linklist_print_info (t_gen d)
 {
 	t_linklist *l = (t_linklist*)d;
-	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
+	t_llnode *ptr, *end;
 	int i;
 
 	printf("%s {Head: %lx} {Tail: %lx} {count: %u} \n[",l->name,
 			(long)l->head,(long)l->tail, l->count);
-	end = l->tail? l->tail->nxt :l->tail;
+
+	// get head of link list
+	ptr = l->head_node(l);
+	// exit for Circ or non circ linked list
+	end = l->end_node(l);
+
 	while (ptr) {
 		printf("[ %lx ", (long)ptr->prv);
 		l->print_data(ptr->data);
 		printf(" %lx]", (long)ptr->nxt);
-		ptr = ptr->nxt;
 	
+		ptr = l->next_node(l, ptr);
 		// exit if end of list
 		if (ptr == end) {
 			break;
@@ -985,11 +1100,13 @@ void linklist_print_info (t_gen d)
 
 }
 
+
 /*! \brief Brief description.
  *   print the elem in xor linklist with linkinfo
  * */
 void linklist_print_info_xor (t_gen d)
 {
+	// TODO : to be merged with the list above
 	t_linklist *l = (t_linklist*)d;
 	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
 	int i;
@@ -1020,14 +1137,14 @@ void destroy_link_list (t_gen d)
 	int i;
 
 	// delete all node in llist
-	ptr = l->head;
+	ptr = l->head_node(l);
 
 	// exit for Circ or non circ linked list
-	end = l->tail? l->tail->nxt :l->tail;
+	end = l->end_node(l);
 
 	while (ptr) {
 		tmp = ptr;	
-		ptr = ptr->nxt;
+		ptr = l->next_node(l, ptr);
 		l->count--;
 		// free node
 		tmp->nxt = tmp->prv = NULL;
