@@ -71,9 +71,12 @@ t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 	l->end_node  = linklist_get_end;
 	l->next_node = linklist_get_next;
 	l->prev_node = linklist_get_prev;
-	l->destroy   = (type != eXOR_LINKLIST)? destroy_link_list: destroy_link_list_xor;
-	l->print     = (type != eXOR_LINKLIST)? linklist_print: linklist_print_xor;
-	l->print_info = (type != eXOR_LINKLIST)? linklist_print_info: linklist_print_info_xor;
+	l->destroy   = destroy_link_list;
+	//l->destroy   = (type != eXOR_LINKLIST)? destroy_link_list: destroy_link_list_xor;
+	l->print      = linklist_print;
+	l->print_info = linklist_print_info;
+	//l->print     = (type != eXOR_LINKLIST)? linklist_print: linklist_print_xor;
+	//l->print_info = (type != eXOR_LINKLIST)? linklist_print_info: linklist_print_info_xor;
 
 	l->cmpr = prm->cmpr;
 	l->swap = prm->swap;
@@ -975,15 +978,21 @@ t_gen linklist_get_end(t_gen d)
 t_gen linklist_get_next(t_gen d, t_gen n)
 {
 	t_linklist *l = (t_linklist*)d;
-	t_llnode *node = (t_llnode*)n;
+	t_llnode *node = (t_llnode*)n, *next;
+	static t_llnode *prev = NULL;
 
 	// return node -> next except for xor list
 	if (l->type != eXOR_LINKLIST) {
 		return node->nxt;
 	}
+	// limitation for xor next node be it iterrates from head
+	// meaning first call should pass head node addr 
+	// and next time next node and so on
+	prev = (l->head == node)? NULL: prev;
+	next = xor(node->nxt, prev);
+	prev = node;
 
-	// TODO: Returning NULL for xor based ll 
-	return NULL;
+	return next;
 }
 
 /*! \brief Brief description.
@@ -993,6 +1002,7 @@ t_gen linklist_get_prev(t_gen d, t_gen n)
 {
 	t_linklist *l = (t_linklist*)d;
 	t_llnode *prev = NULL, *node = (t_llnode*)n;
+	static t_llnode *next = NULL;
 
 	// Return end of link list depending on type of link list
 	switch (l->type)
@@ -1006,9 +1016,15 @@ t_gen linklist_get_prev(t_gen d, t_gen n)
 			prev = node->prv;
 			break;
 		case eXOR_LINKLIST:
-			prev = NULL;
+			// XOR node previous work only on reverse traveersal
+			// meaning first call should pass tail node addr 
+			// and next time the node before tail and so on
+			next = (l->tail == node)? NULL: next;
+			prev = xor(node->nxt, next);
+			next = node;
 			break;
 	}
+	
 
 	return prev;
 }
