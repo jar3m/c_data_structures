@@ -24,7 +24,8 @@ t_gen del_node_scll_idx(t_gen d, int idx);
 t_gen del_node_dcll_idx(t_gen d, int idx);
 
 int linklist_length(t_gen d);
-t_gen linklist_find(t_gen d,t_gen data);
+t_gen linklist_find(t_gen d, t_gen data);
+t_gen linklist_getnode(t_gen d, int idx);
 
 void linklist_print (t_gen d);
 void linklist_print_xor (t_gen d);
@@ -66,6 +67,7 @@ t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 	l->add       = add[type];
 	l->del       = del[type];
 	l->del_idx   = del_idx[type];
+	l->get_idx   = linklist_getnode;
 	l->len 	     = linklist_length;
 	l->find      = linklist_find;
 	l->head_node = linklist_get_head;
@@ -791,6 +793,27 @@ int linklist_length(t_gen d)
 }
 
 
+/*! \brief Brief description.
+ *   return the ith node of the link list
+ * */
+t_gen linklist_getnode(t_gen d, int idx)
+{
+	t_linklist *l = (t_linklist*)d;
+	t_llnode *ptr;
+	int i;	
+
+	// return NULL for index out of bound
+	if ((idx < 0) || (idx >= l->count)) {
+		return NULL;
+	}
+	ptr = l->head_node(l);
+	
+	for (i = 0; i < idx; i++) {
+		ptr = l->next_node(l, ptr);
+	}
+
+	return ptr;
+}
 
 /*! \brief Brief description.
  *   Find data in the link list
