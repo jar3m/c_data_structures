@@ -1,4 +1,9 @@
- #include "link_list.h"
+/*! @file link_list.c
+    @brief 
+    Contains definitions of routines supported by link list
+*/
+
+#include "link_list.h"
 
 void add_begin_sll(t_gen d,t_gen data);
 void add_begin_dll(t_gen d,t_gen data);
@@ -43,14 +48,24 @@ t_gen linklist_get_prev(t_gen, t_gen);
 
 t_gen xor(t_gen x, t_gen y);
 
-/// Look Up function call for add, append and del depending on type of list
+/// Look Up function ptrs for add based on type of list
 f_ins add[] = {add_begin_sll,add_begin_dll,add_begin_scll,add_begin_dcll, add_begin_xor_dll};
+
+/// Look Up function ptrs for apend (add end) based on type of list
 f_ins append[] = {add_end_sll,add_end_dll,add_end_scll,add_end_dcll, add_end_xor_dll};
+
+/// Look Up function ptrs for delete node based on type of list
 f_del del[] = {del_node_sll, del_node_dll, del_node_scll, del_node_dcll, del_node_xor_dll};
+
+/// Look Up function ptrs for delete ith node based on type of list
 f_del_idx del_idx[] = {del_node_sll_idx, del_node_dll_idx, del_node_scll_idx, del_node_dcll_idx};
 
-/*! \brief Brief description.
+/*! @brief  
  *  Create an instance of link list
+ *  @param name - Name of link list instance
+ *  @param type - Type of link list to be created
+ *  @param prm  - Data type specific parameters
+ *  @return     - Pointer to instance of link list 
  * */
 t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 {
@@ -90,8 +105,11 @@ t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 	return (t_gen)l;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Add Beggining for singly LL
+ *  @param d    - Pointer to instance of link list 
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
  * */
 void add_begin_sll(t_gen d, t_gen data)
 {
@@ -113,8 +131,11 @@ void add_begin_sll(t_gen d, t_gen data)
 	l->count++;	
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Add Beggining for doubly LL
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
  * */
 void add_begin_dll(t_gen d, t_gen data)
 {
@@ -142,8 +163,11 @@ void add_begin_dll(t_gen d, t_gen data)
 	l->count++;	
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Add Beggining for Singly Circular LL
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
  * */
 void add_begin_scll(t_gen d,t_gen data)
 {
@@ -169,8 +193,11 @@ void add_begin_scll(t_gen d,t_gen data)
 	l->count++;	
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Add Beggining for Doubly Circular LL
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
  **/
 void add_begin_dcll(t_gen d,t_gen data)
 {
@@ -197,8 +224,11 @@ void add_begin_dcll(t_gen d,t_gen data)
 	l->count++;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Add End for Singly LL
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
  * */
 void add_end_sll(t_gen d,t_gen data) 
 {
@@ -221,8 +251,11 @@ void add_end_sll(t_gen d,t_gen data)
 	l->count++;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Add End for Doublly LL
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
  * */
 void add_end_dll(t_gen d,t_gen data) 
 {
@@ -247,8 +280,11 @@ void add_end_dll(t_gen d,t_gen data)
 	l->count++;
 }
   
-/*! \brief Brief description.
+/*! @brief  
  *  Add End for Singly Circular LL
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
  * */
 void add_end_scll(t_gen d,t_gen data) 
 {
@@ -273,8 +309,11 @@ void add_end_scll(t_gen d,t_gen data)
 	l->count++;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Add End for Doubly Circular LL
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
  * */
 void add_end_dcll(t_gen d,t_gen data) 
 {
@@ -300,9 +339,12 @@ void add_end_dcll(t_gen d,t_gen data)
 	l->count++;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   Delete node with matching data in singly LL
  *   and return the instance
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data which has to be deleted
+ *  @return 	- Pointer to the data
  * */
 t_gen del_node_sll(t_gen d, t_gen data)
 {
@@ -355,9 +397,12 @@ t_gen del_node_sll(t_gen d, t_gen data)
 
 
 
-/*! \brief Brief description.
+/*! @brief  
  *   Delete node with matching data in Doublly LL
  *   and return the instance
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data which has to be deleted
+ *  @return 	- Pointer to the data
  * */
 t_gen del_node_dll(t_gen d, t_gen data)
 {
@@ -417,9 +462,12 @@ t_gen del_node_dll(t_gen d, t_gen data)
 
 
 
-/*! \brief Brief description.
+/*! @brief  
  *   Delete node with matching data in Singly Circular LL
  *   and return the instance
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data which has to be deleted
+ *  @return 	- Pointer to the data
  * */
 t_gen del_node_scll(t_gen d, t_gen data)
 {
@@ -477,9 +525,12 @@ t_gen del_node_scll(t_gen d, t_gen data)
 
 
 
-/*! \brief Brief description.
+/*! @brief  
  *   Delete node with matching data in Doubly Circular LL
  *   and return the instance
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data which has to be deleted
+ *  @return 	- Pointer to the data
  * */
 t_gen del_node_dcll(t_gen d, t_gen data)
 {
@@ -539,9 +590,12 @@ t_gen del_node_dcll(t_gen d, t_gen data)
 
 
 
-/*! \brief Brief description.
+/*! @brief  
  *   Delete node with matching index in singly LL
  *   and return the instance
+ *  @param d    - Pointer to instance of link list
+ *  @param idx  - index of the node to be deleted
+ *  @return 	- Pointer to the data of the deleted node
  * */
 t_gen del_node_sll_idx(t_gen d, int idx)
 {
@@ -590,9 +644,12 @@ t_gen del_node_sll_idx(t_gen d, int idx)
 
 
 
-/*! \brief Brief description.
+/*! @brief  
  *   Delete node with matching index  in Doublly LL
  *   and return the instance
+ *  @param d    - Pointer to instance of link list
+ *  @param idx  - index of the node to be deleted
+ *  @return 	- Pointer to the data of the deleted node
  * */
 t_gen del_node_dll_idx(t_gen d, int idx)
 {
@@ -648,9 +705,12 @@ t_gen del_node_dll_idx(t_gen d, int idx)
 }
 
 
-/*! \brief Brief description.
+/*! @brief  
  *   Delete node with matching index in Singly Circular LL
  *   and return the instance
+ *  @param d    - Pointer to instance of link list
+ *  @param idx  - index of the node to be deleted
+ *  @return 	- Pointer to the data of the deleted node
  * */
 t_gen del_node_scll_idx(t_gen d, int idx)
 {
@@ -713,9 +773,12 @@ t_gen del_node_scll_idx(t_gen d, int idx)
 	return tmp;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   Delete node with matching index in Doubly Circular LL
  *   and return the instance
+ *  @param d    - Pointer to instance of link list
+ *  @param idx  - index of the node to be deleted
+ *  @return 	- Pointer to the data of the deleted node
  * */
 t_gen del_node_dcll_idx(t_gen d, int idx)
 {
@@ -782,8 +845,10 @@ t_gen del_node_dcll_idx(t_gen d, int idx)
 
 }
 
-/*! \brief Brief description.
- *   return the length of the link list
+/*! @brief  
+ *   Length of the link list
+ *  @param d    - Pointer to instance of link list
+ *  @return 	- length of link list
  * */
 int linklist_length(t_gen d)
 {
@@ -792,9 +857,12 @@ int linklist_length(t_gen d)
 	return l->count;
 }
 
-
-/*! \brief Brief description.
- *   return the ith node of the link list
+/*! @brief 
+ *   Get the i th node of the link list
+ *   idx of node should be between 0 and < list count
+ *  @param d    - Pointer to instance of link list
+ *  @param idx  - idx, (0 <= idx < list count)
+ *  @return 	- Pointer to node
  * */
 t_gen linklist_getnode(t_gen d, int idx)
 {
@@ -817,6 +885,9 @@ t_gen linklist_getnode(t_gen d, int idx)
 
 /*! \brief Brief description.
  *   Find data in the link list
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data
+ *  @return 	- Pointer of the node
  * */
 t_gen linklist_find (t_gen d, t_gen data)
 {
@@ -843,8 +914,8 @@ t_gen linklist_find (t_gen d, t_gen data)
         return ptr;
 }
 
-/*! \brief Brief description.
-*   util fuction to complete xor operation between two pointers
+/*! @brief  
+*   Util fuction to complete xor operation between two pointers
 *   returns the xor'ed result as a t_gen type
 * */
 t_gen xor(t_gen x, t_gen y) 
@@ -852,9 +923,12 @@ t_gen xor(t_gen x, t_gen y)
 	return (t_gen)((uintptr_t)(x) ^ (uintptr_t)(y));
 }
 
-/*! \brief Brief description.
-*   add begin in xor link list
-* */
+/*! @brief  
+ *   Add begin in xor link list
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
+ * */
 void add_begin_xor_dll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
@@ -884,9 +958,12 @@ void add_begin_xor_dll(t_gen d, t_gen data)
 }
 
 
-/*! \brief Brief description.
-*   add end in xor link list
-* */
+/*! @brief  
+ *   add end in xor link list
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer to the data to be added
+ *  @return 	- NA
+ * */
 void add_end_xor_dll(t_gen d, t_gen data)
 {
 	t_linklist *l = (t_linklist*)d;
@@ -913,8 +990,11 @@ void add_end_xor_dll(t_gen d, t_gen data)
 	l->count++;
 }
 
-/*! \brief Brief description.
-*   delete node with matching data in xor link list
+/*! @brief  
+*   Delete node with matching data in xor link list
+ *  @param d    - Pointer to instance of link list
+ *  @param data - Pointer of data for the node to be deleted
+ *  @return 	- Pointer to the data of the deleted node
 * */
 t_gen del_node_xor_dll(t_gen d, t_gen data)
 {
@@ -981,8 +1061,10 @@ t_gen del_node_xor_dll(t_gen d, t_gen data)
 
 }
 
-/*! \brief Brief description.
- *   get the head node of link list
+/*! @brief  
+ *   Get the head node of link list
+ *  @param d    - Pointer to instance of link list 
+ *  @return 	- Head Node pointer
  * */
 t_gen linklist_get_head(t_gen d)
 {
@@ -991,8 +1073,10 @@ t_gen linklist_get_head(t_gen d)
 	return l->head;
 }
 
-/*! \brief Brief description.
- *   get the tail node of link list
+/*! @brief  
+ *   Get the tail node of link list
+ *  @param d    - Pointer to instance of link list 
+ *  @return 	- Tail Node pointer
  * */
 t_gen linklist_get_tail(t_gen d)
 {
@@ -1001,8 +1085,10 @@ t_gen linklist_get_tail(t_gen d)
 	return l->tail;
 }
 
-/*! \brief Brief description.
- *   get the end of link list
+/*! @brief  
+ *   Get the end of link list
+ *  @param d    - Pointer to instance of link list 
+ *  @return 	- End Node pointer
  * */
 t_gen linklist_get_end(t_gen d)
 {
@@ -1027,8 +1113,11 @@ t_gen linklist_get_end(t_gen d)
 	return end;
 }
 
-/*! \brief Brief description.
- *   get the next node of given node in link list
+/*! @brief  
+ *   Get the next node of given node in link list
+ *  @param d    - Pointer to instance of link list 
+ *  @param n    - Pointer to node whose next node is returned
+ *  @return 	- Next Node pointer
  * */
 t_gen linklist_get_next(t_gen d, t_gen n)
 {
@@ -1050,8 +1139,11 @@ t_gen linklist_get_next(t_gen d, t_gen n)
 	return next;
 }
 
-/*! \brief Brief description.
- *   get the prev node of given node in link list
+/*! @brief  
+ *   Get the prev node of given node in link list
+ *  @param d    - Pointer to instance of link list 
+ *  @param n    - Pointer to node whose prev node is returned
+ *  @return 	- Prev Node pointer
  * */
 t_gen linklist_get_prev(t_gen d, t_gen n)
 {
@@ -1084,8 +1176,10 @@ t_gen linklist_get_prev(t_gen d, t_gen n)
 	return prev;
 }
 
-/*! \brief Brief description.
- *   print the elems of link list
+/*! @brief  
+ *   Print the elems of link list
+ *  @param d    - Pointer to instance of link list 
+ *  @return 	- NA
  * */
 void linklist_print (t_gen d)
 {
@@ -1114,8 +1208,10 @@ void linklist_print (t_gen d)
 
 }
 
-/*! \brief Brief description.
- *   print the elems of xor list
+/*! @brief  
+ *   Print the elems of xor list
+ *  @param d    - Pointer to instance of link list 
+ *  @return 	- NA
  * */
 void linklist_print_xor (t_gen d)
 {
@@ -1139,8 +1235,10 @@ void linklist_print_xor (t_gen d)
 
 
 
-/*! \brief Brief description.
- *   print the elem in linklist with linkinfo
+/*! @brief  
+ *   Print the elem in linklist with linkinfo
+ *  @param d    - Pointer to instance of link list 
+ *  @return 	- NA
  * */
 void linklist_print_info (t_gen d)
 {
@@ -1172,12 +1270,13 @@ void linklist_print_info (t_gen d)
 }
 
 
-/*! \brief Brief description.
- *   print the elem in xor linklist with linkinfo
+/*! @brief  
+ *   Print the elem in xor linklist with linkinfo
+ *  @param d    - Pointer to instance of link list 
+ *  @return 	- NA
  * */
 void linklist_print_info_xor (t_gen d)
 {
-	// TODO : to be merged with the list above
 	t_linklist *l = (t_linklist*)d;
 	t_llnode *ptr = l->head, *end, *prev = NULL, *cur= NULL;
 	int i;
@@ -1198,8 +1297,10 @@ void linklist_print_info_xor (t_gen d)
 }
 
 
-/*! \brief Brief description.
+/*! @brief  
  *   Destroy instance of the LL
+ *  @param d    - Pointer to instance of link list 
+ *  @return 	- NA
  * */
 void destroy_link_list (t_gen d)
 {	
@@ -1236,9 +1337,10 @@ void destroy_link_list (t_gen d)
 }
 
 
-// TODO: Harsha to look at it
-/*! \brief Brief description.
+/*! @brief  
  *   Destroy instance of the xor LL
+ *  @param d    - Pointer to instance of link list 
+ *  @return 	- NA
  * */
 void destroy_link_list_xor (t_gen d)
 {	

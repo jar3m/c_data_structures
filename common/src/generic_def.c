@@ -1,3 +1,8 @@
+/*! @file generic_def.c
+    @brief 
+    Contains routines for handling different types of data for generic operation
+*/
+
 #include "common.h"
 #include "generic_def.h"
 

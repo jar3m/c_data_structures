@@ -1,5 +1,16 @@
+/*! @file common.c
+    @brief 
+    Contains routines that are commonly used by all data structures
+*/
 #include "common.h"
 
+/*! @brief  
+ *   Called to initalize data params for default data types
+ *   Else for custom data types the data params structure is to be defined by user 
+ *  @param prms       - Pointer to param struct that will be filled for default data types
+ *  @param data_type  - Type of default data .i.e, int, float, char, double...
+ *  @return 	- NA
+ * */
 void init_data_params(t_dparams *prms, e_data_types data_type)
 {
 	switch(data_type)

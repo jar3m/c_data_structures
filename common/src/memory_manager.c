@@ -1,7 +1,15 @@
+/*! @file memory_manager.c
+    @brief 
+    Contains definitions of routines for managing memory allocs
+*/
 #include "common.h"
 
 static t_mem_manager memer; 
 
+/*! @brief  
+ *   Initailize memory module
+ *  @return 	- NA
+ * */
 void mem_init() 
 { 
 	memer.mem_record = NULL;
@@ -9,6 +17,10 @@ void mem_init()
 	memer.free_count = 0;
 }
 
+/*! @brief  
+ *   Close memory module by checking and destroying if any tagged memory
+ *  @return 	- NA
+ * */
 void mem_finit(void) 
 {
 	t_mem_record *iter = NULL;
@@ -25,6 +37,10 @@ void mem_finit(void)
 
 }
 
+/*! @brief  
+ *   allocate memory and store in mem list (tagging)
+ *  @return - memory address
+ * */
 t_gen tag_alloc(size_t nmemb, size_t size, char *file, int line)
 {
 	//TODO:add resource lock
@@ -55,7 +71,10 @@ t_gen tag_alloc(size_t nmemb, size_t size, char *file, int line)
 
 
 
-
+/*! @brief  
+ *   deallocate memory and remove from mem list (untagging)
+ *  @return - memory address
+ * */
 void untag_alloc(void *mem_addr, char *file, int line)
 {
 	t_mem_record * mem_list = NULL, *prev_addr = NULL;
@@ -84,6 +103,10 @@ void untag_alloc(void *mem_addr, char *file, int line)
 }
 
 
+/*! @brief  
+ *  print report of all the assigned memory
+ *  @return - NA
+ * */
 void mem_alloc_report(void)
 {
 	printf("allocations = %4d , freed allocations = %4d\n", 
