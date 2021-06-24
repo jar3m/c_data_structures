@@ -61,6 +61,15 @@ int main(int argc, char *argv[])
 	linklist_print(l4);
 	linklist_print(l5);
 
+	t_gen tmp;
+	tmp =	((t_linklist*)l4)->find(l4, "SEe");
+  	if (tmp != NULL) {
+		printf("Data present \n");
+	}
+	else {
+		printf("Data not present \n");
+	}
+	
 	LOG_INFO("TEST", "deleting nodes in link list\n");
 	for (i = 0; i < 3; i++) {
 		c= 'c' + i;
