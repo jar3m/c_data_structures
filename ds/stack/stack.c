@@ -271,14 +271,14 @@ t_gen push_stack_ll(t_gen d, t_gen data)
 {	
 	t_stack *s = (t_stack*)d;
 	t_linklist * l = (t_linklist *)s->data;
-	
+
 	// Return id stack full
 	if (s->count >= s->max_size) {
 		LOG_WARN("STACKS", "%s: Stack Full\n",s->name);
 		return NULL;
 	}
 
-  // add in begining of the link list
+	// add in begining of the link list
 	l->add(l, data);
 	s->count++;
 
@@ -301,8 +301,8 @@ t_gen pop_stack_ll(t_gen d)
 		return data;
 	}
 
-  // deleting the head node of link list i.e top of stack
-  data = l->del_idx(l, 0);
+	// deleting the head node of link list i.e top of stack
+	data = l->del_idx(l, 0);
 	s->count--;
 
 	return data;
@@ -321,7 +321,7 @@ void print_stack(t_gen d)
 
 	printf("%s {max: %d} {size: %d} {top: %d} {type: %s} \n[",s->name,
 			s->max_size, s->count, s->top, get_name(s->type));
-	
+
 	if (s->type != eLL_STACK) {
 		i = (s->type != eARRAY_STACK_DOWN)? 0:(s->max_size-1);
 		do {
@@ -333,7 +333,7 @@ void print_stack(t_gen d)
 		printf("]\n");
 	}
 	else {
-	  l = (t_linklist *)s->data;
+		l = (t_linklist *)s->data;
 		l->print(l);
 	}
 }
@@ -346,19 +346,19 @@ void print_stack(t_gen d)
 */
 t_gen peek_stack(t_gen d,int idx)
 {
-  t_stack *s = (t_stack *)d;
-	
+	t_stack *s = (t_stack *)d;
+
 
 	if (idx >= s->count) {
-	  if (s->count == 0) {
-		  LOG_WARN("STACKS", "The given stack is empty, attempting to peek on an empty stack :(");
+		if (s->count == 0) {
+			LOG_WARN("STACKS", "The given stack is empty, attempting to peek on an empty stack :(");
 		}
 		else {  
-		  LOG_WARN("STACKS", "The given index is out of bounds, the actual size = %d\n", s->count);
+			LOG_WARN("STACKS", "The given index is out of bounds, the actual size = %d\n", s->count);
 		}
 		return NULL;
-  }
-  return NULL;
+	}
+	return NULL;
 }
 
 /*  @brief
