@@ -1176,6 +1176,29 @@ t_gen linklist_get_prev(t_gen d, t_gen n)
 	return prev;
 }
 
+/*  @brief
+ *  Util function to get type of stack in string
+ *  @param type  - Link list Type
+ *  @return String of link list type
+*/
+char * get_lltype_name(e_lltype type)
+{
+	switch(type) {
+		case eSINGLE_LINKLIST:
+			return "SINGLE_LINKLIST";
+		case eDOUBLE_LINKLIST:
+			return "DOUBLE_LINKLIST";
+		case eSINGLE_CIRCULAR_LINKLIST:
+			return "SINGLE_CIRCULAR_LINKLIST";
+		case eDOUBLE_CIRCULAR_LINKLIST:
+			return "DOUBLE_CIRCULAR_LINKLIST";
+		case eXOR_LINKLIST:
+			return "XOR_LINKLIST";
+	}
+
+	return "UNDEFINED";
+}
+
 /*! @brief  
  *   Print the elems of link list
  *  @param d    - Pointer to instance of link list 
@@ -1246,8 +1269,8 @@ void linklist_print_info (t_gen d)
 	t_llnode *ptr, *end;
 	int i;
 
-	printf("%s {Head: %lx} {Tail: %lx} {count: %u} \n[",l->name,
-			(long)l->head,(long)l->tail, l->count);
+	printf("%s {Head: %lx} {Tail: %lx} {count: %u} {Type: %s}\n[",l->name,
+			(long)l->head,(long)l->tail, l->count, get_lltype_name(l->type));
 
 	// get head of link list
 	ptr = l->head_node(l);
