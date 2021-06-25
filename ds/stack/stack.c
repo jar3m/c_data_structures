@@ -1,3 +1,8 @@
+/*! @file stack.c
+    @brief 
+    Contains definitions of routines supported by stack 
+*/
+
 #include "stack.h"
 
 bool is_stack_full(t_gen d);
@@ -14,36 +19,42 @@ t_gen pop_stack_ll(t_gen d);
 
 char * get_name(e_stacktype type); 
 
+/// Look Up function ptrs for pushing to stack
 f_push stack_push[] = {push_stack_ll, push_stack_arr_up, push_stack_arr_down};
+
+/// Look Up function ptrs for poping to stack
 f_pop stack_pop[] = {pop_stack_ll, pop_stack_arr_up, pop_stack_arr_down};
 
-/*! \brief Brief description.
+/*! @brief  
  *  Create an instance of stack
+ *  @param name     - Name of stack instance
+ *  @param max_size - Max size of stack instance
+ *  @param type     - Type of stack to be created
+ *  @param prm      - Data type specific parameters
+ *  @return         - Pointer to instance of stack
 */
 t_gen create_stack (char *name, int max_size, e_stacktype stype, e_data_types dtype)
 {
         t_stack *s = get_mem(1, sizeof(t_stack));
 	
 	// Init stack variables
-        s->name = name;
-        s->max_size = max_size;
-        s->type = stype;
-        s->count = 0;
+        s->name 	= name;
+        s->max_size 	= max_size;
+        s->type 	= stype;
+        s->count 	= 0;
 	
-	// Bind stack routines
-	s->full = is_stack_full;
-	s->empty = is_stack_empty;
-	s->len = stack_size;
-	s->free = FREE_MEM;
-
         // Initialize top of stack to max size if down growing
-        s->top = (stype == eARRAY_STACK_DOWN) ? max_size : -1;
+        s->top 	       	= (stype == eARRAY_STACK_DOWN) ? max_size : -1;
 
 	// Bind stack routines and create stack space based on stack type
-	s->push = stack_push[stype];	
-	s->pop = stack_pop[stype];	
-	s->peek = stack_peek;	
+	s->push 	= stack_push[stype];	
+	s->pop 		= stack_pop[stype];	
+	s->peek 	= stack_peek;	
+	s->full 	= is_stack_full;
+	s->empty	= is_stack_empty;
+	s->len	 	= stack_size;
 
+	// Create link list or array depending on type of stack
         switch (stype) 
 	{
 		case eLL_STACK:
@@ -54,7 +65,12 @@ t_gen create_stack (char *name, int max_size, e_stacktype stype, e_data_types dt
 			s->data = get_mem(max_size, sizeof(t_gen));
 		break;
         }
+#if 0
+	s->print_data	= prm->print_data;
+	s->free 	= prm->free;
+#else
 
+	s->free 	= FREE_MEM;
 	switch(dtype)
 	{
 		case eINT8:
@@ -74,13 +90,15 @@ t_gen create_stack (char *name, int max_size, e_stacktype stype, e_data_types dt
 			s->print_data = print_str;
 			break;
 	}
-
+#endif			
         return (t_gen) s;
 }
 
-/*! \brief Brief description.
- *  Destroy stack instance 
-*/
+/*! @brief  
+ *   Destroy instance of the stack
+ *  @param d    - Pointer to instance of stack 
+ *  @return 	- NA
+ * */
 void destroy_stack (t_gen d)
 {
         t_stack *s = (t_stack*)d;
@@ -106,32 +124,41 @@ void destroy_stack (t_gen d)
 }
 
 
-/*! \brief Brief description.
+/*! @brief  
  *  Check stack full 
+ *  @param d    - Pointer to instance of stack 
+ *  @return 	- true if full
 */
 bool is_stack_full(t_gen d)
 {
 	return ((t_stack*)d)->count >= ((t_stack*)d)->max_size;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Check stack empty 
+ *  @param d    - Pointer to instance of stack 
+ *  @return 	- true if empty 
 */
 bool is_stack_empty(t_gen d)
 {
 	return ((t_stack*)d)->count == 0;
 }
 
-/*! \brief Brief description.
- *  Return stack size
+/*! @brief  
+ *  get stack size
+ *  @param d    - Pointer to instance of stack 
+ *  @return 	- size of stack
 */
 int stack_size(t_gen d)
 {
 	return ((t_stack*)d)->count;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Push an element into up growing stack
+ *  @param d    - Pointer to instance of stack 
+ *  @param data - Pointer to the data to be pushed
+ *  @return 	- Null is stack full else data pointer
 */
 t_gen push_stack_arr_up(t_gen d, t_gen data)
 {
@@ -149,7 +176,7 @@ t_gen push_stack_arr_up(t_gen d, t_gen data)
 	return data;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  return the top element from up growing stack
 */
 t_gen stack_peek(t_gen d)
@@ -168,8 +195,10 @@ t_gen stack_peek(t_gen d)
 	return data;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Pop an element from up growing stack
+ *  @param d    - Pointer to instance of stack 
+ *  @return 	- Null if stack empty else data pointer
 */
 t_gen pop_stack_arr_up(t_gen d)
 {
@@ -188,8 +217,11 @@ t_gen pop_stack_arr_up(t_gen d)
 	return data;
 } 
 
-/*! \brief Brief description.
+/*! @brief  
  *  Push an element into down growing stack
+ *  @param d    - Pointer to instance of stack 
+ *  @param data - Pointer to the data to be pushed
+ *  @return 	- Null if stack Full else data pointer
 */
 t_gen push_stack_arr_down(t_gen d, t_gen data)
 {
@@ -207,8 +239,10 @@ t_gen push_stack_arr_down(t_gen d, t_gen data)
 	return data;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Pop an element from down growing ll stack
+ *  @param d    - Pointer to instance of stack 
+ *  @return 	- Null if stack empty else data pointer
 */
 t_gen pop_stack_arr_down(t_gen d)
 {
@@ -227,8 +261,11 @@ t_gen pop_stack_arr_down(t_gen d)
 	return data;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Push an element into a link list based stack
+ *  @param d    - Pointer to instance of stack 
+ *  @param data - Pointer to the data to be pushed
+ *  @return 	- Null if stack Full else data pointer
 */
 t_gen push_stack_ll(t_gen d, t_gen data)
 {	
@@ -248,8 +285,10 @@ t_gen push_stack_ll(t_gen d, t_gen data)
 	return data;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Pop an element from a link list based stack
+ *  @param d    - Pointer to instance of stack 
+ *  @return 	- Null if stack empty else data pointer
 */
 t_gen pop_stack_ll(t_gen d)
 {	
@@ -269,8 +308,10 @@ t_gen pop_stack_ll(t_gen d)
 	return data;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  print_stack_info
+ *  @param d    - Pointer to instance of stack 
+ *  @return 	- NA
 */
 void print_stack(t_gen d)
 {
@@ -297,8 +338,11 @@ void print_stack(t_gen d)
 	}
 }
 
-/*
-//a sneak peek into an element of the stack
+/*  @brief
+ *  sneak peek into an element of the stack
+ *  @param d    - Pointer to instance of stack 
+ *  @param idx  - Index of the element to peek
+ *  @return 	- Data pointer if index in bounds else NULL
 */
 t_gen peek_stack(t_gen d,int idx)
 {
@@ -317,9 +361,10 @@ t_gen peek_stack(t_gen d,int idx)
   return NULL;
 }
 
-/*
-//function to return the name of the stack
-//given the type
+/*  @brief
+ *  Util function to get type of stack in string
+ *  @param type  - Stack Type
+ *  @return String of stack type
 */
 char * get_name(e_stacktype type)
 {
