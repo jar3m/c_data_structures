@@ -155,10 +155,10 @@ int main(int argc, char *argv[])
 		fl= (float)i+0.222 / 2.0f;
 		((t_stack*)s4)->push(s4, assign_float(fl));
 	}
-	print_stack(s1);
-	print_stack(s2);
-	print_stack(s3);
-	print_stack(s4);
+	stack_print(s1);
+	stack_print(s2);
+	stack_print(s3);
+	stack_print(s4);
 	for(i = 0; i < 4; i++) {
 		ip = ((t_stack*)s1)->pop(s1);
 		free_mem(ip);
@@ -169,10 +169,10 @@ int main(int argc, char *argv[])
 		fp = ((t_stack*)s4)->pop(s4);
 		free_mem(fp);
 	}
-	print_stack(s1);
-	print_stack(s2);
-	print_stack(s3);
-	print_stack(s4);
+	stack_print(s1);
+	stack_print(s2);
+	stack_print(s3);
+	stack_print(s4);
 	for(i = 4; i > 0; i--) {
 		((t_stack*)s1)->push(s1, assign_int(i));
 		c= 'c' + i;
@@ -182,10 +182,10 @@ int main(int argc, char *argv[])
 		fl= (float)i+0.222 / 2.0f;
 		((t_stack*)s4)->push(s4, assign_float(fl));
 	}
-	print_stack(s1);
-	print_stack(s2);
-	print_stack(s3);
-	print_stack(s4);
+	stack_print(s1);
+	stack_print(s2);
+	stack_print(s3);
+	stack_print(s4);
 	destroy_stack(s1);
 	destroy_stack(s2);
 	destroy_stack(s3);

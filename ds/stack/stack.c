@@ -16,8 +16,8 @@ t_gen push_stack_arr_down(t_gen d, t_gen data);
 t_gen pop_stack_arr_down(t_gen d);
 t_gen push_stack_ll(t_gen d, t_gen data);
 t_gen pop_stack_ll(t_gen d);
+void stack_print(t_gen d);
 
-char * get_name(e_stacktype type); 
 
 /// Look Up function ptrs for pushing to stack
 f_push stack_push[] = {push_stack_ll, push_stack_arr_up, push_stack_arr_down};
@@ -53,7 +53,7 @@ t_gen create_stack (char *name, int max_size, e_stacktype stype, e_data_types dt
 	s->full 	= is_stack_full;
 	s->empty	= is_stack_empty;
 	s->len	 	= stack_size;
-
+	s->print 	= stack_print;
 	// Create link list or array depending on type of stack
         switch (stype) 
 	{
@@ -308,19 +308,38 @@ t_gen pop_stack_ll(t_gen d)
 	return data;
 }
 
+/*  @brief
+ *  Util function to get type of stack in string
+ *  @param type  - Stack Type
+ *  @return String of stack type
+*/
+static char * get_stack_name(e_stacktype type)
+{
+	switch(type) {
+		case eARRAY_STACK:
+			return "ARRAY_STACK_UP";
+		case eARRAY_STACK_DOWN:
+			return "ARRAY_STACK_DOWN";
+		case eLL_STACK:
+			return "LL_STACK";
+	}
+
+	return "UNDEFINED";
+}
+
 /*! @brief  
  *  print_stack_info
  *  @param d    - Pointer to instance of stack 
  *  @return 	- NA
 */
-void print_stack(t_gen d)
+void stack_print(t_gen d)
 {
 	t_stack *s = (t_stack*)d;
 	t_linklist *l = NULL;
 	int i;
 
 	printf("%s {max: %d} {size: %d} {top: %d} {type: %s} \n[",s->name,
-			s->max_size, s->count, s->top, get_name(s->type));
+			s->max_size, s->count, s->top, get_stack_name(s->type));
 
 	if (s->type != eLL_STACK) {
 		i = (s->type != eARRAY_STACK_DOWN)? 0:(s->max_size-1);
@@ -361,22 +380,4 @@ t_gen peek_stack(t_gen d,int idx)
 	return NULL;
 }
 
-/*  @brief
- *  Util function to get type of stack in string
- *  @param type  - Stack Type
- *  @return String of stack type
-*/
-char * get_name(e_stacktype type)
-{
-	switch(type) {
-		case eARRAY_STACK:
-			return "ARRAY_STACK_UP";
-		case eARRAY_STACK_DOWN:
-			return "ARRAY_STACK_DOWN";
-		case eLL_STACK:
-			return "LL_STACK";
-	}
-
-	return "UNDEFINED";
-}
 

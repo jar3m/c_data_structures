@@ -36,6 +36,8 @@ typedef struct stack {
 	f_full full;				///< routine to check if stack is full
 	f_empty empty;				///< routine to check if stack is empty
 	f_len len;				///< routine to get len of stack
+	f_print print;				///< routine to print stack contents
+
 	/// routies for operating on data
 	f_free free;
 	f_print print_data;
@@ -44,6 +46,4 @@ typedef struct stack {
 // API
 t_gen create_stack (char *name, int max_size, e_stacktype stype,e_data_types dtype);
 void destroy_stack (t_gen s);
-void print_stack(t_gen s);
-t_gen peek_stack(t_gen s,int idx);
-void print_stack(t_gen s);
+void stack_print(t_gen s);
