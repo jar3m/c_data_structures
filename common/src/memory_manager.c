@@ -28,7 +28,7 @@ void mem_finit(void)
 	if (memer.mem_record != NULL) {
 		for (iter = memer.mem_record ; iter != NULL; iter = iter->next) {
 			printf("cleaning up allocated memory space @{%s:%d} [%lu Byte(s)] - %p\n", 
-					iter->file, iter->line, iter->block_size, iter);
+					iter->file, iter->line, iter->block_size, iter->mem);
 			os_free(iter);
 		}
 	}

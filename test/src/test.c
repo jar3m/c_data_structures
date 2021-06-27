@@ -91,15 +91,15 @@ int main(int argc, char *argv[])
 		sp = ((t_linklist*)l3)->del(l4, &str[i]);
 		free_mem(sp);
 
-//		fp = ((t_linklist*)l5)->del(l5, &f);
-//		free(fp);
+		fp = ((t_linklist*)l5)->del(l5, &f);
+		free_mem(fp);
 	}
-
 	linklist_print(l1);
 	linklist_print(l2);
 	linklist_print(l3);
 	linklist_print(l4);
 	linklist_print(l5);
+
 	for (i = 0; i < 3; i++) {
 		c= 'c' + i;
 		((t_linklist*)l2)->append(l2, assign_char(c));
