@@ -1,3 +1,7 @@
+/*! @file tree.c
+    @brief 
+    Contains definitions of routines supported by tree 
+*/
 #include "tree.h"
 #include "stack.h"
 #include "queue.h"
@@ -21,12 +25,21 @@ void tree_insert_node_avl(t_gen,t_gen);
 t_gen tree_delete_node_avl(t_gen,t_gen);
 int tree_height_avl(t_gen n);
 
+/// Look Up function ptrs for inserting elem to tree
 f_ins tree_insert[] = {tree_insert_node_bst,tree_insert_node_avl};
+
+/// Look Up function ptrs for deleting elem to tree
 f_del tree_del[] = {tree_delete_node_bst,tree_delete_node_avl};
+
+/// Look Up function ptrs for getting height of tree
 f_len tree_height[] = {tree_height_bst, tree_height_avl};
 
-/*! \brief Brief description.
+/*! @brief  
  *  Create an instance of tree
+ *  @param name	 - Name of tree instance
+ *  @param ttype - Type of tree to be created
+ *  @param prm   - Data type specific parameters
+ *  @return 	 - Pointer to instance of tree
  * */
 t_gen create_tree(char *name, e_treetype ttype, e_data_types dtype)
 {
@@ -89,8 +102,10 @@ t_gen create_tree(char *name, e_treetype ttype, e_data_types dtype)
 }
 
 
-/*! \brief Brief description.
+/*! @brief  
  *   get_num_nodes in tree;
+ *  @param d	- Pointer instance of tree
+ *  @return 	- count of nodes
  */
 int tree_node_count(t_gen d)
 {
@@ -98,8 +113,11 @@ int tree_node_count(t_gen d)
 	return ((t_tree*)d)->count;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   Add element to a bst tree
+ *  @param d	- Pointer instance of tree
+ *  @param data - Pointer data
+ *  @return 	- NA
  */
 void tree_insert_node_bst(t_gen d,t_gen data)
 {
@@ -152,8 +170,11 @@ void tree_insert_node_bst(t_gen d,t_gen data)
 	}
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   find an element in tree
+ *  @param d	- Pointer instance of tree
+ *  @param data - Pointer data
+ *  @return 	- NULL if data absent else node pointer
  */
 t_gen tree_find_node(t_gen d, t_gen data)
 {
@@ -181,8 +202,10 @@ t_gen tree_find_node(t_gen d, t_gen data)
 	return cur;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  get min node in tree 
+ *  @param root - Pointer to root
+ *  @return 	- min node
  */
 t_gen tree_get_min(t_gen root)
 {
@@ -201,8 +224,10 @@ t_gen tree_get_min(t_gen root)
 	return cur;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  get max node in tree 
+ *  @param root - Pointer to root
+ *  @return 	- max node
  */
 t_gen tree_get_max(t_gen root)
 {
@@ -221,8 +246,10 @@ t_gen tree_get_max(t_gen root)
 	return cur;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  get min node in tree recursively 
+ *  @param root - Pointer to root
+ *  @return 	- min node
  */
 t_gen tree_get_min_rcrs(t_gen root)
 {
@@ -241,8 +268,10 @@ t_gen tree_get_min_rcrs(t_gen root)
 	}
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  get max node in tree recursively 
+ *  @param root - Pointer to root
+ *  @return 	- max node
  */
 t_gen tree_get_max_rcrs(t_gen root)
 {
@@ -261,8 +290,11 @@ t_gen tree_get_max_rcrs(t_gen root)
 	}
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  find the predecessor of a given node in tree 
+ *  @param d    - Pointer to instance of tree
+ *  @param data - Pointer to data
+ *  @return 	- predcessor node pointer
  */
 t_gen tree_node_predecessor(t_gen d,t_gen data)
 {
@@ -308,8 +340,11 @@ t_gen tree_node_predecessor(t_gen d,t_gen data)
 	return pred;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  find the successor of a given node in tree 
+ *  @param d    - Pointer to instance of tree
+ *  @param data - Pointer to data
+ *  @return 	- successor node pointer
  */
 t_gen tree_node_successor(t_gen d,t_gen data)
 {
@@ -355,8 +390,11 @@ t_gen tree_node_successor(t_gen d,t_gen data)
 	return succ;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Delete a node in a bst tree 
+ *  @param d    - Pointer to instance of tree
+ *  @param data - Pointer to data of node to delete
+ *  @return 	- NULL of data not present else data pointer
 */
 t_gen tree_delete_node_bst(t_gen d,t_gen data)
 {
@@ -443,8 +481,10 @@ t_gen tree_delete_node_bst(t_gen d,t_gen data)
 	return ret;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   get height of bst
+ *  @param d    - Pointer to node
+ *  @return 	- height of tree from given node
  */
 int tree_height_bst (t_gen n)
 {
@@ -489,8 +529,10 @@ int tree_height_bst (t_gen n)
 
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Destroy the instance of the tree 
+ *  @param d    - Pointer to instance of tree
+ *  @return 	- NA
  */
 void destroy_tree(t_gen d)
 {
@@ -531,8 +573,10 @@ void destroy_tree(t_gen d)
 	free_mem(t);
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  postorder traverse tree
+ *  @param d    - Pointer to instance of tree
+ *  @return 	- NA
  */
 void  tree_postorder(t_gen d)
 {
@@ -586,8 +630,10 @@ void  tree_postorder(t_gen d)
 
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  preorder traverse tree
+ *  @param d    - Pointer to instance of tree
+ *  @return 	- NA
  */
 void  tree_preorder(t_gen d)
 {
@@ -624,8 +670,10 @@ void  tree_preorder(t_gen d)
 	destroy_stack(s);
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  inorder traverse tree
+ *  @param d    - Pointer to instance of tree
+ *  @return 	- NA
  */
 void  tree_inorder(t_gen d)
 {
@@ -661,8 +709,10 @@ void  tree_inorder(t_gen d)
 	destroy_stack(s);
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  print tree info level by level
+ *  @param d    - Pointer to instance of tree
+ *  @return 	- NA
  */
 void print_tree(t_gen d)
 {
@@ -717,8 +767,10 @@ void print_tree(t_gen d)
 
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   get height of avl subtree 
+ *  @param n    - Pointer to node
+ *  @return 	- height of given subtree
  */
 int tree_height_avl (t_gen n)
 {
@@ -735,8 +787,10 @@ int tree_height_avl (t_gen n)
 
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   get slope of node subtree
+ *  @param n    - Pointer to node
+ *  @return 	- slope of given subtree
  */
 int tree_slope(t_gen n)
 {
@@ -749,8 +803,10 @@ int tree_slope(t_gen n)
 	return (lh - rh); 
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   rotate subtree right
+ *  @param n    - Pointer to node
+ *  @return 	- NA
  */
 void tree_rotate_right(t_gen n)
 {
@@ -775,8 +831,10 @@ void tree_rotate_right(t_gen n)
 }
 
 
-/*! \brief Brief description.
+/*! @brief  
  *   rotate subtree left
+ *  @param n    - Pointer to node
+ *  @return 	- NA
  */
 void tree_rotate_left(t_gen n)
 {
@@ -800,8 +858,10 @@ void tree_rotate_left(t_gen n)
 	root->rchild = TLRR;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   rebalance subtree
+ *  @param n    - Pointer to node
+ *  @return 	- NA
  */
 void tree_rebalance(t_gen n)
 {
@@ -823,8 +883,11 @@ void tree_rebalance(t_gen n)
 		
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *   Add element to an avl tree
+ *  @param d    - Pointer to instance of tree
+ *  @param data - Pointer to the data to be inserted
+ *  @return 	- NA
  */
 void tree_insert_node_avl(t_gen d,t_gen data)
 {
@@ -896,8 +959,11 @@ void tree_insert_node_avl(t_gen d,t_gen data)
 }
 
 
-/*! \brief Brief description.
+/*! @brief  
  *  Delete a node in an avl tree 
+ *  @param d    - Pointer to instance of tree
+ *  @param data - Pointer to the data to be deleted
+ *  @return 	- Null if data not present else data pointer
 */
 t_gen tree_delete_node_avl(t_gen d,t_gen data)
 {
