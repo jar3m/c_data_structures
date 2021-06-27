@@ -14,6 +14,7 @@
 /*! data params struct to be passed to all data structures
  *  it holds functions pointers for operating on data depending on type of it
  */
+/// data params struct defn
 typedef struct data_params {
 	// type of datatypes
 	e_data_types type;		///< Holds elem data type
