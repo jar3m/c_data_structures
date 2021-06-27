@@ -27,7 +27,7 @@ t_gen del_node_sll_idx(t_gen d, int idx);
 t_gen del_node_dll_idx(t_gen d, int idx);
 t_gen del_node_scll_idx(t_gen d, int idx); 
 t_gen del_node_dcll_idx(t_gen d, int idx);
-t_gen del_node_xor_dll_idx(t_gen d, int idx);
+t_gen del_node_xor_idx(t_gen d, int idx);
 
 int linklist_length(t_gen d);
 t_gen linklist_find(t_gen d, t_gen data);
@@ -56,7 +56,7 @@ f_ins append[] = {add_end_sll,add_end_dll,add_end_scll,add_end_dcll, add_end_xor
 f_del del[] = {del_node_sll, del_node_dll, del_node_scll, del_node_dcll, del_node_xor_dll};
 
 /// Look Up function ptrs for delete ith node based on type of list
-f_del_idx del_idx[] = {del_node_sll_idx, del_node_dll_idx, del_node_scll_idx, del_node_dcll_idx};
+f_del_idx del_idx[] = {del_node_sll_idx, del_node_dll_idx, del_node_scll_idx, del_node_dcll_idx, del_node_xor_idx};
 
 /*! @brief  
  *  Create an instance of link list
@@ -70,32 +70,32 @@ t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 	t_linklist *l = (t_linklist*)get_mem(1, sizeof(t_linklist));
 	
 	// Initailze LL Params
-	l->name = name;
-	l->type = type;
+	l->name  = name;
+	l->type  = type;
 	l->count = 0;
-	l->tail = l->head = NULL;
+	l->tail  = l->head = NULL;
 
 	// Select Functions based on type of list
-	l->append    = append[type];
-	l->add       = add[type];
-	l->del       = del[type];
-	l->del_idx   = del_idx[type];
-	l->get_idx   = linklist_getnode;
-	l->len 	     = linklist_length;
-	l->find      = linklist_find;
-	l->head_node = linklist_get_head;
-	l->tail_node = linklist_get_tail;
-	l->end_node  = linklist_get_end;
-	l->next_node = linklist_get_next;
-	l->prev_node = linklist_get_prev;
-	l->destroy   = destroy_link_list;
+	l->append     = append[type];
+	l->add        = add[type];
+	l->del        = del[type];
+	l->del_idx    = del_idx[type];
+	l->get_idx    = linklist_getnode;
+	l->len 	      = linklist_length;
+	l->find       = linklist_find;
+	l->head_node  = linklist_get_head;
+	l->tail_node  = linklist_get_tail;
+	l->end_node   = linklist_get_end;
+	l->next_node  = linklist_get_next;
+	l->prev_node  = linklist_get_prev;
+	l->destroy    = destroy_link_list;
 	l->print      = linklist_print;
 	l->print_info = linklist_print_info;
 
-	l->cmpr = prm->cmpr;
-	l->swap = prm->swap;
+	l->cmpr       = prm->cmpr;
+	l->swap       = prm->swap;
 	l->print_data = prm->print_data;
-	l->free = prm->free;
+	l->free       = prm->free;
 
 	return (t_gen)l;
 }
@@ -759,7 +759,7 @@ t_gen del_node_sll_idx(t_gen d, int idx)
 		return tmp;
 	}
 	// idx >count
-	if (idx >= l->count) {
+	if (idx >= l->count && idx < 0) {
 		LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
 		return tmp;
 	}
@@ -814,7 +814,7 @@ t_gen del_node_dll_idx(t_gen d, int idx)
 	}
 
 	// idx >list count
-	if (idx >= l->count) {
+	if (idx >= l->count && idx < 0) {
 		LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
 		return tmp;
 	}
@@ -874,7 +874,7 @@ t_gen del_node_scll_idx(t_gen d, int idx)
 		return tmp;
 	}
 	// idx >list count
-	if (idx >= l->count) {
+	if (idx >= l->count && idx < 0) {
 		LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
 		return tmp;
 	}
@@ -943,7 +943,7 @@ t_gen del_node_dcll_idx(t_gen d, int idx)
 	}
 	
 	// idx > list count
-	if (idx >= l->count) {
+	if (idx >= l->count && idx < 0) {
 	  LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
 		return tmp;
 	}
@@ -994,6 +994,80 @@ t_gen del_node_dcll_idx(t_gen d, int idx)
 	return tmp;
 
 }
+
+/*! @brief  
+ *   Delete node with matching index in XOR LL
+ *   and return the instance
+ *  @param d    - Pointer to instance of link list
+ *  @param idx  - index of the node to be deleted
+ *  @return 	- Pointer to the data of the deleted node
+ * */
+t_gen del_node_xor_idx(t_gen d, int idx)
+{
+	t_linklist *l = (t_linklist *)d;
+	t_llnode *cur = l->head, *prv = NULL, *next = NULL;
+	t_gen tmp = NULL;
+
+	// empty list
+	if (l->head == NULL) {
+		LOG_WARN("LINK_LIST", "%s: No nodes exist\n",l->name);
+		return tmp;
+	}
+	// idx >count
+	if (idx >= l->count && idx < 0) {
+		LOG_WARN("LINK_LIST", "%d: Index out of bounds, number of nodes that exist = %d\n",idx, l->count);
+		return tmp;
+	}
+
+
+	for(int i = 0; i < idx; i++) {
+		prv = cur;
+		cur = l->next_node(l, prv);
+	}
+  
+	// delete for head node
+	if (idx == 0) {
+	
+		// l->head = cur->nxt ^ prev;
+		l->head = xor(cur->nxt, prv);
+
+		// update reverse link
+		// Reset Tail to NULL if list empty
+		if (l->head != NULL) {
+			l->head->nxt = xor(prv, xor(l->head->nxt, cur));
+		}
+		else {
+			l->tail = NULL;
+		}
+
+	}
+  // delete for all the other nodes apart from head
+	else {
+		// next = cur->nxt ^ prev;
+		next = xor(cur->nxt, prv);
+
+		// prev->nxt = (prev->nxt ^ cur) ^ (next) ;
+		prv->nxt = xor(next, xor(prv->nxt, cur)) ;
+
+		// Update tail when the last node is deleted
+		if (next == NULL) {
+			l->tail = prv;
+		}
+		else {
+			// next->nxt = (next->nxt ^ cur) ^ prev;
+			next->nxt = xor(prv, xor(next->nxt, cur));
+		}
+	}
+  l->count--;
+  // Free node
+  tmp = cur->data;
+  cur->nxt =  NULL;
+  free_mem(cur);
+
+	return tmp;
+	
+}
+
 
 /*! @brief  
  *   Length of the link list
@@ -1119,6 +1193,9 @@ t_gen linklist_get_end(t_gen d)
 
 /*! @brief  
  *   Get the next node of given node in link list
+ *   limitation for xor next node be it iterrates from head
+ *   meaning first call should pass head node addr 
+ *   and next time next node and so on
  *  @param d    - Pointer to instance of link list 
  *  @param n    - Pointer to node whose next node is returned
  *  @return 	- Next Node pointer
@@ -1145,6 +1222,9 @@ t_gen linklist_get_next(t_gen d, t_gen n)
 
 /*! @brief  
  *   Get the prev node of given node in link list
+ *   limitation for xor prev node be it iterrates from tail
+ *   meaning first call should pass tail node addr 
+ *   and next time the node before tail and so on
  *  @param d    - Pointer to instance of link list 
  *  @param n    - Pointer to node whose prev node is returned
  *  @return 	- Prev Node pointer

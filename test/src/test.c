@@ -144,7 +144,6 @@ int main(int argc, char *argv[])
 		//printf("%d\n",*ip);
 		free_mem(ip);
 
-		f= (float)i+0.222 / 2.0f;
 		fp = ((t_linklist*)l3)->del_idx(l3, i);
 		//printf("%f\n", *fp);
 		free_mem(fp);
@@ -152,7 +151,15 @@ int main(int argc, char *argv[])
 		sp = ((t_linklist*)l4)->del_idx(l4, i);
 		//printf("%s\n",sp);
 		free_mem(sp);
+		
+		fp = ((t_linklist*)l5)->del_idx(l5, i);
+		//printf("%f\n", *fp);
+		free_mem(fp);
 	}
+	
+	fp = ((t_linklist*)l5)->del_idx(l5, 9);
+	//printf("%f\n", *fp);
+	free_mem(fp);
 	linklist_print(l1);
 	linklist_print(l2);
 	linklist_print(l3);
