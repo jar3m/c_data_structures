@@ -8,22 +8,22 @@
 bool is_stack_full(t_gen d);
 bool is_stack_empty(t_gen d);
 int stack_size(t_gen d);
-t_gen stack_peek(t_gen d);
 
-t_gen push_stack_arr_up(t_gen d, t_gen data);
-t_gen pop_stack_arr_up(t_gen s);
-t_gen push_stack_arr_down(t_gen d, t_gen data);
-t_gen pop_stack_arr_down(t_gen d);
-t_gen push_stack_ll(t_gen d, t_gen data);
-t_gen pop_stack_ll(t_gen d);
+t_gen stack_push_arr_up(t_gen d, t_gen data);
+t_gen stack_pop_arr_up(t_gen s);
+t_gen stack_push_arr_down(t_gen d, t_gen data);
+t_gen stack_pop_arr_down(t_gen d);
+t_gen stack_push_ll(t_gen d, t_gen data);
+t_gen stack_pop_ll(t_gen d);
+t_gen stack_peek(t_gen d,int idx);
 void stack_print(t_gen d);
 
 
 /// Look Up function ptrs for pushing to stack
-f_push stack_push[] = {push_stack_ll, push_stack_arr_up, push_stack_arr_down};
+f_gen2 stack_push[] = {stack_push_ll, stack_push_arr_up, stack_push_arr_down};
 
 /// Look Up function ptrs for poping to stack
-f_pop stack_pop[] = {pop_stack_ll, pop_stack_arr_up, pop_stack_arr_down};
+f_gen stack_pop[] = {stack_pop_ll, stack_pop_arr_up, stack_pop_arr_down};
 
 /*! @brief  
  *  Create an instance of stack
@@ -33,7 +33,7 @@ f_pop stack_pop[] = {pop_stack_ll, pop_stack_arr_up, pop_stack_arr_down};
  *  @param prm      - Data type specific parameters
  *  @return         - Pointer to instance of stack
 */
-t_gen create_stack (char *name, int max_size, e_stacktype stype, e_data_types dtype)
+t_gen create_stack (char *name, int max_size, e_stacktype stype, t_dparams *prm)
 {
         t_stack *s = get_mem(1, sizeof(t_stack));
 	
@@ -54,43 +54,23 @@ t_gen create_stack (char *name, int max_size, e_stacktype stype, e_data_types dt
 	s->empty	= is_stack_empty;
 	s->len	 	= stack_size;
 	s->print 	= stack_print;
+	s->destroy	= destroy_stack;
+
 	// Create link list or array depending on type of stack
         switch (stype) 
 	{
 		case eLL_STACK:
-			s->data = create_link_list("stack_data", eSINGLE_LINKLIST, dtype);
+			s->data = create_link_list("stack_data", eSINGLE_LINKLIST, prm);
 		break;
 		case eARRAY_STACK:
 		case eARRAY_STACK_DOWN:
 			s->data = get_mem(max_size, sizeof(t_gen));
 		break;
         }
-#if 0
+
 	s->print_data	= prm->print_data;
 	s->free 	= prm->free;
-#else
 
-	s->free 	= FREE_MEM;
-	switch(dtype)
-	{
-		case eINT8:
-			//char list;
-			s->print_data = print_char;
-			break;
-		case eINT32:
-			//int list;
-			s->print_data = print_int;
-			break;
-		case eFLOAT:
-			//float list;
-			s->print_data = print_float;
-			break;
-		case eSTRING:
-			//string list;
-			s->print_data = print_str;
-			break;
-	}
-#endif			
         return (t_gen) s;
 }
 
@@ -160,7 +140,7 @@ int stack_size(t_gen d)
  *  @param data - Pointer to the data to be pushed
  *  @return 	- Null is stack full else data pointer
 */
-t_gen push_stack_arr_up(t_gen d, t_gen data)
+t_gen stack_push_arr_up(t_gen d, t_gen data)
 {
 	t_stack *s = (t_stack*)d; 
 	
@@ -177,30 +157,11 @@ t_gen push_stack_arr_up(t_gen d, t_gen data)
 }
 
 /*! @brief  
- *  return the top element from up growing stack
-*/
-t_gen stack_peek(t_gen d)
-{
-	t_stack *s = (t_stack*)d; 
-	t_gen data = NULL;
-
-	if (s->count == 0) {
-		LOG_WARN("STACKS", "%s: Stack empty\n",s->name);
-		return data;
-	}
-	
-	// get and return the elem on top of the stack
-	data = s->data[(s->top)];
-
-	return data;
-}
-
-/*! @brief  
  *  Pop an element from up growing stack
  *  @param d    - Pointer to instance of stack 
  *  @return 	- Null if stack empty else data pointer
 */
-t_gen pop_stack_arr_up(t_gen d)
+t_gen stack_pop_arr_up(t_gen d)
 {
 	t_stack *s = (t_stack*)d; 
 	t_gen data = NULL;
@@ -223,7 +184,7 @@ t_gen pop_stack_arr_up(t_gen d)
  *  @param data - Pointer to the data to be pushed
  *  @return 	- Null if stack Full else data pointer
 */
-t_gen push_stack_arr_down(t_gen d, t_gen data)
+t_gen stack_push_arr_down(t_gen d, t_gen data)
 {
 	t_stack *s = (t_stack*)d; 
 	
@@ -244,7 +205,7 @@ t_gen push_stack_arr_down(t_gen d, t_gen data)
  *  @param d    - Pointer to instance of stack 
  *  @return 	- Null if stack empty else data pointer
 */
-t_gen pop_stack_arr_down(t_gen d)
+t_gen stack_pop_arr_down(t_gen d)
 {
 	t_stack *s = (t_stack*)d; 
 	t_gen data = NULL;
@@ -267,7 +228,7 @@ t_gen pop_stack_arr_down(t_gen d)
  *  @param data - Pointer to the data to be pushed
  *  @return 	- Null if stack Full else data pointer
 */
-t_gen push_stack_ll(t_gen d, t_gen data)
+t_gen stack_push_ll(t_gen d, t_gen data)
 {	
 	t_stack *s = (t_stack*)d;
 	t_linklist * l = (t_linklist *)s->data;
@@ -290,7 +251,7 @@ t_gen push_stack_ll(t_gen d, t_gen data)
  *  @param d    - Pointer to instance of stack 
  *  @return 	- Null if stack empty else data pointer
 */
-t_gen pop_stack_ll(t_gen d)
+t_gen stack_pop_ll(t_gen d)
 {	
 	t_stack *s = (t_stack*)d; 
 	t_gen data = NULL;
@@ -363,21 +324,27 @@ void stack_print(t_gen d)
  *  @param idx  - Index of the element to peek
  *  @return 	- Data pointer if index in bounds else NULL
 */
-t_gen peek_stack(t_gen d,int idx)
+t_gen stack_peek(t_gen d,int idx)
 {
 	t_stack *s = (t_stack *)d;
+	t_linklist *l = NULL;
+	t_gen n;
 
-
-	if (idx >= s->count) {
-		if (s->count == 0) {
-			LOG_WARN("STACKS", "The given stack is empty, attempting to peek on an empty stack :(");
-		}
-		else {  
-			LOG_WARN("STACKS", "The given index is out of bounds, the actual size = %d\n", s->count);
-		}
+	// index out of bound
+	if ((idx < 0) && (idx >= s->count)) {
+		LOG_WARN("STACKS", "index is out of bounds\n", s->count);
 		return NULL;
 	}
-	return NULL;
+
+	// Return data for array based stack
+	if (s->type != eLL_STACK) {
+		return s->data[idx];
+	}
+
+	// Return data for link list based stack
+	n = l->get_idx(l, idx);
+
+	return l->get_node_data(n);
 }
 
 
