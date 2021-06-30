@@ -43,6 +43,7 @@ t_gen linklist_get_tail(t_gen);
 t_gen linklist_get_end(t_gen);
 t_gen linklist_get_next(t_gen, t_gen);
 t_gen linklist_get_prev(t_gen, t_gen);
+t_gen linklist_get_node_data(t_gen);
 
 t_gen xor(t_gen x, t_gen y);
 
@@ -76,21 +77,22 @@ t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 	l->tail  = l->head = NULL;
 
 	// Select Functions based on type of list
-	l->append     = append[type];
-	l->add        = add[type];
-	l->del        = del[type];
-	l->del_idx    = del_idx[type];
-	l->get_idx    = linklist_getnode;
-	l->len 	      = linklist_length;
-	l->find       = linklist_find;
-	l->head_node  = linklist_get_head;
-	l->tail_node  = linklist_get_tail;
-	l->end_node   = linklist_get_end;
-	l->next_node  = linklist_get_next;
-	l->prev_node  = linklist_get_prev;
-	l->destroy    = destroy_link_list;
-	l->print      = linklist_print;
-	l->print_info = linklist_print_info;
+	l->append   	 = append[type];
+	l->add      	 = add[type];
+	l->del      	 = del[type];
+	l->del_idx  	 = del_idx[type];
+	l->get_idx  	 = linklist_getnode;
+	l->len 	    	 = linklist_length;
+	l->find     	 = linklist_find;
+	l->head_node	 = linklist_get_head;
+	l->tail_node	 = linklist_get_tail;
+	l->end_node 	 = linklist_get_end;
+	l->next_node	 = linklist_get_next;
+	l->prev_node	 = linklist_get_prev;
+	l->destroy  	 = destroy_link_list;
+	l->print    	 = linklist_print;
+	l->print_info    = linklist_print_info;
+	l->get_node_data = linklist_get_node_data;
 
 	l->cmpr       = prm->cmpr;
 	l->swap       = prm->swap;
@@ -98,6 +100,18 @@ t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 	l->free       = prm->free;
 
 	return (t_gen)l;
+}
+
+/*! @brief  
+ *  Fetch node data;
+ *  @param data - Pointer to the node whose data to fetch
+ *  @return 	- Node data
+ */
+t_gen linklist_get_node_data(t_gen n)
+{
+	t_llnode *node = (t_llnode*)n;
+	
+	return node->data;
 }
 
 /*! @brief  

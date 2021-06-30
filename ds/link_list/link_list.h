@@ -50,6 +50,7 @@ typedef struct linklist {
 	f_gen end_node; 		///< routine to get the end node
 	f_gen2 next_node;		///< routine to get the next node of the given node
 	f_gen2 prev_node;		///< routine to get the prev node of the given node
+	f_gen get_node_data;		///< routine to get data in given node
 	f_destroy destroy;		///< routine destroy the link list instance
 
 	/// routies for operating on data

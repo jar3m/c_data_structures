@@ -6,8 +6,14 @@
 #include "common.h"
 #include "link_list.h"
 
-void linklist_test();
+void test_linklist();
 
+/*! @brief  
+ *   Main Driver test
+ *  @param argc - Count cmd line arguments
+ *  @param argv - Pointer to cmd line arguments
+ *  @return 	- 0 on succesfull exit
+ */
 int main(int argc, char *argv[])
 {
 	size_t size = 0;
@@ -34,7 +40,7 @@ int main(int argc, char *argv[])
 	LOG_TRACE_IN("COMMON", "Hello World\n");
 	LOG_TRACE_OUT("COMMON", "Hello World\n");
 
-	linklist_test();
+	test_linklist();
 
 	mem_finit();
 
@@ -43,7 +49,11 @@ int main(int argc, char *argv[])
 }
 
 
-void linklist_test()
+/*! @brief  
+ *   Test link list routines
+ *  @return NA
+ */
+void test_linklist()
 {
 	char c,*cp,*sp,str[][64] = {"I", "See", "Everyting"};
 	float f,*fp;
