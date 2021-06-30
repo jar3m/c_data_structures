@@ -1,14 +1,17 @@
-#ifndef _LOGGER_H
-#define _LOGGER_H
+/*! @file logger.h
+    @brief 
+    Defines Macros for logging 
+*/
+#pragma once
 
-#define __LOG_ERROR__		0
-#define __LOG_WARN__		1
-#define __LOG_INFO__		2
-#define __LOG_DEBUG__		3
-#define __LOG_TRACE__		4
+#define __LOG_ERROR__		0		///< log level Error
+#define __LOG_WARN__		1		///< log level Warn
+#define __LOG_INFO__		2		///< log level Info
+#define __LOG_DEBUG__		3		///< log level Debug
+#define __LOG_TRACE__		4		///< log level Trace
 
-#define MAX_LOG_LEVELS	5
-#define MAX_MODULES			4
+#define MAX_LOG_LEVELS		5
+#define MAX_MODULES		4
 #define	COMMON_MODULE		1
 
 #define LOG_ERROR(mod,fmt, args...)			app_log(mod, __LOG_ERROR__, NULL, fmt, ##args)
@@ -21,4 +24,3 @@
 void logger_init();
 int app_log(char *module, int level, char *prefix, const char *format, ...);
 
-#endif // End of _LOGGER_H

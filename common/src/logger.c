@@ -1,3 +1,8 @@
+/*! @file logger.c
+    @brief 
+    Contains definitions of routines for logger module
+*/
+
 #include "common.h"
 #include "logger.h"
 
@@ -5,6 +10,10 @@
 static bool log_level[MAX_LOG_LEVELS] = {false};
 static bool module_logs[MAX_MODULES] = {false};
 
+/*! @brief  
+ *   Initailize logger module
+ *  @return 	- NA
+ * */
 void logger_init()
 {
 	int i;
@@ -17,6 +26,10 @@ void logger_init()
 
 }
 
+/*! @brief  
+ *   Used for defining different logging modules such as warn, error, debug, trace ...
+ *  @return 	- NA
+ * */
 int app_log(char *module, int level, char *prefix, const char *format, ...)
 {
 	int len = 0;

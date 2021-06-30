@@ -3,7 +3,10 @@ include Defs.make
 CC=gcc
 TEST_FILE_DIRECTORY="$(PROJ_PATH)/test/src"
 
-LDLIBS= -lm -pg
+LDLIBS= -lm -pg 
+ifeq ($(SEGFAULT_BACKTRACE), true)
+LDLIBS+=-rdynamic
+endif
 INCLUDES+=-I $(PROJ_PATH)/ds/inc
 INCLUDES+=-I $(PROJ_PATH)/common/inc
 INCLUDES+=-I $(PROJ_PATH)/test/inc
@@ -24,6 +27,7 @@ MODULE_ARCHIVES += $(algo_ARCHIVE)
 endif
 
 ifeq ($(MODULE), test)
+MODULE_ARCHIVES += $(ds_ARCHIVE)
 MODULE_ARCHIVES += $(test_ARCHIVE)
 endif
 
@@ -37,7 +41,11 @@ export
 
 all: $(MODULE_ARCHIVES)
 	@echo "All archives ($(MODULE_ARCHIVES)) created"
-	$(CC) $(INCLUDES) $^ -o foo.out $(MODULE_ARCHIVES) $(LDLIBS) $(CFLAGS)
+ifeq ($(BUILD_TYPE), executable)
+	$(CC) $(INCLUDES) $^  -o foo.out $(MODULE_ARCHIVES) $(LDLIBS) $(CFLAGS)
+else ifeq ($(BUILD_TYPE), library)
+	$(CC) -shared -o $(LIB_NAME) $(MODULE_ARCHIVES) $(LDLIBS) $(CFLAGS)
+endif
 
 $(common_ARCHIVE) :
 	make -C common/ all
@@ -55,9 +63,10 @@ $(test_ARCHIVE) :
 
 clean:
 	make -C test/ clean
-#	make -C ds/ clean
+	make -C ds/ clean
 	find ${PROJ_PATH} -name "*.[ao]" -exec rm -v {} \;
 	find ${PROJ_PATH} -name "*.out" -exec rm -v {} \;
+	find ${PROJ_PATH} -name "*.so" -exec rm -v {} \;
 
 
 
