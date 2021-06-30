@@ -43,5 +43,3 @@ typedef struct stack {
 
 // API
 t_gen create_stack (char *name, int max_size, e_stacktype, t_dparams*);
-void destroy_stack (t_gen s);
-void stack_print(t_gen s);

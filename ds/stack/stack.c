@@ -17,6 +17,7 @@ t_gen stack_push_ll(t_gen d, t_gen data);
 t_gen stack_pop_ll(t_gen d);
 t_gen stack_peek(t_gen d,int idx);
 void stack_print(t_gen d);
+void destroy_stack (t_gen d);
 
 
 /// Look Up function ptrs for pushing to stack
@@ -73,36 +74,6 @@ t_gen create_stack (char *name, int max_size, e_stacktype stype, t_dparams *prm)
 
         return (t_gen) s;
 }
-
-/*! @brief  
- *   Destroy instance of the stack
- *  @param d    - Pointer to instance of stack 
- *  @return 	- NA
- * */
-void destroy_stack (t_gen d)
-{
-        t_stack *s = (t_stack*)d;
-	int i;
-
-	// Free created stack space
-        switch (s->type) 
-	{
-		case eLL_STACK:
-			destroy_link_list(s->data);
-		break;
-		case eARRAY_STACK:
-		case eARRAY_STACK_DOWN:
-			while (s->empty(s) != true) {
-				s->free(s->pop(s), __FILE__, __LINE__);
-			}
-			free_mem(s->data);
-		break;
-        }
-
-	// Free stack
-	free_mem(s);
-}
-
 
 /*! @brief  
  *  Check stack full 
@@ -345,6 +316,35 @@ t_gen stack_peek(t_gen d,int idx)
 	n = l->get_idx(l, idx);
 
 	return l->get_node_data(n);
+}
+
+/*! @brief  
+ *   Destroy instance of the stack
+ *  @param d    - Pointer to instance of stack 
+ *  @return 	- NA
+ * */
+void destroy_stack (t_gen d)
+{
+        t_stack *s = (t_stack*)d;
+	int i;
+
+	// Free created stack space
+        switch (s->type) 
+	{
+		case eLL_STACK:
+			destroy_link_list(s->data);
+		break;
+		case eARRAY_STACK:
+		case eARRAY_STACK_DOWN:
+			while (s->empty(s) != true) {
+				s->free(s->pop(s), __FILE__, __LINE__);
+			}
+			free_mem(s->data);
+		break;
+        }
+
+	// Free stack
+	free_mem(s);
 }
 
 
