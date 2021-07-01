@@ -5,7 +5,9 @@
 
 #include "common.h"
 #include "link_list.h"
+#include "stack.h"
 
+void test_stack();
 void test_linklist();
 
 /*! @brief  
@@ -41,6 +43,7 @@ int main(int argc, char *argv[])
 	LOG_TRACE_OUT("COMMON", "Hello World\n");
 
 	test_linklist();
+	test_stack();
 
 	mem_finit();
 
@@ -48,6 +51,77 @@ int main(int argc, char *argv[])
 
 }
 
+/*! @brief  
+ *   Test stack routines
+ *  @return NA
+ */
+void test_stack()
+{
+	char c,*cp;
+	float f,*fp;
+	int *ip,i;
+	t_dparams dp;
+	t_stack *s1, *s2, *s3, *s4;
+
+	
+	init_data_params(&dp, eINT32);
+	s1 = create_stack("Up Stack", 10, eARRAY_STACK, &dp);
+
+	init_data_params(&dp, eINT8);
+	s2 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, &dp);
+
+	init_data_params(&dp, eFLOAT);
+	s3 = create_stack("Down Stack", 10, eARRAY_STACK_DOWN, &dp);
+
+	init_data_params(&dp, eFLOAT);
+	s4 = create_stack("Up Stack LL", 10, eLL_STACK, &dp);
+
+	for(i = 0; i < 10; i++) {
+		s1->push(s1, assign_int(i));
+		c= 'c' + i;
+		s2->push(s2, assign_char(c));
+		f= (float)i+0.222 / 2.0f;
+		s3->push(s3, assign_float(f));
+		s4->push(s4, assign_float(f));
+	}
+	s1->print(s1);
+	s2->print(s2);
+	s3->print(s3);
+	s4->print(s4);
+
+	for(i = 0; i < 4; i++) {
+		ip = s1->pop(s1);
+		free_mem(ip);
+		cp = s2->pop(s2);
+		free_mem(cp);
+		fp = s3->pop(s3);
+		free_mem(fp);
+		fp = s4->pop(s4);
+		free_mem(fp);
+	}
+	s1->print(s1);
+	s2->print(s2);
+	s3->print(s3);
+	s4->print(s4);
+
+	for(i = 4; i > 0; i--) {
+		s1->push(s1, assign_int(i));
+		c= 'c' + i;
+		s2->push(s2, assign_int(c));
+		f= (float)i+0.222 / 2.0f;
+		s3->push(s3, assign_float(f));
+		s4->push(s4, assign_float(f));
+	}
+	s1->print(s1);
+	s2->print(s2);
+	s3->print(s3);
+	s4->print(s4);
+
+	s1->destroy(s1);
+	s2->destroy(s2);
+	s3->destroy(s3);
+	s4->destroy(s4);
+}
 
 /*! @brief  
  *   Test link list routines

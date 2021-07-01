@@ -19,7 +19,7 @@ BUILD_TYPE=executable
 SEGFAULT_BACKTRACE=true
 #include submodules of Data structures
 LINK_LIST=true
-STACK=false
+STACK=true
 
 .show:
 	@echo "PROJ_PATH= $(PROJ_PATH)"

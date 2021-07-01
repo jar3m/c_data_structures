@@ -1,54 +1,44 @@
+/*! @file stack.h
+    @brief 
+    Contains declations of stack types, operations and structure
+*/
 #pragma once 
 
 #include "common.h"
 #include "link_list.h"
 
-#define MAX_STACK_SIZE	100
 
-typedef int (*f_push)(t_data s, int data);
-typedef int (*f_pop)(t_data s);
-
+/// types of supported stacks
 typedef enum {
-	eLL_STACK,
-	eARRAY_STACK,
-	eARRAY_STACK_DOWN,
+	eLL_STACK,				///< LinkList based Stack
+	eARRAY_STACK,				///< Top Growing Stack
+	eARRAY_STACK_DOWN,			///< Down Growing Stack
 } e_stacktype;
 
+/// stack struct defn
 typedef struct stack {
-	char *name;
-	int max_size;
-	e_stacktype type;
-	t_linklist data;
+	// stack count, size and top refr
+	char *name;				///< Stack instance name
+	int count;				///< Total elems present in stack
+	int max_size;				///< Max Size of stack
+	int top;				///< Stack Top
+	e_stacktype type;			///< Stack Type @see types of stack
+	// link List or array based stack
+	t_gen *data;				///< Ptr to link List or array based on type of stack
+	/// stack operations
+	f_gen2 push;				///< routine to push element into stack
+	f_gen pop;				///< routine to pop element into stack
+	f_genidx peek;				///< routine to peek elements in stack
+	f_full full;				///< routine to check if stack is full
+	f_empty empty;				///< routine to check if stack is empty
+	f_len len;				///< routine to get len of stack
+	f_print print;				///< routine to print stack contents
+	f_vgen destroy;				///< routine to destroy stack contents
 
-	f_push push;
-	f_pop pop;
-	f_print print;
-	f_full full;
-	f_empty empty;
-	f_size size;
-}t_llstack;
+	/// routies for operating on data
+	f_free free;
+	f_print print_data;
+}t_stack;
 
-typedef struct stack {
-	int count;
-	int max_size;
-	int head;
-	int *data;
-
-	f_push push;
-	f_pop pop;
-	f_print print;
-	f_full full;
-	f_empty empty;
-	f_size size;
-}t_arrstack;
-
-t_data create_stack (char *name, int max_size, e_stacktype type);
-void destroy_stack (t_data s);
-void print_stack(t_data s);
-int push_stack(t_data s, int data);
-int pop_stack(t_data s);
-t_elem* peek_stack(t_data s,int idx);
-void print_stack(t_data s);
-int stack_size(t_data s);
-bool is_stack_full(t_data s);
-bool is_stack_empty(t_data s);
+// API
+t_gen create_stack (char *name, int max_size, e_stacktype, t_dparams*);
