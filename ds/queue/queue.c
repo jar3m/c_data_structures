@@ -16,6 +16,7 @@ t_gen queue_peek_ll(t_gen d);
 void queue_enqueue_arr(t_gen s, t_gen data);
 t_gen queue_dequeue_arr(t_gen s);
 t_gen queue_peek_arr(t_gen d);
+void queue_print(t_gen d);
 
 /// Look Up function ptrs to enq elems to queue
 f_ins q_enq[] = {queue_enqueue_ll, queue_enqueue_arr};
@@ -34,7 +35,7 @@ f_gen q_peek[] = {queue_peek_ll, queue_peek_arr};
  *  @param prm      - Data type specific parameters
  *  @return         - Pointer to instance of queue
 */
-t_gen create_queue (char *name, int max_size, e_queuetype qtype, e_data_types dtype)
+t_gen create_queue (char *name, int max_size, e_queuetype qtype, t_dparams *prm)
 {
 	t_queue *q = get_mem(1, sizeof(t_queue));
 	
@@ -49,7 +50,7 @@ t_gen create_queue (char *name, int max_size, e_queuetype qtype, e_data_types dt
 	q->full	 	= queue_full;
 	q->empty	= queue_empty;
 	q->len 		= queue_size;
-	q->print 	= print_queue;
+	q->print 	= queue_print;
 	q->enq 		= q_enq[qtype];
 	q->deq 		= q_deq[qtype];
 	q->peek 	= q_peek[qtype];
@@ -62,34 +63,12 @@ t_gen create_queue (char *name, int max_size, e_queuetype qtype, e_data_types dt
 		break;
 		case eLL_QUEUE_CIRC:
 			q->data = create_link_list("queue_data", 
-					eDOUBLE_LINKLIST, dtype);
+					eDOUBLE_LINKLIST, prm);
 		break;
 	}
-#if 0
-	s->print_data	= prm->print_data;
-	s->free 	= prm->free;
-#else
-	switch(dtype)
-	{
-		case eINT8:
-			//char list;
-			q->print_data = print_char;
-			break;
-		case eINT32:
-			//int list;
-			q->print_data = print_int;
-			break;
-		case eFLOAT:
-			//float list;
-			q->print_data = print_float;
-			break;
-		case eSTRING:
-			//string list;
-			q->print_data = print_str;
-			break;
-	}
-	q->free = FREE_MEM;
-#endif
+	q->print_data	= prm->print_data;
+	q->free 	= prm->free;
+
 	return (t_gen)q;
 }
 
@@ -101,6 +80,7 @@ t_gen create_queue (char *name, int max_size, e_queuetype qtype, e_data_types dt
 void destroy_queue (t_gen d)
 {
 	t_queue *q = (t_queue*)d;
+	t_linklist *l;
 	int i;
 
 	// Free created queue space
@@ -113,7 +93,8 @@ void destroy_queue (t_gen d)
 			free_mem(q->data);
 		break;
 		case eLL_QUEUE_CIRC:
-			destroy_link_list(q->data);
+			l = (t_linklist*)q->data;
+			l->destroy(l);
 		break;
 	}
 
@@ -273,11 +254,11 @@ static char * get_qname(e_queuetype type)
 	return "UNDEFINED";
 }
 /*! @brief  
- *  print_queue_info
+ *  queue_print_info
  *  @param d    - Pointer to instance of queue 
  *  @return 	- NA
 */
-void print_queue(t_gen d)
+void queue_print(t_gen d)
 {
 	t_queue *q = (t_queue*)d; 
 	int i;

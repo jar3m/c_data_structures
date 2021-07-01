@@ -43,6 +43,4 @@ typedef struct {
 } t_queue;
 
 // API
-t_gen create_queue (char *name, int max_size, e_queuetype type, e_data_types dtype);
-void destroy_queue (t_gen s);
-void print_queue(t_gen s);
+t_gen create_queue (char *name, int max_size, e_queuetype type, t_dparams *prm);
