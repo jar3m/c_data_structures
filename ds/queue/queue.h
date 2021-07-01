@@ -7,9 +7,6 @@
 #include "common.h"
 #include "link_list.h"
 
-/// func ptr defn for queue operations
-typedef t_gen (*f_deq)(t_gen s);
-
 /// types of queue
 typedef enum {
 	eLL_QUEUE_CIRC,		///< Link List Based Queue
@@ -30,12 +27,13 @@ typedef struct {
 	t_gen *data;		///< Ptr to link List or array based on type of queue
 	
 	f_ins enq;		///< routine to push elements to queue
-	f_deq deq;		///< routine to pop elements out of queue
+	f_gen deq;		///< routine to pop elements out of queue
 	f_len len;	  	///< routine to get length queue 
-	f_gen peek;	   	///< routine to peek node in queue
+	f_genidx peek;	   	///< routine to peek node in queue
 	f_full full;	   	///< routine to check if queue full
 	f_empty empty;	   	///< routine to check if queue empty
 	f_print print;	   	///< routine to print queue elements
+	f_destroy destroy;	///< routine to detroy queue instance
 
 	///< routines for operating on data
 	f_print print_data;	

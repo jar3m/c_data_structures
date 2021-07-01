@@ -1359,15 +1359,6 @@ void linklist_print_info (t_gen d)
 		if (ptr == end) {
 			break;
 		}
-		else {
-		  printf("[ %lx ", (long)ptr->prv);
-		  l->print_data(ptr->data);
-		  printf(" %lx]", (long)ptr->nxt);
-		  ptr = ptr->nxt;
-		  if (ptr == end) {
-			  break;
-		  }
-	  }
 	}
 	printf(" ]\n");
 
@@ -1412,4 +1403,5 @@ void destroy_link_list (t_gen d)
 
 	free_mem(l);
 }
+
 

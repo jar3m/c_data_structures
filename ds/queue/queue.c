@@ -5,27 +5,26 @@
 
 #include "queue.h"
 
-bool queue_full(t_gen d);
-bool queue_empty(t_gen d);
-int queue_size(t_gen d);
 
 void queue_enqueue_ll(t_gen s, t_gen data);
 t_gen queue_dequeue_ll(t_gen s);
-t_gen queue_peek_ll(t_gen d);
 
 void queue_enqueue_arr(t_gen s, t_gen data);
 t_gen queue_dequeue_arr(t_gen s);
-t_gen queue_peek_arr(t_gen d);
+
+t_gen queue_peek(t_gen d, int idx);
+bool queue_full(t_gen d);
+bool queue_empty(t_gen d);
+int queue_size(t_gen d);
 void queue_print(t_gen d);
+void destroy_queue (t_gen d);
 
 /// Look Up function ptrs to enq elems to queue
 f_ins q_enq[] = {queue_enqueue_ll, queue_enqueue_arr};
 
 /// Look Up function ptrs to deq elems to queue
-f_deq q_deq[] = {queue_dequeue_ll, queue_dequeue_arr};
+f_gen q_deq[] = {queue_dequeue_ll, queue_dequeue_arr};
 
-/// Look Up function ptrs to peek elems to queue
-f_gen q_peek[] = {queue_peek_ll, queue_peek_arr};
 
 /*! @brief  
  *  Destroy queue instance 
@@ -53,7 +52,8 @@ t_gen create_queue (char *name, int max_size, e_queuetype qtype, t_dparams *prm)
 	q->print 	= queue_print;
 	q->enq 		= q_enq[qtype];
 	q->deq 		= q_deq[qtype];
-	q->peek 	= q_peek[qtype];
+	q->peek 	= queue_peek;
+	q->destroy	= destroy_queue;
 
 	// create queue space depending on link list or array based
 	switch (qtype) 
@@ -72,35 +72,6 @@ t_gen create_queue (char *name, int max_size, e_queuetype qtype, t_dparams *prm)
 	return (t_gen)q;
 }
 
-/*! @brief  
- *  Destroy queue instance 
- *  @param d    - Pointer to instance of queue 
- *  @return 	- NA
-*/
-void destroy_queue (t_gen d)
-{
-	t_queue *q = (t_queue*)d;
-	t_linklist *l;
-	int i;
-
-	// Free created queue space
-	switch (q->type) 
-	{
-		case eARRAY_QUEUE_CIRC:
-			while (q->empty(q) != true) {
-				q->free(q->deq(q), __FILE__, __LINE__);
-			}
-			free_mem(q->data);
-		break;
-		case eLL_QUEUE_CIRC:
-			l = (t_linklist*)q->data;
-			l->destroy(l);
-		break;
-	}
-
-	// Free queue
-	free_mem(q);
-}
 
 /*! @brief  
  *  add element in queue
@@ -116,7 +87,7 @@ void queue_enqueue_arr(t_gen d, t_gen data)
 	if (q->full(q) == true) {
 		LOG_WARN("QUEUES", "%s: Queue Full\n",q->name);
 	}
-
+	
 	// queue empty (added first element)
 	q->front  = (q->front != -1) ? q->front : 0;
 
@@ -151,7 +122,7 @@ t_gen queue_dequeue_arr(t_gen d)
 	if (q->front == q->rear) {
 		q->rear = q->front = -1;
 	} else {
-		q->front =  (q->front + 1) % q->max_size;
+		q->front = (q->front + 1) % q->max_size;
 	}
 
 	return data;
@@ -161,12 +132,14 @@ t_gen queue_dequeue_arr(t_gen d)
 /*! @brief  
  *  peek front element in queue
  *  @param d    - Pointer to instance of queue 
+ *  @param idx  - Index of data to peek
  *  @return 	- Pointer to the data to data to be peeked
 */
-t_gen queue_peek_arr(t_gen d)
+t_gen queue_peek(t_gen d, int idx)
 {
 	t_queue *q = (t_queue*)d;
-	t_gen data;
+	t_gen node;
+	t_linklist *l;
 
 	// return if queue empty 
 	if (q->empty(q) == true) {
@@ -174,10 +147,23 @@ t_gen queue_peek_arr(t_gen d)
 		return NULL;
 	}
 
-	// get queue element 
-	data = q->data[q->front];
+	// index out of bound
+	if ((idx < 0) && (idx >= q->count)) {
+		LOG_WARN("QUEUE", "index is out of bounds\n", q->count);
+		return NULL;
+	}
 
-	return data;
+	// get queue element for array based queue
+	if (q->type ==eARRAY_QUEUE_CIRC) {
+		return q->data[idx];
+	}
+	
+	// get queue element for linklist based queue
+	l = (t_linklist*)q->data;
+	node = l->get_idx(l, idx);
+
+	return l->get_node_data(node);
+	
 }
 
 /*! @brief  
@@ -188,6 +174,17 @@ t_gen queue_peek_arr(t_gen d)
 */
 void queue_enqueue_ll(t_gen d, t_gen data)
 {
+	t_queue *q = (t_queue*)d;
+	t_linklist *l = (t_linklist*)q->data;
+
+	// return if queue full
+	if (q->full(q) == true) {
+		LOG_WARN("QUEUES", "%s: Queue Full\n",q->name);
+	}
+	
+	// Incr Rear and add data to queue
+	q->count++;
+	l->append(l, data);
 }
 
 /*! @brief  
@@ -197,15 +194,18 @@ void queue_enqueue_ll(t_gen d, t_gen data)
 */
 t_gen queue_dequeue_ll(t_gen d)
 {
-}
+	t_queue *q = (t_queue*)d;
+	t_linklist *l = (t_linklist*)q->data;
 
-/*! @brief  
- *  peek front element in queue
- *  @param d    - Pointer to instance of queue 
- *  @return 	- Pointer to the data to data to be peeked
-*/
-t_gen queue_peek_ll(t_gen d)
-{
+	// return if queue full
+	if (q->full(q) == true) {
+		LOG_WARN("QUEUES", "%s: Queue Full\n",q->name);
+	}
+	
+	// Decr count and pop first node in linklist
+	q->count--;
+
+	return l->del_idx(l, 0);
 }
 
 /*! @brief  
@@ -253,6 +253,7 @@ static char * get_qname(e_queuetype type)
 	}
 	return "UNDEFINED";
 }
+
 /*! @brief  
  *  queue_print_info
  *  @param d    - Pointer to instance of queue 
@@ -262,13 +263,52 @@ void queue_print(t_gen d)
 {
 	t_queue *q = (t_queue*)d; 
 	int i;
+	t_linklist *l;
 
-	printf("%s {max: %d} {type:%s} {size: %d} {front/rear: [%d:%d]} \n[",q->name,
+	printf("%s {max: %d} {type:%s} {size: %d} {front/rear: [%d:%d]} \n",q->name,
 			q->max_size, get_qname(q->type), q->count, q->front,q->rear);
-	for (i = q->front; (i != -1) && (i <= q->rear); i ++) {
-	//	printf("%d ",*(int*)(q->data[i]));
-		q->print_data(q->data[i]);
-		printf(", ");
+	switch (q->type) {
+		case eARRAY_QUEUE_CIRC:
+			printf("[");
+			for (i = q->front; (i != -1) && (i <= q->rear); i ++) {
+				q->print_data(q->data[i]);
+				printf(", ");
+			}
+			printf("]\n");
+		break;
+		case eLL_QUEUE_CIRC:
+			l = (t_linklist*)q->data;
+			l->print(l);
+		break;
 	}
-	printf("]\n");
+}
+
+/*! @brief  
+ *  Destroy queue instance 
+ *  @param d    - Pointer to instance of queue 
+ *  @return 	- NA
+*/
+void destroy_queue (t_gen d)
+{
+	t_queue *q = (t_queue*)d;
+	t_linklist *l;
+	int i;
+
+	// Free created queue space
+	switch (q->type) 
+	{
+		case eARRAY_QUEUE_CIRC:
+			while (q->empty(q) != true) {
+				q->free(q->deq(q), __FILE__, __LINE__);
+			}
+			free_mem(q->data);
+		break;
+		case eLL_QUEUE_CIRC:
+			l = (t_linklist*)q->data;
+			l->destroy(l);
+		break;
+	}
+
+	// Free queue
+	free_mem(q);
 }

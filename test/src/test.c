@@ -8,6 +8,7 @@
 #include "stack.h"
 #include "queue.h"
 
+void test_queue();
 void test_stack();
 void test_linklist();
 
@@ -42,9 +43,10 @@ int main(int argc, char *argv[])
 	LOG_DEBUG("COMMON", "Hello World\n");		
 	LOG_TRACE_IN("COMMON", "Hello World\n");
 	LOG_TRACE_OUT("COMMON", "Hello World\n");
-
+	
 	test_linklist();
 	test_stack();
+	test_queue();
 
 	mem_finit();
 
@@ -264,4 +266,58 @@ void test_linklist()
 	l3->destroy(l3);
 	l4->destroy(l4);
 	l5->destroy(l5);
+}
+
+/*! @brief  
+ *   Test Queue routines
+ *  @return NA
+ */
+void test_queue()
+{
+	char c,*cp;
+	float f,*fp;
+	int i;
+	t_dparams dp;
+	t_queue *q1, *q2;
+
+	init_data_params(&dp, eINT8);
+	q1 = create_queue("Queue1", 10, eARRAY_QUEUE_CIRC, &dp);
+
+	init_data_params(&dp, eFLOAT);
+	q2 = create_queue("Queue2", 10, eLL_QUEUE_CIRC, &dp);
+
+	for(i = 0; i < 10; i++) {
+		c= 'c' + i;
+		q1->enq(q1, assign_char(c));
+
+		f= (float)i+0.222 / 2.0f;
+		q2->enq(q2, assign_float(f));
+	}
+	q1->print(q1);
+	q2->print(q2);
+
+	for(i = 0; i < 10; i++) {
+		cp = q1->deq(q1);
+		free_mem(cp);
+		fp = q2->deq(q2);
+		free_mem(fp);
+	}
+	q1->print(q1);
+	q2->print(q2);
+
+	for(i = 0; i < 4; i++) {
+		c= 'c' + i;
+		q1->enq(q1, assign_char(c));
+		f= (float)i+0.222 / 2.0f;
+		q2->enq(q2, assign_float(f));
+	}
+		printf("\n");
+	q1->print(q1);
+	q2->print(q2);
+	
+	fp = q2->peek(q2, 2);
+	printf("peeking idx <2: %f>\n", *fp);
+
+	q1->destroy(q1);
+	q2->destroy(q2);
 }
