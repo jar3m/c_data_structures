@@ -20,8 +20,9 @@ var searchData=
   ['copy_5fidx_5fchar_45',['copy_idx_char',['../generic__def_8h.html#a5790d11940499ffb707a74dc11ce84d5',1,'generic_def.h']]],
   ['copy_5fidx_5ffloat_46',['copy_idx_float',['../generic__def_8h.html#abcfb6fe5f62d7c3c4ecc8db63055ec06',1,'generic_def.h']]],
   ['copy_5fidx_5fint_47',['copy_idx_int',['../generic__def_8h.html#a0b9d3d3a90927f159fb051a744cbac21',1,'generic_def.h']]],
-  ['count_48',['count',['../structlinklist.html#ad43c3812e6d13e0518d9f8b8f463ffcf',1,'linklist::count()'],['../structstack.html#ad43c3812e6d13e0518d9f8b8f463ffcf',1,'stack::count()']]],
+  ['count_48',['count',['../structlinklist.html#ad43c3812e6d13e0518d9f8b8f463ffcf',1,'linklist::count()'],['../structt__queue.html#ad43c3812e6d13e0518d9f8b8f463ffcf',1,'t_queue::count()'],['../structstack.html#ad43c3812e6d13e0518d9f8b8f463ffcf',1,'stack::count()']]],
   ['cpy_5fidx_49',['cpy_idx',['../structdata__params.html#ab4aec85daf263bdbab092d736b6b89d5',1,'data_params']]],
   ['create_5flink_5flist_50',['create_link_list',['../link__list_8c.html#aa82c512392e4228a23073e29f9f4302d',1,'create_link_list(char *name, e_lltype type, t_dparams *prm):&#160;link_list.c'],['../link__list_8h.html#a70d89bfbcdb91b79240ee71c195c1631',1,'create_link_list(char *name, e_lltype type, t_dparams *dprm):&#160;link_list.c']]],
-  ['create_5fstack_51',['create_stack',['../stack_8c.html#a6acd5dcd8e6f2fe5254e5638e53c6e1a',1,'create_stack(char *name, int max_size, e_stacktype stype, t_dparams *prm):&#160;stack.c'],['../stack_8h.html#a941ed25905ac63f2dd569c869812515c',1,'create_stack(char *name, int max_size, e_stacktype, t_dparams *):&#160;stack.c']]]
+  ['create_5fqueue_51',['create_queue',['../queue_8c.html#acfd1b2bb49fc2b69775f905f438dc87f',1,'create_queue(char *name, int max_size, e_queuetype qtype, t_dparams *prm):&#160;queue.c'],['../queue_8h.html#ad323dd51849c8a84a0c526b2278d4ef1',1,'create_queue(char *name, int max_size, e_queuetype type, t_dparams *prm):&#160;queue.c']]],
+  ['create_5fstack_52',['create_stack',['../stack_8c.html#a6acd5dcd8e6f2fe5254e5638e53c6e1a',1,'create_stack(char *name, int max_size, e_stacktype stype, t_dparams *prm):&#160;stack.c'],['../stack_8h.html#a941ed25905ac63f2dd569c869812515c',1,'create_stack(char *name, int max_size, e_stacktype, t_dparams *):&#160;stack.c']]]
 ];

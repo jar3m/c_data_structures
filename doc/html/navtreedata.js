@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "c_everything", "index.html", [
+  [ "C Everything", "index.html", [
     [ "<strong>C EVERYTHING Merge</strong>", "md_doc_merge_template.html", [
       [ "Commit details", "md_doc_merge_template.html#autotoc_md1", null ],
       [ "Milestone Details", "md_doc_merge_template.html#autotoc_md2", null ],
@@ -61,7 +61,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"structdata__params.html#a8e625725b9a29e3c785ee9ed3935764d"
+"stack_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
