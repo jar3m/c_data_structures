@@ -347,4 +347,3 @@ void destroy_stack (t_gen d)
 	free_mem(s);
 }
 
-

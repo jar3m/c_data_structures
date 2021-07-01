@@ -8,7 +8,6 @@
 #include "link_list.h"
 
 
-
 /// types of supported stacks
 typedef enum {
 	eLL_STACK,				///< LinkList based Stack
