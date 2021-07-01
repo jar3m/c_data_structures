@@ -94,10 +94,10 @@ t_gen create_link_list (char *name, e_lltype type, t_dparams *prm)
 	l->print_info    = linklist_print_info;
 	l->get_node_data = linklist_get_node_data;
 
-	l->cmpr       = prm->cmpr;
-	l->swap       = prm->swap;
-	l->print_data = prm->print_data;
-	l->free       = prm->free;
+	l->cmpr      	 = prm->cmpr;
+	l->swap      	 = prm->swap;
+	l->print_data	 = prm->print_data;
+	l->free      	 = prm->free;
 
 	return (t_gen)l;
 }

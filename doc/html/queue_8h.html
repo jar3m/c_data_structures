@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>c_everything: ds/queue/queue.h File Reference</title>
+<title>C Everything: ds/queue/queue.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -25,7 +25,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">c_everything
+   <div id="projectname">C Everything
    </div>
   </td>
  </tr>
@@ -81,13 +81,128 @@ $(document).ready(function(){initNavTree('queue_8h.html',''); initResizable(); }
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">queue.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Contains declations of queue types, operations and structure.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="common_8h_source.html">common.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="link__list_8h_source.html">link_list.h</a>&quot;</code><br />
 </div>
 <p><a href="queue_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structt__queue.html">t_queue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">queue struct defn  <a href="structt__queue.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a4b60471142f5aa2480019bb596fd5e1f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a4b60471142f5aa2480019bb596fd5e1f">e_queuetype</a> { <a class="el" href="queue_8h.html#a4b60471142f5aa2480019bb596fd5e1fa100f4d0ef29a1238d358e0f43b034c1c">eLL_QUEUE_CIRC</a>
+, <a class="el" href="queue_8h.html#a4b60471142f5aa2480019bb596fd5e1fadda1e27192d05f74bf029c68afc2bf5f">eARRAY_QUEUE_CIRC</a>
+ }</td></tr>
+<tr class="memdesc:a4b60471142f5aa2480019bb596fd5e1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">types of queue  <a href="queue_8h.html#a4b60471142f5aa2480019bb596fd5e1f">More...</a><br /></td></tr>
+<tr class="separator:a4b60471142f5aa2480019bb596fd5e1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ad323dd51849c8a84a0c526b2278d4ef1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#ad323dd51849c8a84a0c526b2278d4ef1">create_queue</a> (char *name, int max_size, <a class="el" href="queue_8h.html#a4b60471142f5aa2480019bb596fd5e1f">e_queuetype</a> type, <a class="el" href="common_8h.html#a57f0492702b56075e696a63c54e123d4">t_dparams</a> *prm)</td></tr>
+<tr class="memdesc:ad323dd51849c8a84a0c526b2278d4ef1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+ Destroy queue instance  <a href="queue_8h.html#ad323dd51849c8a84a0c526b2278d4ef1">More...</a><br /></td></tr>
+<tr class="separator:ad323dd51849c8a84a0c526b2278d4ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Contains declations of queue types, operations and structure. </p>
+
+<p class="definition">Definition in file <a class="el" href="queue_8h_source.html">queue.h</a>.</p>
+</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a4b60471142f5aa2480019bb596fd5e1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b60471142f5aa2480019bb596fd5e1f">&#9670;&nbsp;</a></span>e_queuetype</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="queue_8h.html#a4b60471142f5aa2480019bb596fd5e1f">e_queuetype</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>types of queue </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4b60471142f5aa2480019bb596fd5e1fa100f4d0ef29a1238d358e0f43b034c1c"></a>eLL_QUEUE_CIRC&#160;</td><td class="fielddoc"><p>Link List Based Queue. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4b60471142f5aa2480019bb596fd5e1fadda1e27192d05f74bf029c68afc2bf5f"></a>eARRAY_QUEUE_CIRC&#160;</td><td class="fielddoc"><p>Array Based Queue. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="queue_8h_source.html#l00011">11</a> of file <a class="el" href="queue_8h_source.html">queue.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ad323dd51849c8a84a0c526b2278d4ef1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad323dd51849c8a84a0c526b2278d4ef1">&#9670;&nbsp;</a></span>create_queue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> create_queue </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>max_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="queue_8h.html#a4b60471142f5aa2480019bb596fd5e1f">e_queuetype</a>&#160;</td>
+          <td class="paramname"><em>qtype</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="common_8h.html#a57f0492702b56075e696a63c54e123d4">t_dparams</a> *&#160;</td>
+          <td class="paramname"><em>prm</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><br  />
+ Destroy queue instance </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>- Name of queue instance </td></tr>
+    <tr><td class="paramname">max_size</td><td>- Max size of queue instance </td></tr>
+    <tr><td class="paramname">type</td><td>- Type of queue to be created </td></tr>
+    <tr><td class="paramname">prm</td><td>- Data type specific parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>- Pointer to instance of queue </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="queue_8c_source.html#l00037">37</a> of file <a class="el" href="queue_8c_source.html">queue.c</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -6,8 +6,6 @@
 
 #include "common.h"
 
-typedef t_gen(*f_del)(t_gen, t_gen);
-
 /// Type of linklists
 typedef enum {
 	eSINGLE_LINKLIST,		///< Singly Link list	
@@ -64,5 +62,3 @@ typedef struct linklist {
 
 //API
 t_gen create_link_list (char *name, e_lltype type, t_dparams *dprm);
-void destroy_link_list (t_gen d);
-void linklist_print (t_gen d);

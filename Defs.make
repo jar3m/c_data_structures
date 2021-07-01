@@ -20,6 +20,7 @@ SEGFAULT_BACKTRACE=true
 #include submodules of Data structures
 LINK_LIST=true
 STACK=true
+QUEUE=true
 
 .show:
 	@echo "PROJ_PATH= $(PROJ_PATH)"
@@ -28,3 +29,4 @@ STACK=true
 	@echo "BUILD_TYPE=$(BUILD_TYPE)"
 	@echo "LINK_LIST= $(LINK_LIST)"
 	@echo "STACKS= $(STACK)"
+	@echo "QUEUES= $(QUEUE)"

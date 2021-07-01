@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xor_387',['xor',['../link__list_8c.html#a425a5a9eb4c44738fa716eaa9538104c',1,'link_list.c']]]
+  ['untag_5falloc_421',['untag_alloc',['../memory__manager_8h.html#ae0f72298c3e531f55beebe3b4d3f2ca6',1,'untag_alloc(void *mem_addr, char *file, int line):&#160;memory_manager.c'],['../memory__manager_8c.html#ae0f72298c3e531f55beebe3b4d3f2ca6',1,'untag_alloc(void *mem_addr, char *file, int line):&#160;memory_manager.c']]]
 ];

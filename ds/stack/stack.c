@@ -326,13 +326,15 @@ t_gen stack_peek(t_gen d,int idx)
 void destroy_stack (t_gen d)
 {
         t_stack *s = (t_stack*)d;
+	t_linklist *l = NULL;
 	int i;
 
 	// Free created stack space
         switch (s->type) 
 	{
 		case eLL_STACK:
-			destroy_link_list(s->data);
+			l = (t_linklist*)s->data;
+			l->destroy(l);
 		break;
 		case eARRAY_STACK:
 		case eARRAY_STACK_DOWN:
