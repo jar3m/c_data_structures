@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['print_5fchar_386',['print_char',['../generic__def_8h.html#aad527d3dc66e9617a690c81ee5d1f4fd',1,'generic_def.h']]],
-  ['print_5ffloat_387',['print_float',['../generic__def_8h.html#a7096dec4595af1a9e74a9bbdad2c0206',1,'generic_def.h']]],
-  ['print_5fgen_388',['print_gen',['../generic__def_8h.html#af638fc9698781d8cabfaade432333c8b',1,'generic_def.h']]],
-  ['print_5fint_389',['print_int',['../generic__def_8h.html#a350c6833c32925d8be444796f940f6bd',1,'generic_def.h']]],
-  ['print_5fstr_390',['print_str',['../generic__def_8h.html#af687c79aa3da5bdd62abee9c36170ee5',1,'print_str(t_gen):&#160;generic_def.c'],['../generic__def_8c.html#a73be15b9b63b32c6bc1dd8f15aacd15c',1,'print_str(t_gen str):&#160;generic_def.c']]]
+  ['main_417',['main',['../test_8c.html#a0ddf1224851353fc92bfbff6f499fa97',1,'test.c']]],
+  ['mem_5falloc_5freport_418',['mem_alloc_report',['../memory__manager_8h.html#a90471c1bb8bfcef3dfe401b9bc54a8df',1,'mem_alloc_report(void):&#160;memory_manager.c'],['../memory__manager_8c.html#a90471c1bb8bfcef3dfe401b9bc54a8df',1,'mem_alloc_report(void):&#160;memory_manager.c']]],
+  ['mem_5ffinit_419',['mem_finit',['../memory__manager_8h.html#ab137b6622e3fd33d160f071cf0faa98a',1,'mem_finit(void):&#160;memory_manager.c'],['../memory__manager_8c.html#ab137b6622e3fd33d160f071cf0faa98a',1,'mem_finit(void):&#160;memory_manager.c']]],
+  ['mem_5finit_420',['mem_init',['../memory__manager_8h.html#a44a136e3b70c36abb6f8dc060c778113',1,'mem_init(void):&#160;memory_manager.c'],['../memory__manager_8c.html#a9ce51c33e96ef646614c4c93f271e316',1,'mem_init():&#160;memory_manager.c']]]
 ];

@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['tail_476',['tail',['../structlinklist.html#ac33cdea54298855c27c8b0aa3137cd82',1,'linklist']]],
-  ['tail_5fnode_477',['tail_node',['../structlinklist.html#ac79cd69751b4a302809da7dd574465c5',1,'linklist']]],
-  ['top_478',['top',['../structstack.html#af93f4f37fc2ad9c37af4a715423b110c',1,'stack']]],
-  ['type_479',['type',['../structdata__params.html#a4f82f2e3f2a65f24997dcf54eaf78201',1,'data_params::type()'],['../structlinklist.html#aa6d9640b8e39654b0ac76b326a61f7cb',1,'linklist::type()'],['../structt__queue.html#a4593404e7509a899f54a1fe6a9dead52',1,'t_queue::type()'],['../structstack.html#ab723aaec587b5a7e9cad01ef7793b31f',1,'stack::type()']]]
+  ['size_510',['size',['../structheap.html#a439227feff9d7f55384e8780cfc2eb82',1,'heap']]],
+  ['sort_511',['sort',['../structheap.html#a35b6fbe271ea84a19deab2c35c433cb6',1,'heap']]],
+  ['stack_5fpop_512',['stack_pop',['../stack_8c.html#ac93502fba40edcb1990235655ef36138',1,'stack.c']]],
+  ['stack_5fpush_513',['stack_push',['../stack_8c.html#ac38889a9faca85296e445008281d49d6',1,'stack.c']]],
+  ['swap_514',['swap',['../structdata__params.html#a367489b820e375a9c9c5c0d96679183e',1,'data_params::swap()'],['../structlinklist.html#a367489b820e375a9c9c5c0d96679183e',1,'linklist::swap()']]],
+  ['swap_5fidx_515',['swap_idx',['../structdata__params.html#a6b2c881258cf8f25e6c8338e205d45fe',1,'data_params::swap_idx()'],['../structheap.html#a6b2c881258cf8f25e6c8338e205d45fe',1,'heap::swap_idx()']]]
 ];

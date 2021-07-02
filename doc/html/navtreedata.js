@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "C Everything", "index.html", [
+  [ "My Project", "index.html", [
     [ "<strong>C EVERYTHING Merge</strong>", "md_doc_merge_template.html", [
       [ "Commit details", "md_doc_merge_template.html#autotoc_md1", null ],
       [ "Milestone Details", "md_doc_merge_template.html#autotoc_md2", null ],
@@ -34,7 +34,10 @@ var NAVTREE =
       [ "Pre Commit checklist", "md_doc_merge_template.html#autotoc_md6", null ],
       [ "Unit test details", "md_doc_merge_template.html#autotoc_md7", null ]
     ] ],
-    [ "c_everything", "md__r_e_a_d_m_e.html", null ],
+    [ "c_everything", "md__r_e_a_d_m_e.html", [
+      [ "BUILD", "md__r_e_a_d_m_e.html#autotoc_md9", null ],
+      [ "RUN", "md__r_e_a_d_m_e.html#autotoc_md10", null ]
+    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -61,7 +64,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"stack_8h.html"
+"queue_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

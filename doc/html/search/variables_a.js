@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['name_456',['name',['../structlinklist.html#a5ac083a645d964373f022d03df4849c8',1,'linklist::name()'],['../structt__queue.html#a5ac083a645d964373f022d03df4849c8',1,'t_queue::name()'],['../structstack.html#a5ac083a645d964373f022d03df4849c8',1,'stack::name()']]],
-  ['next_457',['next',['../structmemory__record.html#a036d0fb26bf29931c0a2a8a6fee6208d',1,'memory_record']]],
-  ['next_5fnode_458',['next_node',['../structlinklist.html#a177bebd1b47cd14e3e61c7095f1e5a90',1,'linklist']]],
-  ['nmemb_459',['nmemb',['../structmemory__record.html#a79fd723df92f68cf8a6207a1d98b4c01',1,'memory_record']]],
-  ['nxt_460',['nxt',['../structllnode.html#a96d2332feecbc91af592f3c3435e597e',1,'llnode']]]
+  ['max_5fsize_491',['max_size',['../structt__queue.html#a98ca8117bc73d9d7520727c4ce8772e6',1,'t_queue::max_size()'],['../structstack.html#a98ca8117bc73d9d7520727c4ce8772e6',1,'stack::max_size()']]],
+  ['mem_492',['mem',['../structmemory__record.html#a5f00e9b1b039412bb144bae39e66b97a',1,'memory_record']]],
+  ['mem_5frecord_493',['mem_record',['../structmem__mamnager.html#a7e1f37618e0388846134279ce6da806b',1,'mem_mamnager']]]
 ];

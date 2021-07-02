@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['rear_471',['rear',['../structt__queue.html#af866be352de659d624986cb76b8d45b6',1,'t_queue']]]
+  ['q_5fdeq_507',['q_deq',['../queue_8c.html#af8ebef5041ea774db5525e1589f52e2f',1,'queue.c']]],
+  ['q_5fenq_508',['q_enq',['../queue_8c.html#af86b7d5119900a4019218f7e6c303b48',1,'queue.c']]]
 ];

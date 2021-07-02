@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['max_5fsize_453',['max_size',['../structt__queue.html#a98ca8117bc73d9d7520727c4ce8772e6',1,'t_queue::max_size()'],['../structstack.html#a98ca8117bc73d9d7520727c4ce8772e6',1,'stack::max_size()']]],
-  ['mem_454',['mem',['../structmemory__record.html#a5f00e9b1b039412bb144bae39e66b97a',1,'memory_record']]],
-  ['mem_5frecord_455',['mem_record',['../structmem__mamnager.html#a7e1f37618e0388846134279ce6da806b',1,'mem_mamnager']]]
+  ['len_489',['len',['../structheap.html#a1806a940f24509620969be008543d4c3',1,'heap::len()'],['../structlinklist.html#a1806a940f24509620969be008543d4c3',1,'linklist::len()'],['../structt__queue.html#a1806a940f24509620969be008543d4c3',1,'t_queue::len()'],['../structstack.html#a1806a940f24509620969be008543d4c3',1,'stack::len()']]],
+  ['line_490',['line',['../structmemory__record.html#a41ebd28ef1d7c6ade45642cb6acc1039',1,'memory_record']]]
 ];

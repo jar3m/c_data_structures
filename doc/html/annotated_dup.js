@@ -1,6 +1,7 @@
 var annotated_dup =
 [
     [ "data_params", "structdata__params.html", "structdata__params" ],
+    [ "heap", "structheap.html", "structheap" ],
     [ "linklist", "structlinklist.html", "structlinklist" ],
     [ "llnode", "structllnode.html", "structllnode" ],
     [ "mem_mamnager", "structmem__mamnager.html", "structmem__mamnager" ],

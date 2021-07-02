@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['memory_5fmanager_2ec_306',['memory_manager.c',['../memory__manager_8c.html',1,'']]],
-  ['memory_5fmanager_2eh_307',['memory_manager.h',['../memory__manager_8h.html',1,'']]],
-  ['merge_5ftemplate_2emd_308',['merge_template.md',['../merge__template_8md.html',1,'']]]
+  ['link_5flist_2ec_327',['link_list.c',['../link__list_8c.html',1,'']]],
+  ['link_5flist_2eh_328',['link_list.h',['../link__list_8h.html',1,'']]],
+  ['logger_2ec_329',['logger.c',['../logger_8c.html',1,'']]],
+  ['logger_2eh_330',['logger.h',['../logger_8h.html',1,'']]]
 ];
