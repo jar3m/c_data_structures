@@ -1,3 +1,8 @@
+/*! @file memory_manager.h
+    @brief 
+    Contains decalration of structures for maintaing all mem alloc and frees
+*/
+
 #pragma once 
 
 #define get_mem(nmemb, size) tag_alloc(nmemb, size,  __FILE__, __LINE__)

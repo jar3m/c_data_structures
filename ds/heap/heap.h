@@ -11,10 +11,6 @@ typedef enum {
 	eMAX_HEAP,		///< Maximum Heap
 } e_heaptype;
 
-// heap routines
-//TODO To be depracated and replaced with f_gen and f_vgen
-typedef t_gen (*f_hdel) (t_gen);
-typedef void (*f_hgen) (t_gen);
 
 /// Heap struct defn
 typedef struct heap {
@@ -28,11 +24,13 @@ typedef struct heap {
 	
 	// heap  roputines
 	f_ins insert;		///< routine to insert elements in heap 
-	f_hdel del;   		///< routine to delete elements in heap
-	f_hgen build; 		///< routine to heapify
-	f_hgen sort;  		///< routine to heap sort 
+	f_gen del;   		///< routine to delete elements in heap
+	f_vgen build; 		///< routine to heapify
+	f_vgen sort;  		///< routine to heap sort 
 	f_len len;    		///< routine to get heap len
 	f_print print;		///< routine to print heap info 
+	f_destroy destroy;	///< routine to destroy
+
 	// routies for operating on data
 	f_cmp_idx cmpr_idx;
 	f_cpy_idx copy_idx;
@@ -42,6 +40,4 @@ typedef struct heap {
 } t_heap;
 
 // Heap interface API
-t_gen create_heap(char *name, t_gen data,int size, e_heaptype htype, e_data_types dtype);
-void destroy_heap(t_gen);
-void print_heap(t_gen);
+t_gen create_heap(char *name, t_gen data,int size, e_heaptype htype, t_dparams *prm);
