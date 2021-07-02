@@ -24,9 +24,11 @@ typedef struct data_params {
 	f_assign assign;		///< Routine used for creating memory for storing the data
 	f_swap swap;			///< Routine used for swaping two elemnts of goven data
 	f_free free;			///< Routine used for freeing elements of said data
+
 	f_cmp_idx cmpr_idx;		///< Routine used for comparing elems in given array indicies
 	f_swp_idx swap_idx;              ///< Routine used for swapring elems in given array indicies	
 	f_cpy_idx copy_idx;              ///< Routine used for copying elems in given array indicies
+
 	f_get_idx get_idx;              ///< Routine used for getting elem in given array index
 	f_print print_data;		///< Routine used for printing elem data
 } t_dparams;

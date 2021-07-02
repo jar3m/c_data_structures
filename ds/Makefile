@@ -3,6 +3,7 @@ link_list_ARCHIVE=$(PROJ_PATH)/ds/link_list/link_list.o
 stack_ARCHIVE=$(PROJ_PATH)/ds/stack/stack.o
 queue_ARCHIVE=$(PROJ_PATH)/ds/queue/queue.o
 heap_ARCHIVE=$(PROJ_PATH)/ds/heap/heap.o
+
 ds_ARCHIVE=$(PROJ_PATH)/ds/bin/ds.a
 
 export
