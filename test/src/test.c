@@ -7,7 +7,9 @@
 #include "link_list.h"
 #include "stack.h"
 #include "queue.h"
+#include "heap.h"
 
+void test_heap();
 void test_queue();
 void test_stack();
 void test_linklist();
@@ -22,11 +24,12 @@ int main(int argc, char *argv[])
 {
 	size_t size = 0;
 	int *ptr[100];
-	int i ;	
+	int i;	
 
 	mem_init();
 	logger_init();
 	fault_manager_init(NULL);
+
 	for (i = 0; i < 100; i ++) {
 		ptr[i] = (int *)get_mem(1, sizeof(int));
 		size += sizeof(*(ptr[i]));
@@ -47,7 +50,8 @@ int main(int argc, char *argv[])
 	test_linklist();
 	test_stack();
 	test_queue();
-
+	test_heap();
+  
 	mem_finit();
 
 	return 0;
@@ -295,7 +299,7 @@ void test_queue()
 	}
 	q1->print(q1);
 	q2->print(q2);
-
+	
 	for(i = 0; i < 10; i++) {
 		cp = q1->deq(q1);
 		free_mem(cp);
@@ -320,4 +324,58 @@ void test_queue()
 
 	q1->destroy(q1);
 	q2->destroy(q2);
+}
+
+/*! @brief  
+ *   Test Heap routines
+ *  @return NA
+ */
+void test_heap()
+{
+	float f, arr1[10]={0};
+	int arr[10] = {1,53,32,43,3,23,11,209};
+	char carr[10] = {'&', '^', 'j', 'a', 'r', 'e', 'm', '*', '%', '!'};
+	t_dparams dp;
+	t_heap *h1, *h2, *h3;
+
+	init_data_params(&dp, eINT32);
+	h1 = create_heap("INT HEAP", arr,10, eMIN_HEAP, &dp);
+
+	init_data_params(&dp, eINT8);
+	h2 = create_heap("CHAR HEAP", carr,10, eMAX_HEAP, &dp);
+
+	init_data_params(&dp, eFLOAT);
+	h3 = create_heap("float HEAP", arr1,10, eMIN_HEAP, &dp); 
+	
+	// Insert element
+	f = -1.2234f;
+	h3->insert(h3,&f);
+	f = -10.3242f;
+	h3->insert(h3,&f);
+	f = 1000.2f;
+	h3->insert(h3,&f);
+	
+	printf("Sorting\n");
+	// heap sort data;
+	h1->sort(h1);
+	h2->sort(h2);
+
+	h1->print(h1);
+	h2->print(h2);
+	h3->print(h3);
+
+	// heapify array
+	h1->build(h1);
+	h2->build(h2);
+	printf("Heapify'd array\n");
+	printf("%f\n", *(float*)(h3->del(h3)));
+	printf("%f\n", *(float*)(h3->del(h3)));
+	h1->print(h1);
+	h2->print(h2);
+	h3->print(h3);
+
+	h1->destroy(h1);
+	h2->destroy(h2);
+	h3->destroy(h3);
+
 }

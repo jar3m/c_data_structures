@@ -19,9 +19,9 @@ void init_data_params(t_dparams *prms, e_data_types data_type)
 			//char list;
 			prms->cmpr = compare_char;
 			prms->swap = swap_char;
-			prms->cmp_idx = compare_idx_char;
-			prms->swp_idx = swap_idx_char;
-			prms->cpy_idx = copy_idx_char;
+			prms->cmpr_idx = compare_idx_char;
+			prms->swap_idx = swap_idx_char;
+			prms->copy_idx = copy_idx_char;
 			prms->get_idx  = get_idx_char;
 			prms->print_data = print_char;
 			prms->free = FREE_MEM;
@@ -30,9 +30,9 @@ void init_data_params(t_dparams *prms, e_data_types data_type)
 			//int list;
 			prms->cmpr = compare_int;
 			prms->swap = swap_int;
-			prms->cmp_idx = compare_idx_int;
-			prms->swp_idx = swap_idx_int;
-			prms->cpy_idx = copy_idx_int;
+			prms->cmpr_idx = compare_idx_int;
+			prms->swap_idx = swap_idx_int;
+			prms->copy_idx = copy_idx_int;
 			prms->get_idx  = get_idx_int;
 			prms->print_data = print_int;
 			prms->free = FREE_MEM;
@@ -41,9 +41,9 @@ void init_data_params(t_dparams *prms, e_data_types data_type)
 			//float list;
 			prms->cmpr = compare_float;
 			prms->swap = swap_float;
-			prms->cmp_idx = compare_idx_float;
-			prms->swp_idx = swap_idx_float;
-			prms->cpy_idx = copy_idx_float;
+			prms->cmpr_idx = compare_idx_float;
+			prms->swap_idx = swap_idx_float;
+			prms->copy_idx = copy_idx_float;
 			prms->get_idx  = get_idx_float;
 			prms->print_data = print_float;
 			prms->free = FREE_MEM;
