@@ -1,3 +1,8 @@
+/*! @file heap.c
+    @brief 
+    Contains definitions of routines supported by heap 
+*/
+
 #include "heap.h"
 
 void heap_insert(t_gen d,t_gen data);
@@ -5,67 +10,54 @@ t_gen heap_delete_root(t_gen d);
 void heap_build(t_gen d);
 void heap_sort(t_gen d);
 int heap_len(t_gen d);
-void print_heap(t_gen d);
+void heap_print(t_gen d);
+void destroy_heap(t_gen d);
 
 
-/*! \brief Brief description.
+/*! @brief  
  *  Create an instance of heap
- * */
-t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, e_data_types dtype)
+ *  @param name     - Name of heap instance
+ *  @param size     - Max size of heap instance
+ *  @param type     - Type of heap to be created
+ *  @param data     - Array pointer to build heap
+ *  @param prm      - Data type specific parameters
+ *  @return         - Pointer to instance of heap
+*/
+t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, t_dparams *prm)
 {
 	t_heap *h = get_mem(1, sizeof(t_heap));
 
 	// Initailze heap Params
-	h->name = name;
-	h->type = htype;
-	h->data = data;
-	h->size = size;
-	h->count = 0;
+	h->name       = name;
+	h->type       = htype;
+	h->data       = data;
+	h->size       = size;
+	h->count      = 0;
 	
 	// Initailze heap routines
-	h->insert = heap_insert;
-	h->del = heap_delete_root;
-	h->build = heap_build;
-	h->sort = heap_sort;
-	h->len = heap_len;
-	h->print = print_heap;
+	h->insert     = heap_insert;
+	h->del        = heap_delete_root;
+	h->build      = heap_build;
+	h->sort       = heap_sort;
+	h->len        = heap_len;
+	h->print      = heap_print;
+	h->destroy    = destroy_heap;
 
 	// Initailze datatype based operations req for prop working of heap
-	switch (dtype)
-	{
-		case eINT8:
-			//char list;
-			h->cmpr_idx = compare_idx_char;
-			h->swap_idx = swap_idx_char;
-			h->copy_idx = copy_idx_char;
-			h->get_idx  = get_idx_char;
-			h->print_data = print_char;
-			break;
-		case eINT32:
-			//int list;
-			h->cmpr_idx = compare_idx_int;
-			h->swap_idx = swap_idx_int;
-			h->copy_idx = copy_idx_int;
-			h->get_idx  = get_idx_int;
-			h->print_data = print_int;
-			break;
-		case eFLOAT:
-			//float list;
-			h->cmpr_idx = compare_idx_float;
-			h->swap_idx = swap_idx_float;
-			h->copy_idx = copy_idx_float;
-			h->get_idx  = get_idx_float;
-			h->print_data = print_float;
-			break;
-
-	}
-
+	h->cmpr_idx   =	prm->cmpr_idx;
+	h->swap_idx   =	prm->swap_idx; 
+	h->copy_idx   =	prm->copy_idx;
+	h->get_idx    =	prm->get_idx;
+	h->print_data =	prm->print_data;
+	
 	return (t_gen)h;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Preserve heap property on insert
  *  by heapifying from bottom to root
+ *  @param d    - Pointer to instance of heap 
+ *  @param idx  - Index of node to heapify
  * */
 void heapify_up(t_heap *h, int idx)
 {
@@ -86,8 +78,11 @@ void heapify_up(t_heap *h, int idx)
 	}
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Insert an element to heap
+ *  @param d    - Pointer to instance of heap 
+ *  @param data - Pointer to data that has to be added to heap
+ *  @return 	- NA
  * */
 void heap_insert(t_gen d,t_gen data)
 {
@@ -103,8 +98,11 @@ void heap_insert(t_gen d,t_gen data)
 	h->count++;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Rearrange a heap to maintain the heap property
+ *  @param d    - Pointer to instance of heap 
+ *  @param idx  - Index of node to heapify
+ *  @return 	- NA
  */
 void heapify(t_heap *h, int idx)
 {
@@ -137,8 +135,10 @@ void heapify(t_heap *h, int idx)
 	}	
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Build a heap given a array
+ *  @param d    - Pointer to instance of heap 
+ *  @return 	- NA
  */
 void heap_build(t_gen d)
 {
@@ -152,8 +152,10 @@ void heap_build(t_gen d)
 }
 
 
-/*! \brief Brief description.
+/*! @brief  
  *  Delete the root from heap
+ *  @param d    - Pointer to instance of heap 
+ *  @return 	- Pointer to deleted heap element
  */
 t_gen heap_delete_root(t_gen d)
 {
@@ -178,8 +180,10 @@ t_gen heap_delete_root(t_gen d)
 	return data;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Heap sort the data
+ *  @param d    - Pointer to instance of heap 
+ *  @return 	- NA
  */
 void heap_sort(t_gen d)
 {
@@ -200,16 +204,20 @@ void heap_sort(t_gen d)
 	}
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  heap count
+ *  @param d    - Pointer to instance of heap 
+ *  @return 	- heap length
  */
 int heap_len(t_gen h)
 {
 	return ((t_heap*)h)->count;
 }
 
-/*! \brief Brief description.
+/*! @brief  
  *  Destroy the instance of the heap
+ *  @param d    - Pointer to instance of heap 
+ *  @return 	- NA
  */
 void destroy_heap(t_gen d)
 {
@@ -218,10 +226,12 @@ void destroy_heap(t_gen d)
 	free_mem(h);
 }
 
-/*! \brief Brief description.
- *  print_heap_info
+/*! @brief  
+ *  heap_print_info
+ *  @param d    - Pointer to instance of heap 
+ *  @return 	- NA
 */
-void print_heap(t_gen d)
+void heap_print(t_gen d)
 {
 	t_heap *h = (t_heap*)d; 
 	int i;

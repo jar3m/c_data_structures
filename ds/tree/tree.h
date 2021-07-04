@@ -19,11 +19,6 @@ typedef enum {
 	eAVL,				///< AVL Tree
 } e_treetype;
 
-// TODO To be depriciated
-// tree specific routines
-typedef t_gen(*f_pred)(t_gen, t_gen);
-typedef t_gen(*f_succ)(t_gen, t_gen);
-
 
 /// tree struct defn
 typedef struct tree {
@@ -39,8 +34,8 @@ typedef struct tree {
 	f_ins insert;			///< routine to insert element in tree
 	f_del del;   			///< routine to delete element in tree
 	f_find find; 			///< routine to find element in tree
-	f_pred pred; 			///< routine to get predecessor to given node
-	f_succ succ; 			///< routine to get successor to given node
+	f_gen2 pred; 			///< routine to get predecessor to given node
+	f_gen2 succ; 			///< routine to get successor to given node
 	f_gen min;   			///< routine to get minm element in tree
 	f_gen max;   			///< routine to get maxm element in tree
 	f_len height;			///< routine to get height of tree
@@ -49,6 +44,7 @@ typedef struct tree {
 	f_print preorder; 		///< routine to print preorder traversal of tree
 	f_print postorder;		///< routine to print postorder traversal of tree
 	f_print print;			///< routine to print tree level by level
+	f_destroy destroy;		///< routine to destroy the tree instance
 	
 	// routies for operating on data
 	f_cmpr cmpr;
@@ -58,6 +54,4 @@ typedef struct tree {
 } t_tree;
 
 /// tree interface API
-t_gen create_tree(char *name, e_treetype, e_data_types);
-void destroy_tree(t_gen);
-void print_tree(t_gen);
+t_gen create_tree(char *name, e_treetype, t_dparams *prm);

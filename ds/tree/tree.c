@@ -24,6 +24,7 @@ int tree_node_count(t_gen n);
 void tree_insert_node_avl(t_gen,t_gen);
 t_gen tree_delete_node_avl(t_gen,t_gen);
 int tree_height_avl(t_gen n);
+void destroy_tree(t_gen);
 
 /// Look Up function ptrs for inserting elem to tree
 f_ins tree_insert[] = {tree_insert_node_bst,tree_insert_node_avl};
@@ -41,66 +42,41 @@ f_len tree_height[] = {tree_height_bst, tree_height_avl};
  *  @param prm   - Data type specific parameters
  *  @return 	 - Pointer to instance of tree
  * */
-t_gen create_tree(char *name, e_treetype ttype, e_data_types dtype)
+t_gen create_tree(char *name, e_treetype ttype, t_dparams *prm)
 {
 	t_tree *t = get_mem(1, sizeof(t_tree));
 
 	// Initailze tree Params
-	t->name = name;
-	t->type = ttype;
-	t->count = 0;
-	t->root = NULL;
+	t->name       = name;
+	t->type       = ttype;
+	t->count      = 0;
+	t->root       = NULL;
 	
 	// Initailze tree routines
-	t->insert = tree_insert[ttype]; 
-	t->del = tree_del[ttype];
-	t->find = tree_find_node;
-	t->pred = tree_node_predecessor;
-	t->succ = tree_node_successor;
-	t->min = tree_get_min;
-	t->max = tree_get_max;
-	t->print = print_tree;
-	t->inorder = tree_inorder;
-	t->preorder = tree_preorder;
-	t->postorder = tree_postorder;
-	t->height = tree_height[ttype];
+	t->insert     = tree_insert[ttype]; 
+	t->del        = tree_del[ttype];
+	t->find       = tree_find_node;
+	t->pred       = tree_node_predecessor;
+	t->succ       = tree_node_successor;
+	t->min        = tree_get_min;
+	t->max        = tree_get_max;
+	t->print      = print_tree;
+	t->inorder    = tree_inorder;
+	t->preorder   = tree_preorder;
+	t->postorder  = tree_postorder;
+	t->height     = tree_height[ttype];
 	t->node_count = tree_node_count;
+	t->destroy    = destroy_tree;
+
 	// Initailze datatype based operations req for prop working of tree
-	switch(dtype)
-	{
-		case eINT8:
-			//char tree;
-			t->cmpr = compare_char;
-			t->swap = swap_char;
-			t->free = FREE_MEM;
-			t->print_data = print_char;
-			break;
-		case eINT32:
-			//int tree;
-			t->cmpr = compare_int;
-			t->swap = swap_int;
-			t->free = FREE_MEM;
-			t->print_data = print_int;
-			break;
-		case eFLOAT:
-			//float tree;
-			t->cmpr = compare_float;
-			t->swap = swap_float;
-			t->free = FREE_MEM;
-			t->print_data = print_float;
-			break;
-		case eSTRING:
-			//string tree;
-			t->cmpr = compare_string;
-			t->swap = swap_string;
-			t->free = FREE_MEM;
-			t->print_data = print_str;
-			break;
-	}
+	t->cmpr       = prm->cmpr;
+	t->swap       = prm->swap;
+	t->print_data = prm->print_data;
+	t->free       = prm->free;
 
 	return (t_gen)t;
-}
-
+}                  
+                   
 
 /*! @brief  
  *   get_num_nodes in tree;
@@ -491,13 +467,15 @@ int tree_height_bst (t_gen n)
 	t_tree_node *cur = (t_tree_node*)n;
 	int height = 0,size;
 	t_queue *q;
+	t_dparams dp;
 	
 	if (cur == NULL) {
 		return height;
 	}
 
 	// TODO: Queue count how to do??
-	q = create_queue("Qdel_tree", 40, eARRAY_QUEUE_CIRC, eUSER);
+	init_data_params(&dp, eINT32);
+	q = create_queue("Qdel_tree", 40, eLL_QUEUE_CIRC, &dp);
 
 	// enqueue the root node
 	q->enq(q, cur);
@@ -523,7 +501,7 @@ int tree_height_bst (t_gen n)
 		height++;
 	}
 	
-	destroy_queue(q);
+	q->destroy(q);
 
 	return height;
 
@@ -539,13 +517,15 @@ void destroy_tree(t_gen d)
 	t_tree *t = (t_tree*)d;
 	t_tree_node *cur = t->root;
 	t_queue *q;
+	t_dparams dp;
 
 	// Empty tree
 	if (cur == NULL) {
 		LOG_WARN("TREES", "%s: TREE Empty\n",t->name);
 	} else {
+		init_data_params(&dp, eINT32);
 		q = create_queue("Qdel_tree", t->count,
-				eARRAY_QUEUE_CIRC, eUSER);
+				eLL_QUEUE_CIRC, &dp);
 		// enqueue the root node
 		q->enq(q, cur);
 
@@ -567,7 +547,7 @@ void destroy_tree(t_gen d)
 			t->free(cur->key, __FILE__, __LINE__);
 			free_mem(cur);
 		}
-		destroy_queue(q);
+		q->destroy(q);
 	}
 	
 	free_mem(t);
@@ -582,6 +562,7 @@ void  tree_postorder(t_gen d)
 {
 	t_tree *t = (t_tree*)d;
 	t_tree_node *tmp, *cur = t->root;
+	t_dparams dp;
 	t_stack *s;
 	 
 	// Empty tree
@@ -591,7 +572,9 @@ void  tree_postorder(t_gen d)
 	}
 	printf("%s: %d nodes postorder traversal\n", t->name, t->count);
 	
-	s = create_stack("Stk_postorder", t->count, eARRAY_STACK, eUINT32);
+	init_data_params(&dp, eINT32);
+	s = create_stack("Stk_postorder", t->count, eLL_STACK, &dp);
+
 	do {
 		// Move to left most node
 		while (cur) {
@@ -607,7 +590,7 @@ void  tree_postorder(t_gen d)
 	
 		//  If popped item has right child and the right child is not
 		// processed, then make sure right child processed before root
-		tmp = (s->empty(s) != true)? s->peek(s): NULL;
+		tmp = (s->empty(s) != true)? s->peek(s, 0): NULL;
 		
 		if (cur->rchild != NULL && tmp == cur->rchild) {
 			// remove right child from stack
@@ -626,7 +609,7 @@ void  tree_postorder(t_gen d)
 	} while (s->empty(s) != true);
 	printf("\n");
 	
-	destroy_stack(s);
+	s->destroy(s);
 
 }
 
@@ -640,6 +623,7 @@ void  tree_preorder(t_gen d)
 	t_tree *t = (t_tree*)d;
 	t_tree_node *cur = t->root;
 	t_stack *s;
+	t_dparams dp;
 	 
 	// Empty tree
 	if (cur == NULL) {
@@ -648,7 +632,9 @@ void  tree_preorder(t_gen d)
 	}
 	printf("%s: %d nodes preorder traversal\n", t->name, t->count);
 
-	s = create_stack("Stk_inorder", t->count, eARRAY_STACK, eUINT32);
+	init_data_params(&dp, eINT32);
+	s = create_stack("Stk_inorder", t->count, eLL_STACK, &dp);
+
 	// push root node
 	s->push(s, cur);
 	while (s->empty(s) != true) {
@@ -667,7 +653,7 @@ void  tree_preorder(t_gen d)
 	}
 	printf("\n");
 	
-	destroy_stack(s);
+	s->destroy(s);
 }
 
 /*! @brief  
@@ -680,6 +666,7 @@ void  tree_inorder(t_gen d)
 	t_tree *t = (t_tree*)d;
 	t_tree_node *cur = t->root;
 	t_stack *s;
+	t_dparams dp;
 	 
 	// Empty tree
 	if (cur == NULL) {
@@ -687,7 +674,9 @@ void  tree_inorder(t_gen d)
 		return;
 	}
 	printf("%s: %d nodes inorder traversal\n", t->name, t->count);
-	s = create_stack("Stk_inorder", t->count, eARRAY_STACK, eUINT32);
+
+	init_data_params(&dp, eINT32);
+	s = create_stack("Stk_inorder", t->count, eLL_STACK, &dp);
 
 	while (s->empty(s) != true || cur != NULL) {
 		// Visit the left most child
@@ -706,7 +695,7 @@ void  tree_inorder(t_gen d)
 	}
 	printf("\n");
 	
-	destroy_stack(s);
+	s->destroy(s);
 }
 
 /*! @brief  
@@ -719,7 +708,9 @@ void print_tree(t_gen d)
 	t_tree *t = (t_tree*)d;
 	t_tree_node *cur = t->root;
 	t_queue *q;
+	t_dparams dp;
 	int level = 0,size;
+
 	// Empty tree
 	if (cur == NULL) {
 		LOG_WARN("TREES", "%s: TREE Empty\n",t->name);
@@ -727,7 +718,8 @@ void print_tree(t_gen d)
 	}
 	printf("%s: %d nodes lvl based print \n", t->name,t->count);
 
-	q = create_queue("Qdel_tree", t->count, eARRAY_QUEUE_CIRC, eUSER);
+	init_data_params(&dp, eINT32);
+	q = create_queue("Qdel_tree", t->count, eLL_QUEUE_CIRC, &dp);
 
 	// enqueue the root node
 	q->enq(q, cur);
@@ -763,7 +755,7 @@ void print_tree(t_gen d)
 		level++;
 	}
 	
-	destroy_queue(q);
+	q->destroy(q);
 
 }
 
@@ -896,6 +888,7 @@ void tree_insert_node_avl(t_gen d,t_gen data)
 	t_tree_node *parent = NULL, *cur;
 	e_cmpr res;
 	t_stack *s;
+	t_dparams dp;
 
 	// key already present
 	if (t->find(t, data) != NULL) {
@@ -917,7 +910,8 @@ void tree_insert_node_avl(t_gen d,t_gen data)
 	}
 
 	// stack to be used to find rebalance and update height
-	s = create_stack("Stk_inorder", t->count, eARRAY_STACK, eUINT32);
+	init_data_params(&dp, eINT32);
+	s = create_stack("Stk_inorder", t->count, eLL_STACK, &dp);
 
 	cur = t->root;
 	// get position in tree to insert node
@@ -955,7 +949,7 @@ void tree_insert_node_avl(t_gen d,t_gen data)
 		cur->height = tree_height_avl(cur);	
 	}
 
-	destroy_stack(s);
+	s->destroy(s);
 }
 
 
@@ -971,6 +965,7 @@ t_gen tree_delete_node_avl(t_gen d,t_gen data)
 	t_tree_node *tmp, *prv, *cur = t->root;
 	t_gen ret = NULL;
 	e_cmpr res;
+	t_dparams dp;
 	t_stack *s;
 	
 	// Empty tree
@@ -980,7 +975,8 @@ t_gen tree_delete_node_avl(t_gen d,t_gen data)
 	} 
 
 	// stack to be used to find rebalance and update height
-	s = create_stack("Stk_inorder", t->count, eARRAY_STACK, eUINT32);
+	init_data_params(&dp, eINT32);
+	s = create_stack("Stk_inorder", t->count, eLL_STACK, &dp);
 
 	t->count++;
 	tmp = prv = NULL;
@@ -1004,7 +1000,7 @@ t_gen tree_delete_node_avl(t_gen d,t_gen data)
 	// key not present
 	if (cur == NULL) {
 		LOG_WARN("TREES", "%s: Key not present\n",t->name);
-		destroy_stack(s);
+		s->destroy(s);
 		return ret;
 	} 
 
@@ -1062,6 +1058,6 @@ t_gen tree_delete_node_avl(t_gen d,t_gen data)
 		cur->height = tree_height_avl(cur);	
 	}
 
-	destroy_stack(s);
+	s->destroy(s);
 	return ret;
 }
