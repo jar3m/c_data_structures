@@ -34,5 +34,5 @@ typedef struct data_params {
 } t_dparams;
 
 void init_data_params(t_dparams*, e_data_types);
-
+void dummy_free(void *mem_addr, char *file, int line);
 

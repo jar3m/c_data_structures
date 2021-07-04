@@ -23,6 +23,7 @@ STACK=true
 QUEUE=true
 HEAP=true
 TREE=true
+GRAPH=true
 
 #data struct define
 DS_FLAGS = -DLINK_LIST=$(LINK_LIST) -DSTACK=$(STACK) \
@@ -39,4 +40,5 @@ DS_FLAGS = -DLINK_LIST=$(LINK_LIST) -DSTACK=$(STACK) \
 	@echo "QUEUES= $(QUEUE)"
 	@echo "HEAPS= $(HEAP)"
 	@echo "TREES= $(TREE)"
+	@echo "GRAPHS= $(GRAPH)"
 

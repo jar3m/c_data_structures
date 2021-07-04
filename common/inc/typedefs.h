@@ -45,6 +45,7 @@ typedef void* t_gen;	///< Generic data pointer
 /// Generic data pointer definitions that are common to most data structure operations
 typedef t_gen (*f_gen)(t_gen);			///< fn ptr that takes one gen ptr and return gen ptr
 typedef t_gen (*f_gen2)(t_gen, t_gen);		///< fn ptr that takes two gen ptr and return gen ptr
+typedef t_gen (*f_gen3)(t_gen, t_gen, t_gen);	///< fn ptr that takes three gen ptr and return gen ptr
 typedef void (*f_vgen)(t_gen);			///< fn ptr that takes one gen ptr and return nothing
 typedef void (*f_vgen2)(t_gen, t_gen);		///< fn ptr that takes two gen ptr and return nothing
 typedef t_gen (*f_genidx)(t_gen, int);		///< fn ptr that takes one gen ptr, idx and return gen ptr

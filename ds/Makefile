@@ -4,6 +4,7 @@ stack_ARCHIVE=$(PROJ_PATH)/ds/stack/stack.o
 queue_ARCHIVE=$(PROJ_PATH)/ds/queue/queue.o
 heap_ARCHIVE=$(PROJ_PATH)/ds/heap/heap.o
 tree_ARCHIVE=$(PROJ_PATH)/ds/tree/tree.o
+graph_ARCHIVE=$(PROJ_PATH)/ds/graph/graph.o
 
 ds_ARCHIVE=$(PROJ_PATH)/ds/bin/ds.a
 
@@ -34,6 +35,11 @@ INCLUDES += -I $(PROJ_PATH)/ds/tree/
 sub_ARCHIVE += $(tree_ARCHIVE)
 endif
 
+ifeq ($(GRAPH), true)
+INCLUDES += -I $(PROJ_PATH)/ds/graph/
+sub_ARCHIVE += $(graph_ARCHIVE)
+endif
+
 all: $(ds_ARCHIVE)
 
 $(ds_ARCHIVE): $(sub_ARCHIVE)
@@ -55,6 +61,9 @@ $(heap_ARCHIVE) :
 
 $(tree_ARCHIVE) :
 	make -C tree/ all
+
+$(graph_ARCHIVE) :
+	make -C graph/ all
 
 clean:
 	rm -rf $(ds_ARCHIVE) $(sub_ARCHIVE)

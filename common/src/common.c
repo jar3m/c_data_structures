@@ -4,6 +4,7 @@
 */
 #include "common.h"
 
+
 /*! @brief  
  *   Called to initalize data params for default data types
  *   Else for custom data types the data params structure is to be defined by user 
@@ -65,4 +66,13 @@ void init_data_params(t_dparams *prms, e_data_types data_type)
 	}
 }	
 
+/*! @brief  
+ *   Dummy free function 
+ *   Else for custom data types the data params structure is to be defined by user 
+ *  @param mem_addr - mem to be free'd
+ *  @return - NA
+ */
+void dummy_free(void *mem_addr, char *file, int line)
+{
 
+}

@@ -9,7 +9,9 @@
 #include "queue.h"
 #include "heap.h"
 #include "tree.h"
+#include "graph.h"
 
+void test_graph();
 void test_tree();
 void test_heap();
 void test_queue();
@@ -54,7 +56,8 @@ int main(int argc, char *argv[])
 	test_queue();
 	test_heap();
 	test_tree();
-  
+	test_graph();
+
 	mem_finit();
 
 	return 0;
@@ -504,4 +507,80 @@ void test_tree()
 	t2->destroy(t2);
 	t3->destroy(t3);
 	t4->destroy(t4);
+}
+
+/*! @brief  
+ *   Test Graph routines
+ *  @return NA
+ */
+void test_graph()
+{
+	t_graph *g1, *g2;
+	char city[][64] ={"Delhi", "Bangalore","Chennai"}; 
+	int i, *ip, num[] = {1,2,3,4,5,6,7,8,9,10};
+	t_dparams dp;
+	t_bfsinfo *bfs;	
+
+	init_data_params(&dp, eSTRING);
+	g1 = create_graph("Graph 1", 10, &dp);
+
+	init_data_params(&dp, eINT32);
+	g2 = create_graph("Graph 2", 10, &dp);
+
+	g1->add_edge_sym(g1, city[0], city[1]);   
+	g1->add_edge_sym(g1, city[1], city[2]);   
+	g1->add_edge(g1, city[2], city[0]);   
+	g1->print(g1);
+
+	if (g1->has_edge(g1, city[0], city[2]) == NULL) {
+		printf("%s not linked to %s\n",city[0],city[1]);
+	} else {
+		printf("%s linked to %s\n",city[0],city[1]);
+	} 
+
+	g1->del_edge(g1, city[0], city[1]);  
+	g1->del_edge_sym(g1, city[2], city[1]);  
+	g1->print(g1);
+
+	g1->del_vertex(g1, city[2]);
+	g1->print(g1);
+
+	if (g1->find(g1, city[2]) == NULL) {
+		printf("%s not present in graph\n",city[2]);
+	} else {
+		printf("%s present in graph\n",city[2]);
+	} 
+	g1->print(g1);
+
+	printf("**************\n");
+	
+	for(i = 0; i < 10; i++) {
+		g2->add_vertex(g2, &num[i]);   
+	}
+
+	g2->add_edge_sym(g2, &num[0], &num[1]);   
+	g2->add_edge_sym(g2, &num[0], &num[2]);   
+	g2->add_edge_sym(g2, &num[0], &num[3]);   
+	g2->add_edge_sym(g2, &num[1], &num[2]);   
+	g2->add_edge_sym(g2, &num[3], &num[4]);   
+	g2->add_edge_sym(g2, &num[3], &num[7]);   
+	g2->add_edge_sym(g2, &num[4], &num[5]);   
+	g2->add_edge_sym(g2, &num[4], &num[6]);   
+	g2->add_edge_sym(g2, &num[5], &num[6]);   
+	g2->add_edge_sym(g2, &num[5], &num[7]);   
+	g2->add_edge_sym(g2, &num[5], &num[8]);   
+	g2->add_edge_sym(g2, &num[7], &num[8]);   
+	g2->add_edge_sym(g2, &num[9], &num[8]);   
+	g2->print(g2);
+	
+	bfs  = g2->bfs(g2, &num[0]);
+	printf("---\n");
+	for(i = 0; i < 10; i++) {
+		ip = (int*)bfs[i].parent;
+		printf("%d %d %d\n", i+1, bfs[i].level, ip != NULL? *ip: -1);
+	}
+	free_mem(bfs);
+
+	g1->destroy(g1);
+	g2->destroy(g2);
 }
