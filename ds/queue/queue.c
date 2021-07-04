@@ -87,7 +87,7 @@ void queue_enqueue_arr(t_gen d, t_gen data)
 	if (q->full(q) == true) {
 		LOG_WARN("QUEUES", "%s: Queue Full\n",q->name);
 	}
-	
+
 	// queue empty (added first element)
 	q->front  = (q->front != -1) ? q->front : 0;
 

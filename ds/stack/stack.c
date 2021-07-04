@@ -302,7 +302,7 @@ t_gen stack_peek(t_gen d,int idx)
 	t_gen n;
 
 	// index out of bound
-	if ((idx < 0) && (idx >= s->count)) {
+	if ((idx < 0) || (idx >= s->count)) {
 		LOG_WARN("STACKS", "index is out of bounds\n", s->count);
 		return NULL;
 	}
@@ -313,6 +313,7 @@ t_gen stack_peek(t_gen d,int idx)
 	}
 
 	// Return data for link list based stack
+	l = (t_linklist*)s->data;
 	n = l->get_idx(l, idx);
 
 	return l->get_node_data(n);

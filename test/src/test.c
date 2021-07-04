@@ -8,7 +8,9 @@
 #include "stack.h"
 #include "queue.h"
 #include "heap.h"
+#include "tree.h"
 
+void test_tree();
 void test_heap();
 void test_queue();
 void test_stack();
@@ -51,6 +53,7 @@ int main(int argc, char *argv[])
 	test_stack();
 	test_queue();
 	test_heap();
+	test_tree();
   
 	mem_finit();
 
@@ -378,4 +381,127 @@ void test_heap()
 	h2->destroy(h2);
 	h3->destroy(h3);
 
+}
+
+/*! @brief  
+ *   Test Tree routines
+ *  @return NA
+ */
+void test_tree()
+{
+	char c,*cp,str[][64] = {"I", "See", "Everyting"};
+	char carr[10] = {'&', '^', 'j', 'a', 'r', 'e', 'm', '*', '%', '!'};
+	float f,*fp;
+	int i;
+	t_dparams dp;
+	t_tree_node *max, *min, *pred, *succ;
+	t_tree *t1, *t2, *t3, *t4;
+
+	init_data_params(&dp, eINT8);
+	t1 = create_tree("tree1", eBST, &dp);
+
+	init_data_params(&dp, eFLOAT);
+	t2 = create_tree("tree2", eAVL, &dp);
+
+	init_data_params(&dp, eSTRING);
+	t3 = create_tree("tree3", eAVL, &dp);
+
+	init_data_params(&dp, eFLOAT);
+	t4 = create_tree("tree4", eBST, &dp);
+	
+	for(i = 0; i < 3; i++) {
+		t1->insert(t1, assign_char(carr[i]));
+		f= (float)i+0.222 / 2.0f;
+		t2->insert(t2, assign_float(f));
+		t3->insert(t3, assign_string(str[i]));
+		t4->insert(t4, assign_float(f));
+	}
+	for(i = 9; i >= 3; i--) {
+		t1->insert(t1, assign_char(carr[i]));
+		f= (float)i+0.222 / 2.0f;
+		t2->insert(t2, assign_float(f));
+		t4->insert(t4, assign_float(f));
+	}
+	// find in tree
+	char str1[10] = "some";
+	if (t3->find(t3, str1) == NULL) {
+		printf("%s not present in tree\n", str1);
+	} else {
+		printf("%s present in tree\n", str1);
+	}
+
+	char str2[10] = "I";
+	if (t3->find(t3, str2) == NULL) {
+		printf("%s not present in tree\n", str2);
+	} else {
+		printf("%s present in tree\n", str2);
+	}
+	
+	// Min  Max in tree
+	printf("\nmin & max\n");
+	max = t1->max(t1->root);
+	min = t1->min(t1->root);
+	printf("%c %c\n", *(char*) max->key, *(char*)min->key); 
+
+	max = t2->max(t2->root);
+	min = t2->min(t2->root);
+	printf("%f %f\n", *(float*)max->key,*(float*)min->key); 
+
+	max = t3->max(t3->root);
+	min = t3->min(t3->root);
+	printf("%s %s\n", (char*)max->key, (char*) min->key); 
+
+	// Succ & pred in tree
+	printf("\nPred & Succ\n");
+	c = 'm';
+	pred = t1->pred(t1,&c);
+	succ = t1->succ(t1,&c);
+	printf("%c %c\n", *(char*) pred->key, *(char*)succ->key); 
+
+	f = 2.111000f;
+	pred = t2->pred(t2,&f);
+	succ = t2->succ(t2,&f);
+	printf("%f %f\n", *(float*) pred->key, *(float*)succ->key); 
+	
+	pred = t3->pred(t3,str[0]);
+	succ = t3->succ(t3,str[0]);
+	printf("%s %s\n", (char*) pred->key, (char*)succ->key); 
+	
+	pred = t2->root;
+	succ = t4->root;
+	printf("Tree height avl/bst %d %d\n",
+			t2->height(pred), t4->height(succ));
+	t1->inorder(t1);
+	t2->inorder(t2);
+	t3->inorder(t3);
+	t4->inorder(t4);
+
+	t1->preorder(t1);
+	t2->preorder(t2);
+	t3->preorder(t3);
+	t4->preorder(t4);
+
+	t1->postorder(t1);
+	t2->postorder(t2);
+	t3->postorder(t3);
+	t4->postorder(t4);
+
+	t1->print(t1);
+	t2->print(t2);
+	t3->print(t3);
+	t4->print(t4);
+
+	// deleting nodes
+	for(i = 9; i >= 0; i--) {
+		cp = t1->del(t1, &carr[i]);
+		free_mem(cp);
+		f= (float)i+0.222 / 2.0f;
+		fp = t2->del(t2, &f);
+		free_mem(fp);
+	}
+
+	t1->destroy(t1);
+	t2->destroy(t2);
+	t3->destroy(t3);
+	t4->destroy(t4);
 }
