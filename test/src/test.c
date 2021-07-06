@@ -520,6 +520,7 @@ void test_graph()
 	int i, *ip, num[] = {1,2,3,4,5,6,7,8,9,10};
 	t_dparams dp;
 	t_bfsinfo *bfs;	
+	t_dfsinfo *dfs;	
 
 	init_data_params(&dp, eSTRING);
 	g1 = create_graph("Graph 1", 10, &dp);
@@ -574,13 +575,21 @@ void test_graph()
 	g2->print(g2);
 	
 	bfs  = g2->bfs(g2, &num[0]);
-	printf("---\n");
+	printf("- BFS -\n");
 	for(i = 0; i < 10; i++) {
 		ip = (int*)bfs[i].parent;
 		printf("%d %d %d\n", i+1, bfs[i].level, ip != NULL? *ip: -1);
 	}
 	free_mem(bfs);
-
+	
+	dfs  = g2->dfs(g2, &num[3]);
+	printf("- DFS -\n");
+	for(i = 0; i < 10; i++) {
+		ip = (int*)dfs[i].parent;
+		printf("%d %d {%d %d}\n", i+1, ip != NULL? *ip: -1, dfs[i].pre, dfs[i].post);
+	}
+	free_mem(dfs);
+	
 	g1->destroy(g1);
 	g2->destroy(g2);
 }
