@@ -19,7 +19,6 @@ t_gen graph_del_edge_sym(t_gen d, t_gen n1, t_gen n2);
 t_gen graph_del_vertex(t_gen d, t_gen n1);
 t_gen graph_bfs(t_gen d, t_gen n);
 t_gen graph_dfs(t_gen d, t_gen n);
-t_gen graph_connected_component(t_gen d);
 void graph_toplogicaly_order_dag(t_gen d);
 void graph_neigh_print(t_gen d, t_gen neigh);
 void graph_print(t_gen d);
@@ -53,7 +52,6 @@ t_gen create_graph(char *name, int size, t_dparams *prm)
 	g->del_edge_sym   = graph_del_edge_sym;
 	g->bfs	          = graph_bfs;
 	g->dfs	          = graph_dfs;
-	g->conn_comp	  = graph_connected_component;
 	g->topo_order_dag = graph_toplogicaly_order_dag;
 	g->find 	  = graph_find;
 	g->len	 	  = graph_len;
@@ -309,7 +307,58 @@ t_gen graph_del_vertex(t_gen d, t_gen n1)
 }
 
 /*! @brief  
+ *  Breath First Search Core routine 
+ *  This routine does bfs on all conncted components
+ *  @param g	- Pointer instance of graph
+ *  @param d	- Pointer to Source node from where to start BFS
+ *  @param bfs	- Pointer to bfs info of each vertex
+ *  @param q	- Pointer to queue used for BFS
+ *  @param comp	- Component of the graph
+ *  @return 	- NA
+ */
+void bfs_core(t_graph *g, t_gnode *node, t_bfsinfo *bfs, t_queue *q, int comp)
+{
+	t_linklist *neigh_list;
+	t_llnode *cur, *end;
+	t_gnode *neigh;
+
+	bfs[node->idx].level  = 0; 
+	bfs[node->idx].parent = NULL; 
+	bfs[node->idx].comp   = comp;
+	q->enq(q, node);
+	while (q->empty(q) != true) {
+		node = q->deq(q);
+
+		// For each vertex in queue
+		// Increment level and update parent for each new vertex
+		neigh_list = (t_linklist*)node->neigh;
+		cur = neigh_list->head_node(neigh_list);
+		end = neigh_list->end_node(neigh_list);
+		while (cur) {
+			neigh = cur->data;
+			// If neigh node not visited add neigh to queue 
+			if (bfs[neigh->idx].level == -1) {
+				bfs[neigh->idx].level  = bfs[node->idx].level + 1;
+				bfs[neigh->idx].parent = node->id;
+				bfs[neigh->idx].comp   = comp;
+				q->enq(q, neigh);
+			}
+			// Get next node in neigh list
+			cur = neigh_list->next_node(neigh_list, cur);
+			if (cur == end) {
+				break;
+			}
+		}
+	}
+}
+
+
+/*! @brief  
  *  Breath First Search
+ *  BFS info Contains
+ *	- Level of the vertex from Source node
+ *      - Parent node of a vertex
+ *      - Component of the graph that the a vertex belongs to
  *  @param d	- Pointer instance of graph
  *  @param n	- Pointer to data1 (Source node from where to start BFS)
  *  @return 	- Pointer to BFS info if node present else null
@@ -317,12 +366,12 @@ t_gen graph_del_vertex(t_gen d, t_gen n1)
 t_gen graph_bfs(t_gen d, t_gen n)
 {
 	t_graph *g = (t_graph*)d;
-	t_gnode *node, *neigh;
+	t_gnode *node;
 	t_queue *q;
 	t_bfsinfo *bfs = NULL;
 	t_dparams dp;
-	t_linklist *neigh_list;
-	t_llnode *cur, *end;
+	int comp;
+	bool all_nodes_visited = false;
 
 	// Find node
 	node = g->find(g, n);
@@ -340,30 +389,24 @@ t_gen graph_bfs(t_gen d, t_gen n)
 	
 	// Init bfs data struct for vertex exploration
 	for (int i = 0; i < g->count; i++) {
-		bfs[i].level = -1; bfs[i].parent = NULL;
+		bfs[i].parent = NULL;
+		bfs[i].comp = bfs[i].level  = -1;
 	}
-	
-	bfs[node->idx].level = 0; 
-	bfs[node->idx].parent = NULL; 
-	q->enq(q, node);
-	while (q->empty(q) != true) {
-		node = q->deq(q);
 
-		// For each vertex in queue
-		// Increment level and update parent for each new vertex
-		neigh_list = (t_linklist*)node->neigh;
-		cur = neigh_list->head_node(neigh_list);
-		while (cur) {
-			neigh = cur->data;
-			// If neigh node not visited add neigh to queue 
-			if (bfs[neigh->idx].level == -1) {
-				bfs[neigh->idx].level = bfs[node->idx].level + 1;
-				bfs[neigh->idx].parent = node->id;
-				q->enq(q, neigh);
-			}
-			// Get next node in neigh list
-			cur = neigh_list->next_node(neigh_list, cur);
-			if (cur == end) {
+	// Run BFS for different connected Components of graph
+	comp = 0;
+	while (all_nodes_visited == false) {
+		bfs_core(g, node, bfs, q, comp);
+		
+		all_nodes_visited = true;
+
+		for (int i = 0; i < g->count; i++) {
+			// unvisited Vertex remains and belongs to different component
+			// Run BFS with new unvisited vertex
+			if (bfs[i].level == -1) {
+				all_nodes_visited = false;
+				node = &g->nodes[i];
+				comp++;
 				break;
 			}
 		}
@@ -375,61 +418,43 @@ t_gen graph_bfs(t_gen d, t_gen n)
 }
 
 /*! @brief  
- *  Depth First Search
- *  @param d	- Pointer instance of graph
- *  @param n	- Pointer to data1 (Source node from where to start DFS)
- *  @return 	- Pointer to DFS info if node present else null
+ *  Depth First Search Core routine 
+ *  This routine does dfs on all conncted components
+ *  @param g      - Pointer instance of graph
+ *  @param d      - Pointer to Source node from where to start DFS
+ *  @param dfs    - Pointer to dfs info of each vertex
+ *  @param s      - Pointer to stack used for DFS
+ *  @param comp   - Component of the graph
+ *  @param gcount - Pointer to count value that used to store pre/post(arrival/depature) of a vertex
+ *  @return 	  - NA
  */
-t_gen graph_dfs(t_gen d, t_gen n)
+void dfs_core(t_graph *g, t_gnode *node, t_dfsinfo *dfs, t_stack *s, int comp, int *gcount)
 {
-	t_graph *g = (t_graph*)d;
-	t_gnode *node, *neigh;
-	t_stack *s;
-	t_dfsinfo *dfs = NULL;
-	t_dparams dp;
 	t_linklist *neigh_list;
-	t_llnode *cur, *end = NULL;
-	int count = 0;
-
-	// Find node
-	node = g->find(g, n);
-
-	// return if node doesn't exist
-	if (node == NULL) {
-		return dfs;
-	}
-
-	// Create queue and bfs info array for bfs 
-	init_data_params(&dp, eINT32);
-	dp.free = dummy_free;
-	s = create_stack("dfs_Stack", g->count, eLL_STACK, &dp);
-	dfs = get_mem(g->count, sizeof(t_dfsinfo));
+	t_llnode *cur, *end;
+	t_gnode *neigh;
+	int count = *gcount;
 	
-	// Init bfs data struct for vertex exploration
-	for (int i = 0; i < g->count; i++) {
-		dfs[i].parent = NULL;
-		dfs[i].pre = dfs[i].post = -1;
-		dfs[i].visited_neighbors = 0;
-	}
-	
-	dfs[node->idx].pre = count++;
+	dfs[node->idx].parent = NULL;
+	dfs[node->idx].pre    = count++;
+	dfs[node->idx].comp   = comp;
 	s->push(s, node);
 	do {
 		neigh_list = (t_linklist*)node->neigh;
 		cur = neigh_list->head_node(neigh_list);
-
+		end = neigh_list->end_node(neigh_list);
 		// Depth Traversal of unvisited neighbor vertex
 		// Don't check Neighbor list if already all neighbors visited  
-		while (cur && dfs[node->idx].visited_neighbors != 1) {
+		while (cur && dfs[node->idx].visited_neighbors != 0) {
 			neigh = cur->data;
-			dfs[node->idx].visited_neighbors--;
 			// For each unvisited neighbor vertex
 			// update parent and pre count 
 			// Push Node to stack break for Depth Traversal
 			if (dfs[neigh->idx].pre == -1) {
 				dfs[neigh->idx].parent = node->id;
+				dfs[neigh->idx].pre    = count++;
+				dfs[neigh->idx].comp   = comp;
 				s->push(s, neigh);
-				dfs[neigh->idx].pre = count++;
 				node = neigh;
 				break;
 			} 
@@ -440,7 +465,7 @@ t_gen graph_dfs(t_gen d, t_gen n)
 				
 				if (cur == end) {
 					// All neighbor of current node have been visited
-					dfs[node->idx].visited_neighbors = 1;
+					dfs[node->idx].visited_neighbors = 0;
 					break;
 				}
 			}
@@ -449,7 +474,7 @@ t_gen graph_dfs(t_gen d, t_gen n)
 		node = s->pop(s);
 		// Pop'd node has unvisted neighbors
 		// Push node on to stack again to continue DFS for unvisited neighbors
-		if (dfs[node->idx].visited_neighbors != 1) {
+		if (dfs[node->idx].visited_neighbors != 0 && cur) {
 			s->push(s, node);
 			continue;
 		}
@@ -457,7 +482,71 @@ t_gen graph_dfs(t_gen d, t_gen n)
 		// All neighbors visited update post count on exit
 		dfs[node->idx].post = count++;
 	} while (s->empty(s) != true);
+	
+	// Preserve count value for remaining nodes
+	*gcount = count;
+}
 
+
+/*! @brief  
+ *  Depth First Search
+ *  DFS info contains
+ *	- pre/post(arrival/depature) intervals of a vertex
+ *      - Parent node of a vertex
+ *      - Component of the graph that the a vertex belongs to
+ *  @param d	- Pointer instance of graph
+ *  @param n	- Pointer to data1 (Source node from where to start DFS)
+ *  @return 	- Pointer to DFS info of all nodes if node present else null
+ */
+t_gen graph_dfs(t_gen d, t_gen n)
+{
+	t_graph *g = (t_graph*)d;
+	t_gnode *node;
+	t_stack *s;
+	t_dfsinfo *dfs = NULL;
+	t_dparams dp;
+	int count, comp;
+	bool all_nodes_visited = false;
+
+	// Find node
+	node = g->find(g, n);
+
+	// return if node doesn't exist
+	if (node == NULL) {
+		return dfs;
+	}
+
+	// Create stack and dfs info array for dfs 
+	init_data_params(&dp, eINT32);
+	dp.free = dummy_free;
+	s = create_stack("dfs_Stack", g->count, eLL_STACK, &dp);
+	dfs = get_mem(g->count, sizeof(t_dfsinfo));
+	
+	// Init dfs data struct for vertex exploration
+	for (int i = 0; i < g->count; i++) {
+		dfs[i].comp = -1;
+		dfs[i].parent = NULL;
+		dfs[i].pre = dfs[i].post = -1;
+		dfs[i].visited_neighbors = 1;
+	}
+
+	// Run DFS for different connected Components of graph
+	comp = count = 0; 
+	while (all_nodes_visited == false) {
+		dfs_core(g, node, dfs, s, comp, &count);
+		
+		all_nodes_visited = true;
+		for (int i = 0; i < g->count; i++) {
+			// unvisited Vertex remains and belongs to different component
+			// Run DFS with new unvisited vertex
+			if (dfs[i].pre == -1) {
+				all_nodes_visited = false;
+				node = &g->nodes[i];
+				comp++;
+				break;
+			}
+		}
+	}
 	s->destroy(s);
 	
 	return dfs;
@@ -491,13 +580,13 @@ t_gen graph_dfs_optimised(t_gen d, t_gen n)
 		return dfs;
 	}
 
-	// Create queue and bfs info array for bfs 
+	// Create queue and dfs info array for dfs 
 	init_data_params(&dp, eINT32);
 	dp.free = dummy_free;
 	s = create_stack("dfs_Stack", g->count, eLL_STACK, &dp);
 	dfs = get_mem(g->count, sizeof(t_dfsinfo));
 	
-	// Init bfs data struct for vertex exploration
+	// Init dfs data struct for vertex exploration
 	for (int i = 0; i < g->count; i++) {
 		dfs[i].parent = NULL;
 		dfs[i].pre = dfs[i].post = -1;
@@ -564,58 +653,6 @@ t_gen graph_dfs_optimised(t_gen d, t_gen n)
 	return dfs;
 }
 
-/*! @brief  
- *  Group all the connected components in graph
- *  Note: 
- *	- This can be implemented using either bfs or dfs
- *      - This logic can be further optimized with storing all nodes in hash 
- * 	  and deleting all visited nodes and run bfs on node(s) remaining until 
- * 	  hash is empty
- *  @param d	 - Pointer instance of graph
- *  @return 	 - BFS/DFS info containing the connected comp info
- */
-t_gen graph_connected_component(t_gen d)
-{
-	t_graph *g = (t_graph*)d;
-	t_gnode *node;
-	t_bfsinfo *bfs = NULL, *bfs2 = NULL;
-	int i, comp;
-	// Create mem to store bfs results for entire set
-	bfs = get_mem(g->count, sizeof(t_dfsinfo));
-	for (i = 0; i < g->count; i++) {
-		bfs[i].comp = -1;
-	}
-	
-	// Start BFS/DFS from 0th node
-	comp = 1;
-	node = &g->nodes[0];
-	while (node != NULL) {
-		bfs2 = g->bfs(g, node->id);
-		// Set node to NULL and update with non visited node
-		// exit with node == NULL
-		node = NULL;
-		for (i = 0; i < g->count; i++) {
-			// Non zero comp meaning node visited 
-			if (bfs[i].comp == -1) {
-				if (bfs2[i].level != -1 ) {
-					// Update component for current bfs
-					bfs[i].level  = bfs2[i].level;
-					bfs[i].parent = bfs2[i].parent;
-					bfs[i].comp   = comp;
-				}
-				// Select unvisited Node as node to run bfs
-				else { 
-					node = &g->nodes[i];
-				}
-			}
-		}
-		// Incr comp, indicating different component
-		comp++;
-		free_mem(bfs2);
-	}
-
-	return bfs;
-}
 
 /*! @brief  
  *  Topologicaly order/Topologicaly sort the nodes of a DAG
@@ -699,6 +736,7 @@ void graph_toplogicaly_order_dag(t_gen d)
 	printf(" ]\n");
 	
 	q->destroy(q);
+	free_mem(indegree);
 }
 /*! @brief  
  *  Util function to Print neighbor list of a vetex(node)

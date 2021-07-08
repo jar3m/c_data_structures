@@ -518,7 +518,7 @@ void test_graph()
 	t_graph *g1, *g2, *g3, *g4;
 	char city[][64] ={"Delhi", "Bangalore","Chennai"}; 
 	int i, *ip, num[] = {1,2,3,4,5,6,7,8,9,10};
-	int a1[] = {1,2,3,4,5,6,7,8,9,10};
+	int a1[] = {1,2,3,4,5,6,7,8,9,10,11,12};
 	int a2[] = {1,2,3,4,5,6,7,8,9,10};
 	t_dparams dp;
 	t_bfsinfo *bfs;	
@@ -531,7 +531,7 @@ void test_graph()
 	g2 = create_graph("Graph 2", 10, &dp);
 
 	init_data_params(&dp, eINT32);
-	g3 = create_graph("Graph 3", 10, &dp);
+	g3 = create_graph("Graph 3", 12, &dp);
 
 	init_data_params(&dp, eINT32);
 	g4 = create_graph("Graph 4", 10, &dp);
@@ -581,44 +581,62 @@ void test_graph()
 	g2->add_edge_sym(g2, &num[7], &num[8]);   
 	g2->add_edge_sym(g2, &num[9], &num[8]);   
 	g2->print(g2);
-	
+
 	printf("- BFS -\n");
 	bfs  = g2->bfs(g2, &num[0]);
 	for(i = 0; i < 10; i++) {
 		ip = (int*)bfs[i].parent;
-		printf("%d %d %d\n", i+1, bfs[i].level, ip != NULL? *ip: -1);
+		printf("%d: %d %d %d\n", 
+			bfs[i].comp,i+1, bfs[i].level, ip != NULL? *ip: -1);
 	}
 	free_mem(bfs);
-	
+
 	printf("- DFS -\n");
 	dfs  = g2->dfs(g2, &num[3]);
 	for(i = 0; i < 10; i++) {
 		ip = (int*)dfs[i].parent;
-		printf("%d %d {%d %d}\n", i+1, ip != NULL? *ip: -1, dfs[i].pre, dfs[i].post);
+		printf("%d: %d %d {%d %d}\n", 
+			dfs[i].comp, i+1, ip != NULL? *ip: -1, dfs[i].pre, dfs[i].post);
 	}
 	free_mem(dfs);
 
 	printf("- Connected Components -\n");
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < 12; i++) {
 		g3->add_vertex(g3, &a1[i]);   
 	}
 	g3->add_edge_sym(g3, &a1[0], &a1[1]);   
 	g3->add_edge_sym(g3, &a1[0], &a1[4]);   
 	g3->add_edge_sym(g3, &a1[4], &a1[8]);   
 	g3->add_edge_sym(g3, &a1[4], &a1[9]);   
-	g3->add_edge_sym(g3, &a1[3], &a1[2]);   
-	g3->add_edge_sym(g3, &a1[3], &a1[6]);   
+	g3->add_edge_sym(g3, &a1[2], &a1[3]);   
+	g3->add_edge_sym(g3, &a1[2], &a1[6]);   
+	g3->add_edge_sym(g3, &a1[2], &a1[7]);   
+	g3->add_edge_sym(g3, &a1[3], &a1[7]);   
 	g3->add_edge_sym(g3, &a1[6], &a1[7]);   
+	g3->add_edge_sym(g3, &a1[6], &a1[10]);   
+	g3->add_edge_sym(g3, &a1[7], &a1[10]);   
+	g3->add_edge_sym(g3, &a1[7], &a1[11]);   
+	g3->add_edge_sym(g3, &a1[8], &a1[9]);   
 	g3->print(g3);
 	
-	bfs = g3->conn_comp(g3);
-	for(i = 0; i < 10; i++) {
+	printf("- BFS -\n");
+	bfs  = g3->bfs(g3, &a1[0]);
+	for(i = 0; i < 12; i++) {
 		ip = (int*)bfs[i].parent;
-		printf("{%d -> comp: %d}  %d %d\n", 
-			  i+1, bfs[i].comp, ip != NULL? *ip: -1, bfs[i].level);
+		printf("%d: %d %d %d\n", 
+			bfs[i].comp,i+1, bfs[i].level, ip != NULL? *ip: -1);
 	}
 	free_mem(bfs);
-	
+
+	printf("- DFS -\n");
+	dfs  = g3->dfs(g3, &a1[0]);
+	for(i = 0; i < 12; i++) {
+		ip = (int*)dfs[i].parent;
+		printf("%d: %d %d {%d %d}\n", 
+			dfs[i].comp, i+1, ip != NULL? *ip: -1, dfs[i].pre, dfs[i].post);
+	}
+	free_mem(dfs);
+
 	for (i = 0; i < 7; i++) {
 		g4->add_vertex(g4, &a2[i]);   
 	}
