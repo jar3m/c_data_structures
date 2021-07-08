@@ -17,6 +17,7 @@ typedef struct gnode {
 typedef struct bfs_info{
 	t_gen parent;			///< Pointer to Parent Vertex
 	int level;			///< Level of vertex from the source
+	int comp;			///< Subgraph id of vertex
 } t_bfsinfo;
 
 /// Level and Parent info after DFS walk
@@ -25,7 +26,7 @@ typedef struct dfs_info{
 	int pre;			///< Pre Interval of a vertex on dfs walk
 	int post;			///< Post Interval of a vertex on dfs walk
 	int comp;			///< Subgraph id of vertex
-	bool visited_neighbors;		///< Flag indicating neighbors still to be visited
+	int visited_neighbors;		///< Flag indicating neighbors still to be visited
 } t_dfsinfo;
 
 /// graph struct defn
@@ -49,6 +50,8 @@ typedef struct graph {
 	f_gen3 has_edge;		///< routine to check an edge between two vertices graph
 	f_gen2 bfs;			///< routine to Breadth First Search in graph
 	f_gen2 dfs;			///< routine to Depth First Search in graph
+	f_gen conn_comp;		///< routine to get the connected components in graph
+	f_vgen topo_order_dag;		///< routine to topologica order a DAG
 	f_find find;			///< routine to find a vertex in graph
 	f_len len;			///< routine to get vertex count in graph
 	f_print print;			///< routine to print graph info
