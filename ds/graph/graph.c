@@ -19,7 +19,7 @@ t_gen graph_del_edge_sym(t_gen d, t_gen n1, t_gen n2);
 t_gen graph_del_vertex(t_gen d, t_gen n1);
 t_gen graph_bfs(t_gen d, t_gen n);
 t_gen graph_dfs(t_gen d, t_gen n);
-void graph_toplogicaly_order_dag(t_gen d);
+t_gen graph_toplogicaly_order_dag(t_gen d);
 void graph_neigh_print(t_gen d, t_gen neigh);
 void graph_print(t_gen d);
 void graph_destroy(t_gen d);
@@ -98,6 +98,25 @@ t_gen graph_find(t_gen d, t_gen data)
 	return NULL;
 }
 
+#if 0
+/*! @brief  
+ *  Add a Vertex(node) in graph;
+ *  @param d	- Pointer instance of graph
+ *  @param data	- Pointer to data
+ *  @return 	- Pointer to Vertex(node) else null
+ */
+e_cmpr graph_neigh_list_compare(t_gen x, t_gen y)
+{
+	t_gneighll *neighl = (t_gneighll*) x;
+	t_gnode node = (t_gnode*) y;
+	
+	if (neighl->neigh == node) {
+		return eEQUAL;
+	}
+
+	return eLESS;
+}
+#endif
 /*! @brief  
  *  Add a Vertex(node) in graph;
  *  @param d	- Pointer instance of graph
@@ -132,6 +151,7 @@ t_gen graph_add_vertex(t_gen d, t_gen data)
 	node->id = data;
 	init_data_params(&dp, eINT32);
 	dp.free = dummy_free;
+//	dp.cmpr = graph_neigh_list_compare;
 //	node->neigh = create_link_list("neighNodes", eDOUBLE_LINKLIST, &dp);
 	node->neigh = create_link_list("neighNodes", eXOR_LINKLIST, &dp);
 
@@ -654,42 +674,45 @@ t_gen graph_dfs_optimised(t_gen d, t_gen n)
 }
 
 
-/*! @brief  
+/*! @brief
  *  Topologicaly order/Topologicaly sort the nodes of a DAG
+ *  And get the longest path to each of the vertices in DAG
  *  The topologicaly order nodes instead of being printed
  *  can be pushed to link list and return
  *  @param d	 - Pointer instance of graph
- *  @return 	 - NA
+ *  @return 	 - DAG info struct containg longest path 
+ *                 and vertices in topological order
  */
-void graph_toplogicaly_order_dag(t_gen d)
+t_gen graph_toplogicaly_order_dag(t_gen d)
 {
 	t_graph *g = (t_graph*)d;
-	t_gnode *node;
+	t_gnode *node, *neigh;
 	t_linklist *neigh_list;
 	t_llnode *cur,*end;
-	int *indegree, i;
+	t_daginfo *dag_inf;
 	t_dparams dp;
 	t_queue *q;
 
-	// Create queue and array for indegree
-	indegree = get_mem(g->count, sizeof(int));
+	// Create queue and array for dag_inf
+	dag_inf = get_mem(g->count, sizeof(t_daginfo));
 	init_data_params(&dp, eINT32);
 	dp.free = dummy_free;
 	q = create_queue("topo_dag", g->count, eLL_QUEUE_CIRC, &dp);
 	
 	// Indegree initialization
-	for (i = 0; i < g->count; i++) {
-		indegree[i] = 0;
+	for (int i = 0; i < g->count; i++) {
+		dag_inf[i].indegree     = 0;
+		dag_inf[i].longest_path = 0;
 	}
 
 	// Update indegree for all nodes
-	for (i = 0; i < g->count; i++) {
+	for (int i = 0; i < g->count; i++) {
 		neigh_list = g->nodes[i].neigh;
 		cur = neigh_list->head_node(neigh_list);
 		end = neigh_list->end_node(neigh_list);
 		while (cur) {
 			node = cur->data;
-			indegree[node->idx] += 1;
+			dag_inf[node->idx].indegree += 1;
 			cur = neigh_list->next_node(neigh_list, cur);
 			if (cur == end) {
 				break;
@@ -698,33 +721,36 @@ void graph_toplogicaly_order_dag(t_gen d)
 	}
 	
 	// Add vertices with indegree 0
-	for (i = 0; i < g->count; i++) {
-		if (indegree[i] == 0) {
+	for (int i = 0; i < g->count; i++) {
+		if (dag_inf[i].indegree == 0) {
 			q->enq(q, &g->nodes[i]);
 		}
 	}
 	
 	// Start exploration to sort/order by
 	// Enumerating the vertices(delete/visited)
-	printf("Topologicaly order nodes: [ ");
 	while (q->empty(q) != true) {
 		node = q->deq(q);
-		g->print_data(node->id);
-		printf(" ");
 		// Enumerate node, i.e, mark as visited
-		indegree[node->idx] = -1;
+		dag_inf[node->idx].node     =  node->id;
+		dag_inf[node->idx].indegree = -1;
 		
-		// update indegree of neighbors
+		// update longest path and indegree of neighbors
+		// for the enumerated vertex
 		neigh_list = node->neigh;
 		cur = neigh_list->head_node(neigh_list);
 		end = neigh_list->end_node(neigh_list);
 		while (cur) {
-			node = cur->data;
-			indegree[node->idx] -= 1;
+			neigh = cur->data;
+			dag_inf[neigh->idx].indegree -= 1;
+			// update path as max of parent and cur longest path
+			dag_inf[neigh->idx].longest_path = 
+				(dag_inf[neigh->idx].longest_path > dag_inf[node->idx].longest_path) ?
+				dag_inf[neigh->idx].longest_path : (dag_inf[node->idx].longest_path + 1);
 			
-			// neigh node indegree is 0 push to queue 
-			if (indegree[node->idx] == 0) {
-				q->enq(q, node);
+			//push to queue any neigh with indegree 0 
+			if (dag_inf[neigh->idx].indegree == 0) {
+				q->enq(q, neigh);
 			}	
 			// Get next neigh
 			cur = neigh_list->next_node(neigh_list, cur);
@@ -733,10 +759,10 @@ void graph_toplogicaly_order_dag(t_gen d)
 			}
 		}
 	}
-	printf(" ]\n");
 	
 	q->destroy(q);
-	free_mem(indegree);
+
+	return dag_inf;
 }
 /*! @brief  
  *  Util function to Print neighbor list of a vetex(node)

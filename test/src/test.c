@@ -523,6 +523,7 @@ void test_graph()
 	t_dparams dp;
 	t_bfsinfo *bfs;	
 	t_dfsinfo *dfs;	
+	t_daginfo *dag;	
 
 	init_data_params(&dp, eSTRING);
 	g1 = create_graph("Graph 1", 10, &dp);
@@ -637,7 +638,8 @@ void test_graph()
 	}
 	free_mem(dfs);
 
-	for (i = 0; i < 7; i++) {
+	printf("- DAGS Sorting and Longest Path -\n");
+	for (i = 0; i < 8; i++) {
 		g4->add_vertex(g4, &a2[i]);   
 	}
 	
@@ -654,7 +656,13 @@ void test_graph()
 	g4->add_edge(g4, &a2[6], &a2[7]);   
 	g4->print(g4);
 	
-	g4->topo_order_dag(g4);
+	dag = g4->topo_order_dag(g4);
+	for(i = 0; i < 8; i++) {
+		ip = (int*)dag[i].node;
+		printf("{%d %d}\n", 
+			ip != NULL? *ip: -1, dag[i].longest_path);
+	}
+	free_mem(dag);
 	
 	g1->destroy(g1);
 	g2->destroy(g2);

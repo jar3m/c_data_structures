@@ -13,21 +13,11 @@ typedef struct gnode {
 	t_linklist *neigh;		///< Link List to neighbor vertices(nodes)
 } t_gnode;
 
-/// Level and Parent info after BFS walk
-typedef struct bfs_info{
-	t_gen parent;			///< Pointer to Parent Vertex
-	int level;			///< Level of vertex from the source
-	int comp;			///< Subgraph id of vertex
-} t_bfsinfo;
-
-/// Level and Parent info after DFS walk
-typedef struct dfs_info{
-	t_gen parent;			///< Pointer to Parent Vertex
-	int pre;			///< Pre Interval of a vertex on dfs walk
-	int post;			///< Post Interval of a vertex on dfs walk
-	int comp;			///< Subgraph id of vertex
-	int visited_neighbors;		///< Flag indicating neighbors still to be visited
-} t_dfsinfo;
+/// graph Neigbor node represented in neigh list
+typedef struct gneigh {
+	t_gnode neigh;			///< Pointer to neighbor vertex
+	int cost;			///< Cost of the edge
+} t_gneigh;
 
 /// graph struct defn
 typedef struct graph {
@@ -51,7 +41,7 @@ typedef struct graph {
 	f_gen2 bfs;			///< routine to Breadth First Search in graph
 	f_gen2 dfs;			///< routine to Depth First Search in graph
 	f_gen conn_comp;		///< routine to get the connected components in graph
-	f_vgen topo_order_dag;		///< routine to topologica order a DAG
+	f_gen topo_order_dag;		///< routine to topologica order a DAG
 	f_find find;			///< routine to find a vertex in graph
 	f_len len;			///< routine to get vertex count in graph
 	f_print print;			///< routine to print graph info
@@ -63,6 +53,30 @@ typedef struct graph {
 	f_free free;
 	f_print print_data;
 } t_graph;
+
+/// Level and Parent info after BFS walk
+typedef struct bfs_info{
+	t_gen parent;			///< Pointer to Parent Vertex
+	int level;			///< Level of vertex from the source
+	int comp;			///< Subgraph id of vertex
+} t_bfsinfo;
+
+/// Level and Parent info after DFS walk
+typedef struct dfs_info{
+	t_gen parent;			///< Pointer to Parent Vertex
+	int pre;			///< Pre Interval of a vertex on dfs walk
+	int post;			///< Post Interval of a vertex on dfs walk
+	int comp;			///< Subgraph id of vertex
+	int visited_neighbors;		///< Used internally Flag indicating neighbors still to be visited
+} t_dfsinfo;
+
+/// Longest Path and Node order after DAG ordering
+typedef struct dag_info{
+	t_gen node;			///< Pointer to Vertex in topologically sorted order
+	int longest_path;		///< Longest path to vertex in DAG
+	int indegree;			///< Used internally for topologicaly order and find longest path in DAG
+} t_daginfo;
+
 
 /// graph interface APIs
 t_gen create_graph(char *name, int size, t_dparams *prm);
