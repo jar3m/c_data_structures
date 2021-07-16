@@ -7,6 +7,7 @@
 #include "queue.h"
 #include "stack.h"
 
+// function Declarations
 t_gen graph_delete(t_gen,t_gen);
 t_gen graph_find(t_gen,t_gen);
 int graph_len(t_gen);
@@ -17,11 +18,14 @@ t_gen graph_del_edge(t_gen d, t_gen n1, t_gen n2);
 t_gen graph_add_edge_sym(t_gen d, t_gen n1, t_gen n2);
 t_gen graph_del_edge_sym(t_gen d, t_gen n1, t_gen n2);
 t_gen graph_del_vertex(t_gen d, t_gen n1);
+t_gen graph_add_wedge(t_gen d, t_gen n1, t_gen n2, int weight);
+t_gen graph_add_wedge_sym(t_gen d, t_gen n1, t_gen n2, int weight);
 t_gen graph_bfs(t_gen d, t_gen n);
 t_gen graph_dfs(t_gen d, t_gen n);
 t_gen graph_toplogicaly_order_dag(t_gen d);
 void graph_neigh_print(t_gen d, t_gen neigh);
 void graph_print(t_gen d);
+void graph_wprint(t_gen d);
 void graph_destroy(t_gen d);
 
 /*! @brief  
@@ -50,12 +54,15 @@ t_gen create_graph(char *name, int size, t_dparams *prm)
 	g->has_edge	  = graph_has_edge;
 	g->add_edge_sym   = graph_add_edge_sym; 
 	g->del_edge_sym   = graph_del_edge_sym;
+	g->add_wedge      = graph_add_wedge; 
+	g->add_wedge_sym  = graph_add_wedge_sym; 
 	g->bfs	          = graph_bfs;
 	g->dfs	          = graph_dfs;
 	g->topo_order_dag = graph_toplogicaly_order_dag;
 	g->find 	  = graph_find;
 	g->len	 	  = graph_len;
 	g->print 	  = graph_print;
+	g->wprint 	  = graph_wprint;
 	g->destroy 	  = graph_destroy;
 
 	// Initailze data type based operations req for prop working of graph
@@ -98,17 +105,16 @@ t_gen graph_find(t_gen d, t_gen data)
 	return NULL;
 }
 
-#if 0
 /*! @brief  
- *  Add a Vertex(node) in graph;
- *  @param d	- Pointer instance of graph
- *  @param data	- Pointer to data
- *  @return 	- Pointer to Vertex(node) else null
+ *  Util compare function for neigh link list node data
+ *  @param x	- Pointer linklist node 
+ *  @param y   	- Pointer to data to be compared
+ *  @return 	- Equal, Less or Great
  */
 e_cmpr graph_neigh_list_compare(t_gen x, t_gen y)
 {
-	t_gneighll *neighl = (t_gneighll*) x;
-	t_gnode node = (t_gnode*) y;
+	t_gedge *neighl = (t_gedge*) x;
+	t_gnode *node = (t_gnode*) y;
 	
 	if (neighl->neigh == node) {
 		return eEQUAL;
@@ -116,7 +122,24 @@ e_cmpr graph_neigh_list_compare(t_gen x, t_gen y)
 
 	return eLESS;
 }
-#endif
+
+/*! @brief  
+ *  Util free function for deleting neigh link list node data
+ *  @param mem	- Pointer to memory
+ *  @param file - File name
+ *  @param line - line number
+ *  @return 	- NA
+ */
+void graph_neigh_list_free(t_gen mem, char *file, int line)
+{
+	t_gedge *neighl = (t_gedge*) mem;
+	
+	neighl->neigh = NULL;
+	
+	free_mem(neighl);
+	
+}
+
 /*! @brief  
  *  Add a Vertex(node) in graph;
  *  @param d	- Pointer instance of graph
@@ -149,9 +172,9 @@ t_gen graph_add_vertex(t_gen d, t_gen data)
 
 	// create link list to store node neighbors
 	node->id = data;
-	init_data_params(&dp, eINT32);
-	dp.free = dummy_free;
-//	dp.cmpr = graph_neigh_list_compare;
+	init_data_params(&dp, eUSER);
+	dp.free = graph_neigh_list_free;
+	dp.cmpr = graph_neigh_list_compare;
 //	node->neigh = create_link_list("neighNodes", eDOUBLE_LINKLIST, &dp);
 	node->neigh = create_link_list("neighNodes", eXOR_LINKLIST, &dp);
 
@@ -184,15 +207,16 @@ t_gen graph_has_edge(t_gen d, t_gen n1, t_gen n2)
 
 /*! @brief  
  *  Add an asymmetric edge between two vertices(nodes) in graph;
- *  @param d	- Pointer instance of graph
- *  @param n1	- Pointer to data1
- *  @param n2	- Pointer to data2
- *  @return 	- Pointer to Vertex(node) else null
+ *  @param d	  - Pointer instance of graph
+ *  @param n1	  - Pointer to data1
+ *  @param n2	  - Pointer to data2
+ *  @return 	  - Pointer to Vertex(node) else null
  */
 t_gen graph_add_edge(t_gen d, t_gen n1, t_gen n2)
 {
 	t_graph *g = (t_graph*)d;
 	t_gnode *A, *B;
+	t_gedge *edge;
 
 	// ADD Node if node doesn't exit else get node
 	A = g->add_vertex(g, n1);
@@ -209,8 +233,53 @@ t_gen graph_add_edge(t_gen d, t_gen n1, t_gen n2)
 	}
 
 	g->total_edges++;
+
+	edge = get_mem(1, sizeof(t_gedge));
+	edge->neigh  = B;
+	edge->weight = 0;
+
 	// link N1->N2
-	A->neigh->append(A->neigh, B);
+	A->neigh->append(A->neigh, edge);
+
+	return A;
+}
+
+/*! @brief  
+ *  Add an asymmetric weighted edge between two vertices(nodes) in graph;
+ *  @param d	  - Pointer instance of graph
+ *  @param n1	  - Pointer to data1
+ *  @param n2	  - Pointer to data2
+ *  @param weight - Edge weight
+ *  @return 	  - Pointer to Vertex(node) else null
+ */
+t_gen graph_add_wedge(t_gen d, t_gen n1, t_gen n2, int weight)
+{
+	t_graph *g = (t_graph*)d;
+	t_gnode *A, *B;
+	t_gedge *edge;
+
+	// ADD Node if node doesn't exit else get node
+	A = g->add_vertex(g, n1);
+	B = g->add_vertex(g, n2);
+
+	// Return if Graph FULL
+	if (A == NULL || B == NULL) {
+		return NULL;
+	}
+
+	// Return Link already exists
+	if (g->has_edge(g, n1, n2) != NULL) {
+		return NULL;
+	}
+
+	g->total_edges++;
+
+	edge = get_mem(1, sizeof(t_gedge));
+	edge->neigh  = B;
+	edge->weight = weight;
+
+	// link N1->N2
+	A->neigh->append(A->neigh, edge);
 
 	return A;
 }
@@ -236,7 +305,8 @@ t_gen graph_del_edge(t_gen d, t_gen n1, t_gen n2)
 	}
 	
 	// unlink N1->N2
-	A->neigh->del(A->neigh, B);
+	d = A->neigh->del(A->neigh, B);
+	free_mem(d);
 	return A;
 }
 
@@ -256,6 +326,27 @@ t_gen graph_add_edge_sym(t_gen d, t_gen n1, t_gen n2)
 	ret = g->add_edge(g, n1, n2);
 	// link N2->N1
 	ret = g->add_edge(g, n2, n1);
+
+	return ret;
+}
+
+/*! @brief  
+ *  Add a symmetric weighted edge between two vertices(nodes) in graph;
+ *  @param d	  - Pointer instance of graph
+ *  @param n1	  - Pointer to data1
+ *  @param n2	  - Pointer to data2
+ *  @param weight - Edge weight
+ *  @return 	  - Pointer to Vertex(node) else null
+ */
+t_gen graph_add_wedge_sym(t_gen d, t_gen n1, t_gen n2, int weight)
+{
+	t_graph *g = (t_graph*)d;
+	t_gen ret;
+
+	// link N1->N2
+	ret = g->add_wedge(g, n1, n2, weight);
+	// link N2->N1
+	ret = g->add_wedge(g, n2, n1, weight);
 
 	return ret;
 }
@@ -309,7 +400,8 @@ t_gen graph_del_vertex(t_gen d, t_gen n1)
 			continue;
 		}
 		node = &g->nodes[i];
-		node->neigh->del(node->neigh, A);
+		tmp = node->neigh->del(node->neigh, A);
+		free_mem(tmp);
 	}
 	// destroy neigh list 
 	A->neigh->destroy(A->neigh);	
@@ -341,7 +433,9 @@ void bfs_core(t_graph *g, t_gnode *node, t_bfsinfo *bfs, t_queue *q, int comp)
 	t_linklist *neigh_list;
 	t_llnode *cur, *end;
 	t_gnode *neigh;
+	t_gedge *edge;
 
+	// Initializations 
 	bfs[node->idx].level  = 0; 
 	bfs[node->idx].parent = NULL; 
 	bfs[node->idx].comp   = comp;
@@ -355,7 +449,8 @@ void bfs_core(t_graph *g, t_gnode *node, t_bfsinfo *bfs, t_queue *q, int comp)
 		cur = neigh_list->head_node(neigh_list);
 		end = neigh_list->end_node(neigh_list);
 		while (cur) {
-			neigh = cur->data;
+			edge  = cur->data;
+			neigh = edge->neigh;
 			// If neigh node not visited add neigh to queue 
 			if (bfs[neigh->idx].level == -1) {
 				bfs[neigh->idx].level  = bfs[node->idx].level + 1;
@@ -453,6 +548,7 @@ void dfs_core(t_graph *g, t_gnode *node, t_dfsinfo *dfs, t_stack *s, int comp, i
 	t_linklist *neigh_list;
 	t_llnode *cur, *end;
 	t_gnode *neigh;
+	t_gedge *edge;
 	int count = *gcount;
 	
 	dfs[node->idx].parent = NULL;
@@ -466,7 +562,8 @@ void dfs_core(t_graph *g, t_gnode *node, t_dfsinfo *dfs, t_stack *s, int comp, i
 		// Depth Traversal of unvisited neighbor vertex
 		// Don't check Neighbor list if already all neighbors visited  
 		while (cur && dfs[node->idx].visited_neighbors != 0) {
-			neigh = cur->data;
+			edge  = cur->data;
+			neigh = edge->neigh;
 			// For each unvisited neighbor vertex
 			// update parent and pre count 
 			// Push Node to stack break for Depth Traversal
@@ -585,6 +682,7 @@ t_gen graph_dfs_optimised(t_gen d, t_gen n)
 {
 	t_graph *g = (t_graph*)d;
 	t_gnode *node, *neigh;
+	t_gedge *edge;
 	t_stack *s;
 	t_dfsinfo *dfs = NULL;
 	t_dparams dp;
@@ -623,7 +721,8 @@ t_gen graph_dfs_optimised(t_gen d, t_gen n)
 		// Depth Traversal of unvisited neighbor vertex
 		// Don't check Neighbor list if already visited all the neighbors
 		while (cur && dfs[node->idx].visited_neighbors != 0) {
-			neigh = cur->data;
+			edge  = cur->data;
+			neigh = edge->neigh;
 			dfs[node->idx].visited_neighbors--;
 			// For each vertex unvisited vertex
 			// update parent and pre count 
@@ -639,8 +738,8 @@ t_gen graph_dfs_optimised(t_gen d, t_gen n)
 				// By pushing the unvisited node to last
 				// And eliminating it being revisited
 				// By traversing  the list only 'visited_neighbors' times
-				n = neigh_list->del_idx(neigh_list, 0);
-				neigh_list->append(neigh_list, n);
+				edge = neigh_list->del_idx(neigh_list, 0);
+				neigh_list->append(neigh_list, edge);
 				break;
 			}  
 			// Else get next unvisited vertex in neigh list
@@ -687,6 +786,7 @@ t_gen graph_toplogicaly_order_dag(t_gen d)
 {
 	t_graph *g = (t_graph*)d;
 	t_gnode *node, *neigh;
+	t_gedge *edge;
 	t_linklist *neigh_list;
 	t_llnode *cur,*end;
 	t_daginfo *dag_inf;
@@ -711,7 +811,8 @@ t_gen graph_toplogicaly_order_dag(t_gen d)
 		cur = neigh_list->head_node(neigh_list);
 		end = neigh_list->end_node(neigh_list);
 		while (cur) {
-			node = cur->data;
+			edge = cur->data;
+			node = edge->neigh;
 			dag_inf[node->idx].indegree += 1;
 			cur = neigh_list->next_node(neigh_list, cur);
 			if (cur == end) {
@@ -741,7 +842,8 @@ t_gen graph_toplogicaly_order_dag(t_gen d)
 		cur = neigh_list->head_node(neigh_list);
 		end = neigh_list->end_node(neigh_list);
 		while (cur) {
-			neigh = cur->data;
+			edge  = cur->data;
+			neigh = edge->neigh;
 			dag_inf[neigh->idx].indegree -= 1;
 			// update path as max of parent and cur longest path
 			dag_inf[neigh->idx].longest_path = 
@@ -764,6 +866,7 @@ t_gen graph_toplogicaly_order_dag(t_gen d)
 
 	return dag_inf;
 }
+
 /*! @brief  
  *  Util function to Print neighbor list of a vetex(node)
  *  @param d	 - Pointer instance of graph
@@ -774,13 +877,15 @@ void graph_neigh_print(t_gen d, t_gen neigh)
 {
 	t_graph *g = (t_graph*)d;
 	t_gnode *node;
+	t_gedge *edge;
 	t_linklist *l = (t_linklist*)neigh;
 	t_llnode *cur, *end;
 
 	printf("{ ");
 	cur = l->head_node(l);
 	while (cur) {
-		node = (t_gnode*)cur->data;
+		edge  = cur->data;
+		node  = edge->neigh;
 		g->print_data(node->id);
 		printf(" ");
 		cur = l->next_node(l, cur);
@@ -807,6 +912,57 @@ void graph_print(t_gen d)
 		g->print_data(g->nodes[i].id);
 		printf(":");
 		graph_neigh_print(g,g->nodes[i].neigh);
+		printf("\n");
+	} 
+}
+
+/*! @brief  
+ *  Util function to Print neighbor list of a vetex(node) with edge weights
+ *  @param d	 - Pointer instance of graph
+ *  @param neigh - Pointer to neigh link list 
+ *  @return 	 - NA
+ */
+void graph_wneigh_print(t_gen d, t_gen neigh)
+{
+	t_graph *g = (t_graph*)d;
+	t_gnode *node;
+	t_gedge *edge;
+	t_linklist *l = (t_linklist*)neigh;
+	t_llnode *cur, *end;
+
+	printf("{ ");
+	cur = l->head_node(l);
+	while (cur) {
+		edge  = cur->data;
+		node  = edge->neigh;
+		printf("<");
+		g->print_data(node->id);
+		printf(" %d> ", edge->weight);
+		cur = l->next_node(l, cur);
+		if (cur == end) {
+			break;
+		}
+	}
+	printf("}");
+}
+
+
+/*! @brief  
+ *  Print Graph info with edge weights
+ *  @param d	 - Pointer instance of graph
+ *  @return 	 - NA
+ */
+void graph_wprint(t_gen d)
+{
+	t_graph *g = (t_graph*)d;
+	int i;
+	
+	printf("%s: vertex:%d edges:%d\n", g->name, g->count, g->total_edges);
+
+	for (i = 0; i < g->count; i++) {
+		g->print_data(g->nodes[i].id);
+		printf(":");
+		graph_wneigh_print(g,g->nodes[i].neigh);
 		printf("\n");
 	} 
 }

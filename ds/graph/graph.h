@@ -13,11 +13,14 @@ typedef struct gnode {
 	t_linklist *neigh;		///< Link List to neighbor vertices(nodes)
 } t_gnode;
 
-/// graph Neigbor node represented in neigh list
-typedef struct gneigh {
-	t_gnode neigh;			///< Pointer to neighbor vertex
-	int cost;			///< Cost of the edge
-} t_gneigh;
+/// graph neighbor edges represented in neigh list
+typedef struct gedge {
+	t_gnode *neigh;			///< Pointer to neighbor vertex
+	int weight;			///< Cost of the edge
+} t_gedge;
+
+// fn ptr for adding weighted edge
+typedef t_gen (*f_wedge)(t_gen, t_gen, t_gen, int);	
 
 /// graph struct defn
 typedef struct graph {
@@ -37,6 +40,8 @@ typedef struct graph {
 	f_gen3 del_edge;		///< routine to del an edge in graph
 	f_gen3 add_edge_sym;		///< routine to add a symmetric edge in graph
 	f_gen3 del_edge_sym;		///< routine to del a symmetric edge in graph
+	f_wedge add_wedge;		///< routine to add a weighted edge in graph
+	f_wedge add_wedge_sym;		///< routine to add a weighted symmetric edge in graph
 	f_gen3 has_edge;		///< routine to check an edge between two vertices graph
 	f_gen2 bfs;			///< routine to Breadth First Search in graph
 	f_gen2 dfs;			///< routine to Depth First Search in graph
@@ -45,6 +50,7 @@ typedef struct graph {
 	f_find find;			///< routine to find a vertex in graph
 	f_len len;			///< routine to get vertex count in graph
 	f_print print;			///< routine to print graph info
+	f_print wprint;			///< routine to print graph info with edge weights
 	f_destroy destroy;		///< routine to destroy the graph instance
 	
 	// routies for operating on data

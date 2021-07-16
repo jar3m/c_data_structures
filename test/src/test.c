@@ -537,10 +537,10 @@ void test_graph()
 	init_data_params(&dp, eINT32);
 	g4 = create_graph("Graph 4", 10, &dp);
 
-	g1->add_edge_sym(g1, city[0], city[1]);   
-	g1->add_edge_sym(g1, city[1], city[2]);   
-	g1->add_edge(g1, city[2], city[0]);   
-	g1->print(g1);
+	g1->add_wedge_sym(g1, city[0], city[1], 420);   
+	g1->add_wedge_sym(g1, city[1], city[2], 1234);   
+	g1->add_wedge(g1, city[2], city[0], 1000);   
+	g1->wprint(g1);
 
 	if (g1->has_edge(g1, city[0], city[2]) == NULL) {
 		printf("%s not linked to %s\n",city[0],city[1]);
@@ -550,17 +550,17 @@ void test_graph()
 
 	g1->del_edge(g1, city[0], city[1]);  
 	g1->del_edge_sym(g1, city[2], city[1]);  
-	g1->print(g1);
+	g1->wprint(g1);
 
 	g1->del_vertex(g1, city[2]);
-	g1->print(g1);
+	g1->wprint(g1);
 
 	if (g1->find(g1, city[2]) == NULL) {
 		printf("%s not present in graph\n",city[2]);
 	} else {
 		printf("%s present in graph\n",city[2]);
 	} 
-	g1->print(g1);
+	g1->wprint(g1);
 
 	printf("**************\n");
 	
