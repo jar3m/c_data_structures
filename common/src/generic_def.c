@@ -81,3 +81,7 @@ GET_IDX(char, get_idx_char)
 GET_IDX(int, get_idx_int)
 GET_IDX(float, get_idx_float)
 
+GET_IDX_CPY(char, get_idx_char_cpy)
+GET_IDX_CPY(int, get_idx_int_cpy)
+GET_IDX_CPY(float, get_idx_float_cpy)
+

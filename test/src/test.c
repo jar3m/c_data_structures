@@ -339,7 +339,7 @@ void test_queue()
 void test_heap()
 {
 	float f, arr1[10]={0};
-	int arr[10] = {1,53,32,43,3,23,11,209};
+	int arr[10] = {1,53,32,43,3,23,11,209, -2, 25};
 	char carr[10] = {'&', '^', 'j', 'a', 'r', 'e', 'm', '*', '%', '!'};
 	t_dparams dp;
 	t_heap *h1, *h2, *h3;
@@ -360,6 +360,12 @@ void test_heap()
 	h3->insert(h3,&f);
 	f = 1000.2f;
 	h3->insert(h3,&f);
+	f = 1.2f;
+	h3->insert(h3,&f);
+	f = -9.2f;
+	h3->insert(h3,&f);
+	f = 9.2f;
+	h3->insert(h3,&f);
 	
 	printf("Sorting\n");
 	// heap sort data;
@@ -373,9 +379,16 @@ void test_heap()
 	// heapify array
 	h1->build(h1);
 	h2->build(h2);
+	
+	// Update key
+	f = 2000.01f;
+	h3->update(h3, &f, 2);
 	printf("Heapify'd array\n");
-	printf("%f\n", *(float*)(h3->del(h3)));
-	printf("%f\n", *(float*)(h3->del(h3)));
+	f = -2000.01f;
+	h3->update(h3, &f, 2);
+	
+	printf("%d\n", *(int*)(h1->extract(h1)));
+	printf("%d\n", *(int*)(h1->extract(h1)));
 	h1->print(h1);
 	h2->print(h2);
 	h3->print(h3);
