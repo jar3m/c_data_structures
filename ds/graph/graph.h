@@ -15,8 +15,8 @@ typedef struct gnode {
 
 /// graph neighbor edges represented in neigh list
 typedef struct gedge {
-	t_gnode *neigh;			///< Pointer to neighbor vertex
-	int weight;			///< Cost of the edge
+	t_gnode *node;			///< Pointer to neighbor vertex
+	unsigned int weight;			///< Cost of the edge
 } t_gedge;
 
 // fn ptr for adding weighted edge
@@ -83,6 +83,12 @@ typedef struct dag_info{
 	int indegree;			///< Used internally for topologicaly order and find longest path in DAG
 } t_daginfo;
 
+/// Dist info
+typedef struct dist_info {
+	t_gedge edge;			///< Pointer to edge
+	t_gnode *parent;		///< Pointer to Vertex vertex
+} t_distinfo;
 
 /// graph interface APIs
 t_gen create_graph(char *name, int size, t_dparams *prm);
+t_gen dijkstra(t_gen d, t_gen data);

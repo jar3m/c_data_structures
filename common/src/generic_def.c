@@ -65,6 +65,37 @@ void print_str(t_gen str)
 	printf("%s", (char*)str);
 }
 
+t_gen gen_get_idx(t_gen x, int idx1)
+{
+	t_gen *arr = ((t_gen*)(x));
+	return arr[idx1];
+}
+
+void gen_cpy_idx(t_gen x, int idx1, t_gen data)
+{
+	t_gen *arr = ((t_gen*)(x));
+	arr[idx1] = data;
+}
+
+void gen_swp_idx(t_gen x, int idx1, int idx2)
+{
+	t_gen *arr = (t_gen*)(x);
+	t_gen tmp = arr[idx1];
+	arr[idx1] = arr[idx2];
+	arr[idx2] = tmp;
+}
+
+e_cmpr gen_cmpr_idx(t_gen x, int idx1, int idx2)
+{	
+	e_cmpr ret = eEQUAL;
+	t_gen *arr = ((t_gen*)(x));
+	t_gen tmp = (t_gen)(arr[idx1] -arr[idx2]);
+	if (tmp < 0)	
+		ret = eLESS;
+	else if (tmp > 0)
+		ret = eGREAT;
+	return ret;
+}
 CMPR_IDX(char,compare_idx_char)
 CMPR_IDX(int,compare_idx_int)
 CMPR_IDX(float,compare_idx_float)

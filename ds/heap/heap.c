@@ -11,8 +11,10 @@ void heap_build(t_gen d);
 void heap_sort(t_gen d);
 int heap_len(t_gen d);
 void heap_print(t_gen d);
-void destroy_heap(t_gen d);
+bool heap_empty(t_gen d);
+bool heap_full(t_gen d);
 t_gen heap_update_key(t_gen d, t_gen val, int idx);
+void destroy_heap(t_gen d);
 
 
 /*! @brief  
@@ -42,6 +44,8 @@ t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, t_dparams 
 	h->sort       = heap_sort;
 	h->len        = heap_len;
 	h->update     = heap_update_key;
+	h->full	      = heap_full;
+	h->empty      = heap_empty;
 	h->print      = heap_print;
 	h->destroy    = destroy_heap;
 
@@ -56,11 +60,37 @@ t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, t_dparams 
 	return (t_gen)h;
 }
 
+
+/*! @brief  
+ *  To check if heap full
+ *  @param d    - Pointer to instance of heap 
+ *  @return     - true if heap full
+ * */
+bool heap_full(t_gen d)
+{
+	t_heap *h = (t_heap*)d;
+
+	return (h->count >= h->size);
+}
+
+/*! @brief  
+ *  To check if heap empty
+ *  @param d    - Pointer to instance of heap 
+ *  @return     - true if heap empty
+ * */
+bool heap_empty(t_gen d)
+{
+	t_heap *h = (t_heap*)d;
+
+	return (h->count == 0);
+}
+
 /*! @brief  
  *  Preserve heap property on insert
  *  by heapifying from bottom to root
  *  @param d    - Pointer to instance of heap 
  *  @param idx  - Index of node to heapify
+ *  @return     - NA
  * */
 void heapify_up(t_heap *h, int idx)
 {

@@ -31,6 +31,8 @@ typedef struct heap {
 	f_vgen sort;  		///< routine to heap sort 
 	f_update update;	///< routine to update a key of given heap node
 	f_len len;    		///< routine to get heap len
+	f_full full;		///< routine to check if heap full
+	f_empty empty;		///< routine to check if heap empty
 	f_print print;		///< routine to print heap info 
 	f_destroy destroy;	///< routine to destroy
 

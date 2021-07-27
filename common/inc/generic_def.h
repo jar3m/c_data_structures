@@ -156,3 +156,8 @@ t_gen get_idx_float(t_gen,int);
 t_gen get_idx_char_cpy(t_gen,int);
 t_gen get_idx_int_cpy(t_gen,int);
 t_gen get_idx_float_cpy(t_gen,int);
+
+e_cmpr gen_cmpr_idx(t_gen x, int idx1, int idx2);
+void gen_swp_idx(t_gen x, int idx1, int idx2);
+void gen_cpy_idx(t_gen x, int idx1, t_gen data);
+t_gen gen_get_idx(t_gen x, int idx1);

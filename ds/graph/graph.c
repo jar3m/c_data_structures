@@ -6,6 +6,7 @@
 #include "link_list.h"
 #include "queue.h"
 #include "stack.h"
+#include "heap.h"
 
 // function Declarations
 t_gen graph_delete(t_gen,t_gen);
@@ -116,7 +117,7 @@ e_cmpr graph_neigh_list_compare(t_gen x, t_gen y)
 	t_gedge *neighl = (t_gedge*) x;
 	t_gnode *node = (t_gnode*) y;
 	
-	if (neighl->neigh == node) {
+	if (neighl->node == node) {
 		return eEQUAL;
 	}
 
@@ -134,7 +135,7 @@ void graph_neigh_list_free(t_gen mem, char *file, int line)
 {
 	t_gedge *neighl = (t_gedge*) mem;
 	
-	neighl->neigh = NULL;
+	neighl->node = NULL;
 	
 	free_mem(neighl);
 	
@@ -235,7 +236,7 @@ t_gen graph_add_edge(t_gen d, t_gen n1, t_gen n2)
 	g->total_edges++;
 
 	edge = get_mem(1, sizeof(t_gedge));
-	edge->neigh  = B;
+	edge->node  = B;
 	edge->weight = 0;
 
 	// link N1->N2
@@ -275,8 +276,8 @@ t_gen graph_add_wedge(t_gen d, t_gen n1, t_gen n2, int weight)
 	g->total_edges++;
 
 	edge = get_mem(1, sizeof(t_gedge));
-	edge->neigh  = B;
-	edge->weight = weight;
+	edge->node  = B;
+	edge->weight = (unsigned)weight;
 
 	// link N1->N2
 	A->neigh->append(A->neigh, edge);
@@ -450,7 +451,7 @@ void bfs_core(t_graph *g, t_gnode *node, t_bfsinfo *bfs, t_queue *q, int comp)
 		end = neigh_list->end_node(neigh_list);
 		while (cur) {
 			edge  = cur->data;
-			neigh = edge->neigh;
+			neigh = edge->node;
 			// If neigh node not visited add neigh to queue 
 			if (bfs[neigh->idx].level == -1) {
 				bfs[neigh->idx].level  = bfs[node->idx].level + 1;
@@ -563,7 +564,7 @@ void dfs_core(t_graph *g, t_gnode *node, t_dfsinfo *dfs, t_stack *s, int comp, i
 		// Don't check Neighbor list if already all neighbors visited  
 		while (cur && dfs[node->idx].visited_neighbors != 0) {
 			edge  = cur->data;
-			neigh = edge->neigh;
+			neigh = edge->node;
 			// For each unvisited neighbor vertex
 			// update parent and pre count 
 			// Push Node to stack break for Depth Traversal
@@ -722,7 +723,7 @@ t_gen graph_dfs_optimised(t_gen d, t_gen n)
 		// Don't check Neighbor list if already visited all the neighbors
 		while (cur && dfs[node->idx].visited_neighbors != 0) {
 			edge  = cur->data;
-			neigh = edge->neigh;
+			neigh = edge->node;
 			dfs[node->idx].visited_neighbors--;
 			// For each vertex unvisited vertex
 			// update parent and pre count 
@@ -812,7 +813,7 @@ t_gen graph_toplogicaly_order_dag(t_gen d)
 		end = neigh_list->end_node(neigh_list);
 		while (cur) {
 			edge = cur->data;
-			node = edge->neigh;
+			node = edge->node;
 			dag_inf[node->idx].indegree += 1;
 			cur = neigh_list->next_node(neigh_list, cur);
 			if (cur == end) {
@@ -843,7 +844,7 @@ t_gen graph_toplogicaly_order_dag(t_gen d)
 		end = neigh_list->end_node(neigh_list);
 		while (cur) {
 			edge  = cur->data;
-			neigh = edge->neigh;
+			neigh = edge->node;
 			dag_inf[neigh->idx].indegree -= 1;
 			// update path as max of parent and cur longest path
 			dag_inf[neigh->idx].longest_path = 
@@ -885,7 +886,7 @@ void graph_neigh_print(t_gen d, t_gen neigh)
 	cur = l->head_node(l);
 	while (cur) {
 		edge  = cur->data;
-		node  = edge->neigh;
+		node  = edge->node;
 		g->print_data(node->id);
 		printf(" ");
 		cur = l->next_node(l, cur);
@@ -934,7 +935,7 @@ void graph_wneigh_print(t_gen d, t_gen neigh)
 	cur = l->head_node(l);
 	while (cur) {
 		edge  = cur->data;
-		node  = edge->neigh;
+		node  = edge->node;
 		printf("<");
 		g->print_data(node->id);
 		printf(" %d> ", edge->weight);
@@ -965,6 +966,133 @@ void graph_wprint(t_gen d)
 		graph_wneigh_print(g,g->nodes[i].neigh);
 		printf("\n");
 	} 
+}
+
+/*! @brief  
+ *  Utils function used for comparing two different graph edges
+ *  @param x	 - Pointer to edge1
+ *  @param y	 - Pointer to edge2
+ *  @return 	 - Comparision resutlt @see e_cmpr
+ */
+e_cmpr graph_wedge_cmpr(t_gen x, t_gen y)
+{
+	t_gedge *A = (t_gedge*)x;
+	t_gedge *B = (t_gedge*)y;
+	e_cmpr ret = eEQUAL;
+	
+	if (A->weight > B->weight) {
+		ret = eGREAT;
+	}
+	else if (A->weight < B->weight) {
+		ret = eGREAT;
+	}
+	
+	return ret;
+}
+
+/*! @brief  
+ *  Utils function used by genric heap for comparing 
+ *  graph edge weights
+ *  @param d	 - Pointer to array heap
+ *  @param i	 - index 1
+ *  @param j	 - index 2
+ *  @return 	 - Comparision resutlt @see e_cmpr
+ */
+e_cmpr graph_wedge_cmpr_idx(t_gen x, int i, int j)
+{
+	t_gen *arr = (t_gen*)x;
+	return graph_wedge_cmpr(arr[i], arr[j]);
+}
+
+/*! @brief  
+ *  Find the shortest path from a given source vertex
+ *  to all source nodes in a graph
+ *  @param d	 - Pointer instance of graph
+ *  @param data  - Pointer to source vertex data
+ *  @return 	 - Pointer to dist array to all nodes in graph
+ */
+t_gen dijkstra(t_gen d, t_gen data)
+{
+	t_graph *g = (t_graph*)d;
+	t_gnode *node;
+	t_gedge *v, *u;
+	t_llnode *cur, *end;
+	t_linklist *neigh_list;
+	t_distinfo *dist, *tmp;
+	t_heap *h;
+	t_dparams dp;
+	t_gen *pq;
+	unsigned int alt_weight;
+
+	// Get vertex
+	node = g->find(g, data);
+	if (node == NULL) {
+		return NULL;
+	}	
+
+	// Data specific operation for generic min heap
+	init_data_params(&dp, eUSER);
+	dp.free     = dummy_free;
+	dp.cmpr	    = graph_wedge_cmpr; 
+	dp.cmpr_idx = graph_wedge_cmpr_idx;
+	dp.swap_idx = gen_swp_idx;
+	dp.copy_idx = gen_cpy_idx;
+	dp.get_idx  = gen_get_idx;
+
+	// Creating a generic min heap to store edges
+	pq   = get_mem(g->count, sizeof(t_gen)); 	
+	h    = create_heap("Dijkstra's Heap", pq, g->count, eMIN_HEAP, &dp);
+	
+	// Initalize all dist to all nodes as infinite 
+	dist = get_mem(g->count, sizeof(t_distinfo)); 	
+	for (int i = 0; i < g->count; i++) {
+		dist[i].edge.node   = NULL;
+		dist[i].edge.weight = (unsigned)-1; 
+		dist[i].parent 	    = NULL;
+	}
+	
+	// Set the source node dist as 0
+	dist[node->idx].edge.weight = 0; 
+	dist[node->idx].edge.node   = node; 
+	
+	// Add source vertex to heap 
+	h->insert(h, &dist[node->idx].edge);
+	while (h->empty(h) != true) {
+		// Get min dist vertex from heap and traverse all its edges
+		// check if dist from cur vertex to its neigh vertex is smaller
+		// Using heaps cos extract min is O(1)
+		u = h->extract(h);
+
+		neigh_list = (t_linklist*)u->node->neigh;
+		cur = neigh_list->head_node(neigh_list);
+		end = neigh_list->end_node(neigh_list);
+		while (cur) {
+			v = (t_gedge*)cur->data;
+
+			// If cur dist is greater than the alt dist
+			alt_weight = u->weight + v->weight;
+			if (dist[v->node->idx].edge.weight > alt_weight) {
+				// Set cur dist as alt dist, update parent
+				// and add edge to heap
+				dist[v->node->idx].edge.node   = v->node;
+				dist[v->node->idx].edge.weight = alt_weight;
+				dist[v->node->idx].parent = u->node;
+				h->insert(h, &dist[v->node->idx].edge);
+			}
+			
+			// Exit after neigh list traversal complete
+			cur = neigh_list->next_node(neigh_list, cur);
+			if (cur == end) {
+				break;
+			}
+		}
+	}
+	
+	// Destroy heap and destroy the array used for storing heap
+	h->destroy(h);
+	free_mem(pq);
+
+	return dist;
 }
 
 /*! @brief  
