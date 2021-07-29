@@ -16,7 +16,7 @@ typedef struct gnode {
 /// graph neighbor edges represented in neigh list
 typedef struct gedge {
 	t_gnode *node;			///< Pointer to neighbor vertex
-	unsigned int weight;			///< Cost of the edge
+	int weight;			///< Cost of the edge
 } t_gedge;
 
 // fn ptr for adding weighted edge
@@ -92,3 +92,4 @@ typedef struct dist_info {
 /// graph interface APIs
 t_gen create_graph(char *name, int size, t_dparams *prm);
 t_gen dijkstra(t_gen d, t_gen data);
+t_gen bellman_ford(t_gen d, t_gen data);

@@ -528,27 +528,36 @@ void test_tree()
  */
 void test_graph()
 {
-	t_graph *g1, *g2, *g3, *g4;
+	t_graph *g1, *g2, *g3, *g4, *g5;
 	char city[][64] ={"Delhi", "Bangalore","Chennai"}; 
 	int i, *ip, num[] = {1,2,3,4,5,6,7,8,9,10};
 	int a1[] = {1,2,3,4,5,6,7,8,9,10,11,12};
 	int a2[] = {1,2,3,4,5,6,7,8,9,10};
+	int a3[] = {1,2,3,4,5,6,7,8,9,10};
 	t_dparams dp;
 	t_bfsinfo *bfs;	
 	t_dfsinfo *dfs;	
 	t_daginfo *dag;	
 
 	init_data_params(&dp, eSTRING);
+	dp.free = dummy_free;
 	g1 = create_graph("Graph 1", 10, &dp);
 
 	init_data_params(&dp, eINT32);
+	dp.free = dummy_free;
 	g2 = create_graph("Graph 2", 10, &dp);
 
 	init_data_params(&dp, eINT32);
+	dp.free = dummy_free;
 	g3 = create_graph("Graph 3", 12, &dp);
 
 	init_data_params(&dp, eINT32);
+	dp.free = dummy_free;
 	g4 = create_graph("Graph 4", 10, &dp);
+
+	init_data_params(&dp, eINT32);
+	dp.free = dummy_free;
+	g5 = create_graph("Graph 5", 10, &dp);
 
 	g1->add_wedge_sym(g1, city[0], city[1], 420);   
 	g1->add_wedge_sym(g1, city[1], city[2], 1234);   
@@ -640,6 +649,7 @@ void test_graph()
 	}
 	free_mem(dag);
 		
+	printf("* Dijkstra's Algo *\n");
 	for (i = 0; i < 10; i++) {
 		g2->add_vertex(g2, &num[i]);   
 	}
@@ -661,8 +671,36 @@ void test_graph()
 				dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: -1);
 	}
 	free_mem(dist);
+
+	printf("* Bellman Ford *\n");
+	for (i = 0; i < 10; i++) {
+		g5->add_vertex(g5, &a3[i]);   
+	}
+
+	g5->add_wedge(g5, &a3[0], &a3[1], 10);   
+	g5->add_wedge(g5, &a3[0], &a3[7], 8);   
+	g5->add_wedge(g5, &a3[1], &a3[5], 2);   
+	g5->add_wedge(g5, &a3[2], &a3[1], 1);   
+	g5->add_wedge(g5, &a3[2], &a3[3], 1);   
+	g5->add_wedge(g5, &a3[3], &a3[4], 3);   
+	g5->add_wedge(g5, &a3[4], &a3[5], -1);   
+	g5->add_wedge(g5, &a3[5], &a3[2], -2);   
+	g5->add_wedge(g5, &a3[6], &a3[5], -1);   
+	g5->add_wedge(g5, &a3[6], &a3[1], -4);   
+	g5->add_wedge(g5, &a3[7], &a3[6], 1);   
+	g5->wprint(g5);
+	dist = bellman_ford(g5, &a3[0]);
+
+	for (i = 0; i < 10; i++) {
+		printf("{%d: %d %d %d}\n", i+1, dist[i].edge.weight,
+				dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
+				dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: -1);
+	}
+	free_mem(dist);
+
 	g1->destroy(g1);
 	g2->destroy(g2);
 	g3->destroy(g3);
 	g4->destroy(g4);
+	g5->destroy(g5);
 }

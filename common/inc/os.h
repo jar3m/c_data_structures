@@ -15,6 +15,7 @@
 #include <pthread.h>
 #include <signal.h>
 #include <sys/time.h>
+#include <limits.h>
 
 /// Custom malloc if not defined use calloc and free
 #ifndef CUSTOM_MALLOC
