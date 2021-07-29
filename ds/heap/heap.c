@@ -6,11 +6,14 @@
 #include "heap.h"
 
 void heap_insert(t_gen d,t_gen data);
-t_gen heap_delete_root(t_gen d);
+t_gen heap_extract_root(t_gen d);
 void heap_build(t_gen d);
 void heap_sort(t_gen d);
 int heap_len(t_gen d);
 void heap_print(t_gen d);
+bool heap_empty(t_gen d);
+bool heap_full(t_gen d);
+t_gen heap_update_key(t_gen d, t_gen val, int idx);
 void destroy_heap(t_gen d);
 
 
@@ -36,14 +39,18 @@ t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, t_dparams 
 	
 	// Initailze heap routines
 	h->insert     = heap_insert;
-	h->del        = heap_delete_root;
+	h->extract    = heap_extract_root;
 	h->build      = heap_build;
 	h->sort       = heap_sort;
 	h->len        = heap_len;
+	h->update     = heap_update_key;
+	h->full	      = heap_full;
+	h->empty      = heap_empty;
 	h->print      = heap_print;
 	h->destroy    = destroy_heap;
 
 	// Initailze datatype based operations req for prop working of heap
+	h->cmpr	      =	prm->cmpr;
 	h->cmpr_idx   =	prm->cmpr_idx;
 	h->swap_idx   =	prm->swap_idx; 
 	h->copy_idx   =	prm->copy_idx;
@@ -53,11 +60,37 @@ t_gen create_heap(char *name, t_gen data, int size, e_heaptype htype, t_dparams 
 	return (t_gen)h;
 }
 
+
+/*! @brief  
+ *  To check if heap full
+ *  @param d    - Pointer to instance of heap 
+ *  @return     - true if heap full
+ * */
+bool heap_full(t_gen d)
+{
+	t_heap *h = (t_heap*)d;
+
+	return (h->count >= h->size);
+}
+
+/*! @brief  
+ *  To check if heap empty
+ *  @param d    - Pointer to instance of heap 
+ *  @return     - true if heap empty
+ * */
+bool heap_empty(t_gen d)
+{
+	t_heap *h = (t_heap*)d;
+
+	return (h->count == 0);
+}
+
 /*! @brief  
  *  Preserve heap property on insert
  *  by heapifying from bottom to root
  *  @param d    - Pointer to instance of heap 
  *  @param idx  - Index of node to heapify
+ *  @return     - NA
  * */
 void heapify_up(t_heap *h, int idx)
 {
@@ -99,7 +132,8 @@ void heap_insert(t_gen d,t_gen data)
 }
 
 /*! @brief  
- *  Rearrange a heap to maintain the heap property
+ *  Rearrange a heap to maintain the heap property 
+ *  aka heapyfy_down
  *  @param d    - Pointer to instance of heap 
  *  @param idx  - Index of node to heapify
  *  @return 	- NA
@@ -153,11 +187,11 @@ void heap_build(t_gen d)
 
 
 /*! @brief  
- *  Delete the root from heap
+ *  Extract the root from heap
  *  @param d    - Pointer to instance of heap 
- *  @return 	- Pointer to deleted heap element
+ *  @return 	- Pointer to extracted root node element of heap
  */
-t_gen heap_delete_root(t_gen d)
+t_gen heap_extract_root(t_gen d)
 {
 	t_heap *h = (t_heap*)d;
 	t_gen data = NULL;
@@ -167,10 +201,11 @@ t_gen heap_delete_root(t_gen d)
 		return data;
 	}
 	
-	// Root to be deleted is swapped with last node in heap
+	// Root is swapped with last node in heap
 	// temp store root at last heap location
 	h->count--;
 	h->swap_idx(h->data, 0, h->count);
+
 	// heapify to preserve heap prop
 	heapify(h, 0);
 	
@@ -205,6 +240,43 @@ void heap_sort(t_gen d)
 }
 
 /*! @brief  
+ *  heap update value of given node
+ *  @param d    - Pointer to instance of heap 
+ *  @param val  - Pointer of value to be copied to given heap node
+ *  @param idx  - Node idx of heap to which value has to be updated
+ *		  idx b/w 0 and heap node count -1
+ *  @return 	- Pointer to updated node data
+ */
+t_gen heap_update_key(t_gen d, t_gen val, int idx)
+{
+	t_heap *h = (t_heap*)d;
+	t_gen tmp = NULL;
+	e_cmpr cmp_res;
+	
+	if (idx < 0 || idx >= h->count) {
+		LOG_WARN("HEAP", "%s: idx out of bound\n",h->name);
+		return tmp;
+	}
+
+	// exit condition depending type of heap
+	cmp_res = (h->type != eMAX_HEAP)? eGREAT : eLESS;
+	tmp = h->get_idx(h->data, idx);
+	
+	// If new val '<'/'>' previous val or min/max heap
+	// then heapify up else heapify down
+	if (h->cmpr(tmp, val) == cmp_res) {
+		h->copy_idx(h->data, idx, val);
+		heapify_up(h, idx);
+	}
+	else {
+		h->copy_idx(h->data, idx, val);
+		heapify(h, idx);
+	}
+
+	return tmp;
+}
+
+/*! @brief  
  *  heap count
  *  @param d    - Pointer to instance of heap 
  *  @return 	- heap length
@@ -226,6 +298,22 @@ void destroy_heap(t_gen d)
 	free_mem(h);
 }
 
+/*  @brief
+ *  Util function to get type of heap in string
+ *  @param type  - heap Type
+ *  @return String of heap type
+*/
+char * get_heaptype_name(e_heaptype type)
+{
+	switch (type) {
+		case eMIN_HEAP:
+			return "MIN_HEAP";
+		case eMAX_HEAP:
+			return "MAX_HEAP";
+	}
+
+	return "UNDEFINED";
+}
 /*! @brief  
  *  heap_print_info
  *  @param d    - Pointer to instance of heap 
@@ -236,10 +324,11 @@ void heap_print(t_gen d)
 	t_heap *h = (t_heap*)d; 
 	int i;
 
-	printf("%s: {count: %d} {size: %d}\n[",h->name, h->count, h->size);
+	printf("%s:%s {count: %d} {size: %d}\n[ ",h->name, 
+			get_heaptype_name(h->type), h->count, h->size);
 	for (i = 0; i < h->size; i ++) {
 		h->print_data(h->get_idx(h->data, i));
-		printf(", ");
+		printf(" ");
 	}
 	printf("]\n");
 }

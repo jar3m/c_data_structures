@@ -103,6 +103,15 @@
 						return tmp;\
 					}
 
+/// Template function for getting element at a given index of an array for default data types
+#define GET_IDX_CPY(T, NAME)	t_gen NAME(t_gen x, int idx1)\
+					{	\
+						T *arr = ((T*)(x));\
+						t_gen tmp = get_mem(1, sizeof(T));\
+						*(T*)tmp = arr[idx1] ;\
+						return tmp;\
+					}
+
 /// Below routines defined as reference for basic datatypes
 e_cmpr compare_char(t_gen,t_gen);
 e_cmpr compare_int(t_gen,t_gen);
@@ -143,3 +152,12 @@ void copy_idx_float(t_gen,int,t_gen);
 t_gen get_idx_char(t_gen,int);
 t_gen get_idx_int(t_gen,int);
 t_gen get_idx_float(t_gen,int);
+
+t_gen get_idx_char_cpy(t_gen,int);
+t_gen get_idx_int_cpy(t_gen,int);
+t_gen get_idx_float_cpy(t_gen,int);
+
+e_cmpr gen_cmpr_idx(t_gen x, int idx1, int idx2);
+void gen_swp_idx(t_gen x, int idx1, int idx2);
+void gen_cpy_idx(t_gen x, int idx1, t_gen data);
+t_gen gen_get_idx(t_gen x, int idx1);

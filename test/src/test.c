@@ -9,7 +9,11 @@
 #include "queue.h"
 #include "heap.h"
 #include "tree.h"
+#include "graph.h"
+#include "disjoint_set.h"
 
+void test_disjoint_set();
+void test_graph();
 void test_tree();
 void test_heap();
 void test_queue();
@@ -54,7 +58,9 @@ int main(int argc, char *argv[])
 	test_queue();
 	test_heap();
 	test_tree();
-  
+	test_disjoint_set();
+	test_graph();
+
 	mem_finit();
 
 	return 0;
@@ -336,7 +342,7 @@ void test_queue()
 void test_heap()
 {
 	float f, arr1[10]={0};
-	int arr[10] = {1,53,32,43,3,23,11,209};
+	int arr[10] = {1,53,32,43,3,23,11,209, -2, 25};
 	char carr[10] = {'&', '^', 'j', 'a', 'r', 'e', 'm', '*', '%', '!'};
 	t_dparams dp;
 	t_heap *h1, *h2, *h3;
@@ -357,6 +363,12 @@ void test_heap()
 	h3->insert(h3,&f);
 	f = 1000.2f;
 	h3->insert(h3,&f);
+	f = 1.2f;
+	h3->insert(h3,&f);
+	f = -9.2f;
+	h3->insert(h3,&f);
+	f = 9.2f;
+	h3->insert(h3,&f);
 	
 	printf("Sorting\n");
 	// heap sort data;
@@ -370,9 +382,16 @@ void test_heap()
 	// heapify array
 	h1->build(h1);
 	h2->build(h2);
+	
+	// Update key
+	f = 2000.01f;
+	h3->update(h3, &f, 2);
 	printf("Heapify'd array\n");
-	printf("%f\n", *(float*)(h3->del(h3)));
-	printf("%f\n", *(float*)(h3->del(h3)));
+	f = -2000.01f;
+	h3->update(h3, &f, 2);
+	
+	printf("%d\n", *(int*)(h1->extract(h1)));
+	printf("%d\n", *(int*)(h1->extract(h1)));
 	h1->print(h1);
 	h2->print(h2);
 	h3->print(h3);
@@ -504,4 +523,227 @@ void test_tree()
 	t2->destroy(t2);
 	t3->destroy(t3);
 	t4->destroy(t4);
+}
+
+/*! @brief  
+ *   Test Graph routines
+ *  @return NA
+ */
+void test_graph()
+{
+	t_graph *g1, *g2, *g3, *g4, *g5;
+	char city[][64] ={"Delhi", "Bangalore","Chennai"}; 
+	int i, *ip, num[] = {1,2,3,4,5,6,7,8,9,10};
+	int a1[] = {1,2,3,4,5,6,7,8,9,10,11,12};
+	int a2[] = {1,2,3,4,5,6,7,8,9,10};
+	int a3[] = {1,2,3,4,5,6,7,8,9,10};
+	t_dparams dp;
+	t_bfsinfo *bfs;	
+	t_dfsinfo *dfs;	
+	t_daginfo *dag;	
+
+	init_data_params(&dp, eSTRING);
+	dp.free = dummy_free;
+	g1 = create_graph("Graph 1", 10, &dp);
+
+	init_data_params(&dp, eINT32);
+	dp.free = dummy_free;
+	g2 = create_graph("Graph 2", 10, &dp);
+
+	init_data_params(&dp, eINT32);
+	dp.free = dummy_free;
+	g3 = create_graph("Graph 3", 12, &dp);
+
+	init_data_params(&dp, eINT32);
+	dp.free = dummy_free;
+	g4 = create_graph("Graph 4", 10, &dp);
+
+	init_data_params(&dp, eINT32);
+	dp.free = dummy_free;
+	g5 = create_graph("Graph 5", 10, &dp);
+
+	g1->add_wedge_sym(g1, city[0], city[1], 420);   
+	g1->add_wedge_sym(g1, city[1], city[2], 1234);   
+	g1->add_wedge(g1, city[2], city[0], 1000);   
+	g1->wprint(g1);
+
+	if (g1->has_edge(g1, city[0], city[2]) == NULL) {
+		printf("%s not linked to %s\n",city[0],city[1]);
+	} else {
+		printf("%s linked to %s\n",city[0],city[1]);
+	} 
+
+	g1->del_edge(g1, city[0], city[1]);  
+	g1->del_edge_sym(g1, city[2], city[1]);  
+	g1->wprint(g1);
+
+	g1->del_vertex(g1, city[2]);
+	g1->wprint(g1);
+
+	if (g1->find(g1, city[2]) == NULL) {
+		printf("%s not present in graph\n",city[2]);
+	} else {
+		printf("%s present in graph\n",city[2]);
+	} 
+	g1->wprint(g1);
+
+	printf("**************\n");
+
+	printf("- Connected Components -\n");
+	for (i = 0; i < 12; i++) {
+		g3->add_vertex(g3, &a1[i]);   
+	}
+	g3->add_edge_sym(g3, &a1[0], &a1[1]);   
+	g3->add_edge_sym(g3, &a1[0], &a1[4]);   
+	g3->add_edge_sym(g3, &a1[4], &a1[8]);   
+	g3->add_edge_sym(g3, &a1[4], &a1[9]);   
+	g3->add_edge_sym(g3, &a1[2], &a1[3]);   
+	g3->add_edge_sym(g3, &a1[2], &a1[6]);   
+	g3->add_edge_sym(g3, &a1[2], &a1[7]);   
+	g3->add_edge_sym(g3, &a1[3], &a1[7]);   
+	g3->add_edge_sym(g3, &a1[6], &a1[7]);   
+	g3->add_edge_sym(g3, &a1[6], &a1[10]);   
+	g3->add_edge_sym(g3, &a1[7], &a1[10]);   
+	g3->add_edge_sym(g3, &a1[7], &a1[11]);   
+	g3->add_edge_sym(g3, &a1[8], &a1[9]);   
+	g3->print(g3);
+	
+	printf("- BFS -\n");
+	bfs  = g3->bfs(g3, &a1[0]);
+	for(i = 0; i < 12; i++) {
+		ip = (int*)bfs[i].parent;
+		printf("%d: %d %d %d\n", 
+			bfs[i].comp,i+1, bfs[i].level, ip != NULL? *ip: -1);
+	}
+	free_mem(bfs);
+
+	printf("- DFS -\n");
+	dfs  = g3->dfs(g3, &a1[0]);
+	for(i = 0; i < 12; i++) {
+		ip = (int*)dfs[i].parent;
+		printf("%d: %d %d {%d %d}\n", 
+			dfs[i].comp, i+1, ip != NULL? *ip: -1, dfs[i].pre, dfs[i].post);
+	}
+	free_mem(dfs);
+
+	printf("- DAGS Sorting and Longest Path -\n");
+	for (i = 0; i < 8; i++) {
+		g4->add_vertex(g4, &a2[i]);   
+	}
+	
+	g4->add_edge(g4, &a2[0], &a2[2]);   
+	g4->add_edge(g4, &a2[0], &a2[3]);   
+	g4->add_edge(g4, &a2[0], &a2[4]);   
+	g4->add_edge(g4, &a2[1], &a2[2]);   
+	g4->add_edge(g4, &a2[1], &a2[7]);   
+	g4->add_edge(g4, &a2[2], &a2[5]);   
+	g4->add_edge(g4, &a2[3], &a2[7]);   
+	g4->add_edge(g4, &a2[3], &a2[5]);   
+	g4->add_edge(g4, &a2[4], &a2[7]);   
+	g4->add_edge(g4, &a2[5], &a2[6]);   
+	g4->add_edge(g4, &a2[6], &a2[7]);   
+	g4->print(g4);
+	
+	dag = g4->topo_order_dag(g4);
+	for(i = 0; i < 8; i++) {
+		ip = (int*)dag[i].node;
+		printf("{%d %d}\n", 
+			ip != NULL? *ip: -1, dag[i].longest_path);
+	}
+	free_mem(dag);
+		
+	for (i = 0; i < 10; i++) {
+		g2->add_vertex(g2, &num[i]);   
+	}
+
+	g2->add_wedge_sym(g2, &num[0], &num[1], 10);   
+	g2->add_wedge_sym(g2, &num[0], &num[2], 80);   
+	g2->add_wedge_sym(g2, &num[1], &num[2], 6);   
+	g2->add_wedge_sym(g2, &num[2], &num[3], 70);   
+	g2->add_wedge_sym(g2, &num[1], &num[4], 20);   
+	g2->add_wedge_sym(g2, &num[4], &num[5], 50);   
+	g2->add_wedge_sym(g2, &num[4], &num[6], 10);   
+	g2->add_wedge_sym(g2, &num[5], &num[6], 5);   
+	g2->wprint(g2);
+
+	printf("* Dijkstra's Algo *\n");
+	t_distinfo *dist = dijkstra(g2, &num[0]);
+
+	for (i = 0; i < 10; i++) {
+		printf("{%d : %d %d}\n", 
+			dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
+			dist[i].edge.weight,
+			dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: -1);
+	}
+	free_mem(dist);
+
+	printf("* Prim's Minimum Spanning Tree *\n");
+	dist = prims_mst(g2);
+
+	for (i = 0; i < 10; i++) {
+		printf("{%d - %d: %d}\n", 
+			dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
+			dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: 
+			-1, dist[i].edge.weight);
+	}
+	free_mem(dist);
+
+
+	for (i = 0; i < 10; i++) {
+		g5->add_vertex(g5, &a3[i]);   
+	}
+
+	g5->add_wedge(g5, &a3[0], &a3[1], 10);   
+	g5->add_wedge(g5, &a3[0], &a3[7], 8);   
+	g5->add_wedge(g5, &a3[1], &a3[5], 2);   
+	g5->add_wedge(g5, &a3[2], &a3[1], 1);   
+	g5->add_wedge(g5, &a3[2], &a3[3], 1);   
+	g5->add_wedge(g5, &a3[3], &a3[4], 3);   
+	g5->add_wedge(g5, &a3[4], &a3[5], -1);   
+	g5->add_wedge(g5, &a3[5], &a3[2], -2);   
+	g5->add_wedge(g5, &a3[6], &a3[5], -1);   
+	g5->add_wedge(g5, &a3[6], &a3[1], -4);   
+	g5->add_wedge(g5, &a3[7], &a3[6], 1);   
+	g5->wprint(g5);
+	dist = bellman_ford(g5, &a3[0]);
+
+	printf("* Bellman Ford *\n");
+	for (i = 0; i < 10; i++) {
+		printf("{%d : %d %d}\n", 
+			dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
+			dist[i].edge.weight,
+			dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: -1);
+	}
+	free_mem(dist);
+
+	g1->destroy(g1);
+	g2->destroy(g2);
+	g3->destroy(g3);
+	g4->destroy(g4);
+	g5->destroy(g5);
+}
+
+/*! @brief  
+ *   Test Disjoint set routines
+ *  @return NA
+ */
+void test_disjoint_set()
+{
+	t_disjset *d = create_disjoint_set("disjoint set", 10);
+
+	printf("* Disjoint set operation test *\n");
+	d->make(d);
+
+	d->merge(d, 1, 2);
+	d->merge(d, 4, 3);
+	d->merge(d, 3, 2);
+	d->merge(d, 5, 7);
+	
+	d->print(d);
+	printf("find 2: %d\n",d->find(d, 2));
+	printf("find 1: %d\n",d->find(d, 4));
+	printf("find 8: %d\n",d->find(d, 8));
+	d->print(d);
+
+	d->destroy(d);
 }

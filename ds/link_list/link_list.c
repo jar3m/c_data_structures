@@ -1275,7 +1275,7 @@ t_gen linklist_get_prev(t_gen d, t_gen n)
 }
 
 /*  @brief
- *  Util function to get type of stack in string
+ *  Util function to get type of list in string
  *  @param type  - Link list Type
  *  @return String of link list type
 */
@@ -1341,8 +1341,8 @@ void linklist_print_info (t_gen d)
 	t_llnode *ptr, *end;
 	int i;
 
-	printf("%s {Head: %lx} {Tail: %lx} {count: %u} {Type: %s}\n[",l->name,
-			(long)l->head,(long)l->tail, l->count, get_lltype_name(l->type));
+	printf("%s:%s {Head: %lx} {Tail: %lx} {count: %u}\n[",l->name,
+			get_lltype_name(l->type),(long)l->head,(long)l->tail, l->count);
 
 	// get head of link list
 	ptr = l->head_node(l);
