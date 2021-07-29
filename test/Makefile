@@ -7,6 +7,7 @@ INCLUDES += -I $(PROJ_PATH)/ds/queue/
 INCLUDES += -I $(PROJ_PATH)/ds/heap/
 INCLUDES += -I $(PROJ_PATH)/ds/tree/
 INCLUDES += -I $(PROJ_PATH)/ds/graph/
+INCLUDES += -I $(PROJ_PATH)/ds/disjoint_set/
 export
 
 CFLAGS += -g -Wall 

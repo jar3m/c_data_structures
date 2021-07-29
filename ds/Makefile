@@ -5,6 +5,7 @@ queue_ARCHIVE=$(PROJ_PATH)/ds/queue/queue.o
 heap_ARCHIVE=$(PROJ_PATH)/ds/heap/heap.o
 tree_ARCHIVE=$(PROJ_PATH)/ds/tree/tree.o
 graph_ARCHIVE=$(PROJ_PATH)/ds/graph/graph.o
+disjoint_set_ARCHIVE=$(PROJ_PATH)/ds/disjoint_set/disjoint_set.o
 
 ds_ARCHIVE=$(PROJ_PATH)/ds/bin/ds.a
 
@@ -40,6 +41,11 @@ INCLUDES += -I $(PROJ_PATH)/ds/graph/
 sub_ARCHIVE += $(graph_ARCHIVE)
 endif
 
+ifeq ($(DISJOINT_SET), true)
+INCLUDES += -I $(PROJ_PATH)/ds/disjoint_set/
+sub_ARCHIVE += $(disjoint_set_ARCHIVE)
+endif
+
 all: $(ds_ARCHIVE)
 
 $(ds_ARCHIVE): $(sub_ARCHIVE)
@@ -64,6 +70,9 @@ $(tree_ARCHIVE) :
 
 $(graph_ARCHIVE) :
 	make -C graph/ all
+
+$(disjoint_set_ARCHIVE) :
+	make -C disjoint_set/ all
 
 clean:
 	rm -rf $(ds_ARCHIVE) $(sub_ARCHIVE)

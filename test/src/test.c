@@ -10,7 +10,9 @@
 #include "heap.h"
 #include "tree.h"
 #include "graph.h"
+#include "disjoint_set.h"
 
+void test_disjoint_set();
 void test_graph();
 void test_tree();
 void test_heap();
@@ -56,6 +58,7 @@ int main(int argc, char *argv[])
 	test_queue();
 	test_heap();
 	test_tree();
+	test_disjoint_set();
 	test_graph();
 
 	mem_finit();
@@ -718,4 +721,29 @@ void test_graph()
 	g3->destroy(g3);
 	g4->destroy(g4);
 	g5->destroy(g5);
+}
+
+/*! @brief  
+ *   Test Disjoint set routines
+ *  @return NA
+ */
+void test_disjoint_set()
+{
+	t_disjset *d = create_disjoint_set("disjoint set", 10);
+
+	printf("* Disjoint set operation test *\n");
+	d->make(d);
+
+	d->merge(d, 1, 2);
+	d->merge(d, 4, 3);
+	d->merge(d, 3, 2);
+	d->merge(d, 5, 7);
+	
+	d->print(d);
+	printf("find 2: %d\n",d->find(d, 2));
+	printf("find 1: %d\n",d->find(d, 4));
+	printf("find 8: %d\n",d->find(d, 8));
+	d->print(d);
+
+	d->destroy(d);
 }
