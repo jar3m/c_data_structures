@@ -1048,14 +1048,13 @@ t_gen dijkstra(t_gen d, t_gen data)
 	// Initalize all dist to all nodes as infinite 
 	dist = get_mem(g->count, sizeof(t_distinfo)); 	
 	for (int i = 0; i < g->count; i++) {
-		dist[i].edge.node   = NULL;
+		dist[i].edge.node   = &g->nodes[i];
 		dist[i].edge.weight = INT_MAX; 
 		dist[i].parent 	    = NULL;
 	}
 	
 	// Set the source node dist as 0
 	dist[node->idx].edge.weight = 0; 
-	dist[node->idx].edge.node   = node; 
 	
 	// Add source vertex to heap 
 	h->insert(h, &dist[node->idx].edge);
@@ -1076,7 +1075,6 @@ t_gen dijkstra(t_gen d, t_gen data)
 			if (dist[v->node->idx].edge.weight > alt_weight) {
 				// Set cur dist as alt dist, update parent
 				// and add edge to heap
-				dist[v->node->idx].edge.node   = v->node;
 				dist[v->node->idx].edge.weight = alt_weight;
 				dist[v->node->idx].parent = u->node;
 				h->insert(h, &dist[v->node->idx].edge);
@@ -1134,7 +1132,7 @@ t_gen bellman_ford(t_gen d, t_gen data)
 	dist = get_mem(g->count, sizeof(t_distinfo)); 	
 	in_q = get_mem(g->count, sizeof(bool)); 	
 	for (int i = 0; i < g->count; i++) {
-		dist[i].edge.node   = NULL;
+		dist[i].edge.node   = &g->nodes[i];
 		dist[i].edge.weight = INT_MAX; 
 		dist[i].parent 	    = NULL;
 		in_q[i] = false;
@@ -1142,7 +1140,6 @@ t_gen bellman_ford(t_gen d, t_gen data)
 	
 	// Set the source node dist as 0
 	dist[node->idx].edge.weight = 0; 
-	dist[node->idx].edge.node   = node; 
 	q->enq(q, &dist[node->idx].edge);
 	in_q[node->idx] = true;
 	while (q->empty(q) != true) {
@@ -1160,7 +1157,6 @@ t_gen bellman_ford(t_gen d, t_gen data)
 			if (dist[v->node->idx].edge.weight > alt_weight) {
 				// Set cur dist as alt dist, update parent
 				// and add edge to queue if vertex not already in queue
-				dist[v->node->idx].edge.node   = v->node;
 				dist[v->node->idx].edge.weight = alt_weight;
 				dist[v->node->idx].parent = u->node;
 				if (in_q[v->node->idx] != true) {
@@ -1183,6 +1179,85 @@ t_gen bellman_ford(t_gen d, t_gen data)
 
 	return dist;
 }
+
+/*! @brief  
+ *  Find the Minimum Spanning for weighted undirected graph
+ *  Using Prim's Algorithm
+ *  @see https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  @param d	 - Pointer instance of graph
+ *  @return 	 - Pointer to dist array to all nodes in graph
+ */
+t_gen prims_mst(t_gen d)
+{
+	t_graph *g = (t_graph*)d;
+	t_gedge *v, *u;
+	t_llnode *cur, *end;
+	t_linklist *neigh_list;
+	t_distinfo *dist, *tmp;
+	t_heap *h;
+	t_dparams dp;
+	t_gen *pq;
+
+	// Data specific operation for generic min heap
+	init_data_params(&dp, eUSER);
+	dp.free     = dummy_free;
+	dp.cmpr	    = graph_wedge_cmpr; 
+	dp.cmpr_idx = graph_wedge_cmpr_idx;
+	dp.swap_idx = gen_swp_idx;
+	dp.copy_idx = gen_cpy_idx;
+	dp.get_idx  = gen_get_idx;
+
+	// Creating a generic min heap to store edges
+	pq   = get_mem(g->count, sizeof(t_gen)); 	
+	h    = create_heap("Dijkstra's Heap", pq, g->count, eMIN_HEAP, &dp);
+	
+	// Initalize all dist to all nodes as infinite 
+	dist = get_mem(g->count, sizeof(t_distinfo)); 	
+	for (int i = 0; i < g->count; i++) {
+		dist[i].edge.node   = &g->nodes[i];
+		dist[i].edge.weight = INT_MAX; 
+		dist[i].parent 	    = NULL;
+	}
+	
+	
+	// Set 0 as start vertex
+	h->insert(h, &dist[0].edge);
+	while (h->empty(h) != true) {
+		// Of the edges that connect the tree to vertices not yet in the tree,
+		// Find the minimum-weight edge, and transfer it to the tree
+		u = h->extract(h);
+
+		neigh_list = (t_linklist*)u->node->neigh;
+		cur = neigh_list->head_node(neigh_list);
+		end = neigh_list->end_node(neigh_list);
+		while (cur) {
+			v = (t_gedge*)cur->data;
+			
+			// If cur edge weight is greater than new edge
+			// and the end vertex is not visited
+			if (dist[v->node->idx].edge.weight > v->weight) {
+				// Set new edge as part of MST, update parent
+				// and add edge to heap
+				dist[v->node->idx].edge.weight = v->weight;
+				dist[v->node->idx].parent = u->node;
+				h->insert(h, &dist[v->node->idx].edge);
+			}
+			
+			// Exit after neigh list traversal complete
+			cur = neigh_list->next_node(neigh_list, cur);
+			if (cur == end) {
+				break;
+			}
+		}
+	}
+	
+	// Destroy heap and destroy the array used for storing heap
+	h->destroy(h);
+	free_mem(pq);
+
+	return dist;
+}
+
 /*! @brief  
  *  Destroy instance of graph
  *  @param d	 - Pointer instance of graph

@@ -649,7 +649,6 @@ void test_graph()
 	}
 	free_mem(dag);
 		
-	printf("* Dijkstra's Algo *\n");
 	for (i = 0; i < 10; i++) {
 		g2->add_vertex(g2, &num[i]);   
 	}
@@ -663,16 +662,30 @@ void test_graph()
 	g2->add_wedge_sym(g2, &num[4], &num[6], 10);   
 	g2->add_wedge_sym(g2, &num[5], &num[6], 5);   
 	g2->wprint(g2);
+
+	printf("* Dijkstra's Algo *\n");
 	t_distinfo *dist = dijkstra(g2, &num[0]);
 
 	for (i = 0; i < 10; i++) {
-		printf("{%d: %d %d %d}\n", i+1, dist[i].edge.weight,
-				dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
-				dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: -1);
+		printf("{%d : %d %d}\n", 
+			dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
+			dist[i].edge.weight,
+			dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: -1);
 	}
 	free_mem(dist);
 
-	printf("* Bellman Ford *\n");
+	printf("* Prim's Minimum Spanning Tree *\n");
+	dist = prims_mst(g2);
+
+	for (i = 0; i < 10; i++) {
+		printf("{%d - %d: %d}\n", 
+			dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
+			dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: 
+			-1, dist[i].edge.weight);
+	}
+	free_mem(dist);
+
+
 	for (i = 0; i < 10; i++) {
 		g5->add_vertex(g5, &a3[i]);   
 	}
@@ -691,10 +704,12 @@ void test_graph()
 	g5->wprint(g5);
 	dist = bellman_ford(g5, &a3[0]);
 
+	printf("* Bellman Ford *\n");
 	for (i = 0; i < 10; i++) {
-		printf("{%d: %d %d %d}\n", i+1, dist[i].edge.weight,
-				dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
-				dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: -1);
+		printf("{%d : %d %d}\n", 
+			dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
+			dist[i].edge.weight,
+			dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: -1);
 	}
 	free_mem(dist);
 
