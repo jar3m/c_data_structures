@@ -10,10 +10,12 @@
 #include "heap.h"
 #include "tree.h"
 #include "graph.h"
+#include "array.h"
 #include "disjoint_set.h"
 
 void test_disjoint_set();
 void test_graph();
+void test_array();
 void test_tree();
 void test_heap();
 void test_queue();
@@ -60,6 +62,7 @@ int main(int argc, char *argv[])
 	test_tree();
 	test_disjoint_set();
 	test_graph();
+	test_array();
 
 	mem_finit();
 
@@ -721,6 +724,45 @@ void test_graph()
 	g3->destroy(g3);
 	g4->destroy(g4);
 	g5->destroy(g5);
+}
+
+/*! @brief  
+ *   Test Array search and sort routines
+ *  @return NA
+ */
+void test_array()
+{
+	int a1[] = {310,-22,35,534,55,76,907,8,239,1210,151,-12};
+	int a2[] = {310,-22,35,534,55,76,907,8,239,1210,151,-12};
+	int a3[] = {310,-22,35,534,55,76,907,8,239,1210,151,-12};
+	t_dparams dp;
+
+	init_data_params(&dp, eINT32);
+	selection_sort(a1, 12, &dp);
+
+	printf("Select sort: \n");
+	for (int i = 0; i < 12; i++) {
+		printf("%d ", a1[i]);
+	}
+	printf("\n");
+
+	insertion_sort(a2, 12, &dp);
+
+	printf("Insertion sort: \n");
+	for (int i = 0; i < 12; i++) {
+		printf("%d ", a2[i]);
+	}
+	printf("\n");
+
+	quick_sort(a3, 12, &dp);
+
+	printf("quick sort: \n");
+	for (int i = 0; i < 12; i++) {
+		printf("%d ", a3[i]);
+	}
+	printf("\n");
+
+
 }
 
 /*! @brief  

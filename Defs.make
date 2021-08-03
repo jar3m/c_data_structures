@@ -18,6 +18,7 @@ BUILD_TYPE=executable
 #flags
 SEGFAULT_BACKTRACE=true
 #include submodules of Data structures
+ARRAY=true
 LINK_LIST=true
 STACK=true
 QUEUE=true
@@ -42,5 +43,6 @@ DS_FLAGS = -DLINK_LIST=$(LINK_LIST) -DSTACK=$(STACK) \
 	@echo "HEAPS= $(HEAP)"
 	@echo "TREES= $(TREE)"
 	@echo "GRAPHS= $(GRAPH)"
+	@echo "ARRAYS= $(ARRAY)"
 	@echo "DISJOINT_SET= $(DISJOINT_SET)"
 
