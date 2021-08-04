@@ -84,7 +84,11 @@ int quick_sort_partition(t_gen a, int lo, int hi, t_dparams *op)
 }
 
 /*! @brief  
- *  Quicksort is an in-place sorting algorithm
+ *  Quicksort is an in-place sorting algorithm is a divide and conquer algorithm which relies on
+ *  a partition operation: to partition an array, an element called a pivot is selected.
+ *  All elements smaller than the pivot are moved before it and all greater elements are moved after it. 
+ *  This can be done efficiently in linear time and in-place.
+ *  Worst case complexity of O(n2) and average of O(nlogn)
  *  @param a  - Pointer to array
  *  @param n  - size of array
  *  @param op - Data type specific params 
@@ -135,3 +139,5 @@ void quick_sort(t_gen a, int n, t_dparams *op)
 	// free auxillary stack created
 	free_mem(stack);
 }
+
+

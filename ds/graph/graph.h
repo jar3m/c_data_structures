@@ -94,3 +94,4 @@ t_gen create_graph(char *name, int size, t_dparams *prm);
 t_gen dijkstra(t_gen d, t_gen data);
 t_gen bellman_ford(t_gen d, t_gen data);
 t_gen prims_mst(t_gen d);
+t_gen kruskals_mst(t_gen d);

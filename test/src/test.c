@@ -690,6 +690,18 @@ void test_graph()
 			-1, dist[i].edge.weight);
 	}
 	free_mem(dist);
+	
+	printf("* Kruskal's Minimum Spanning Tree *\n");
+	dist = kruskals_mst(g2);
+
+	for (i = 0; i < 10; i++) {
+		printf("{%d - %d: %d}\n", 
+			dist[i].edge.node?((t_gnode*)dist[i].edge.node)->idx+1: -1,
+			dist[i].parent? ((t_gnode*)dist[i].parent)->idx+1: 
+			-1, dist[i].edge.weight);
+	}
+	free_mem(dist);
+
 
 
 	for (i = 0; i < 10; i++) {
