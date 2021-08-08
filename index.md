@@ -106,3 +106,5 @@ $ make clean; make all
 $ ./foo.out
 
 
+<meta name="google-site-verification" content="nnCl1q8vBmkhVrzWvmuSth7KW7IBy9WiG6jaBiClmjg" />
+https://jar3m.github.io/c_everything/docs/index.html
