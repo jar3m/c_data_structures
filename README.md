@@ -3,7 +3,7 @@
 
 # INFO
 
-* This is a C repository containing a curated set of data structures and algorithm.
+* This is a C repository containing a curated set of data structures and algorithm.[website](https://jar3m.github.io/c_everything)
 * The data structures are implemented keeping them Generic and Abstract.
 * Genericness: Since in C any data structure is completely type dependent, we've tried to achieve a genric data structure that supports any standard data types (int, char, float, etc..) and user defined data types (struct user {})
     - The means by which we achieved a data structure by storing the pointer to the data (std or user defined) rather the data itself
