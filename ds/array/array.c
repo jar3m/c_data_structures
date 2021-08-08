@@ -5,6 +5,30 @@
 #include "array.h"
 
 /*! @brief  
+ *  Bubble sort is simplest sorting algorithm that works by repeatedly 
+ *  swapping the adjacent elements if they are in wrong order
+ *  It has an O(n2) time complexity
+ *  @param a  - Pointer to array
+ *  @param n  - size of array
+ *  @param op - Data type specific params 
+		for operation such as compare and swap
+ *  @return   - NA
+ * */
+void bubble_sort(t_gen a, int n, t_dparams *op)
+{
+	int idx1, idx2;
+	
+	for (idx1 = 0; idx1 < (n-1); idx1++) {
+		// Last idx elements are already in place
+		for (idx2 = 0; idx2 < (n-idx1-1); idx2++) {
+			if (op->cmpr_idx(a, idx2, idx2+1) == eGREAT) {
+				op->swap_idx(a, idx2, idx2+1);
+			}
+		}
+	}
+}
+
+/*! @brief  
  *  Selection sort is an in-place comparison sorting algorithm. 
  *  It has an O(n2) time complexity
  *  @param a  - Pointer to array
