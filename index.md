@@ -1,10 +1,13 @@
 ## C Everything
+
+# Info
+
 * This is a C repository containing a curated set of data structures and algorithm.
 * The data structures are implemented keeping them Generic and Abstract.
 * Genericness: Since in C any data structure is completely type dependent, we've tried to achieve a genric data structure that supports any standard data types (int, char, float, etc..) and user defined data types (struct user {})
     - The means by which we achieved a data structure by storing the pointer to the data (std or user defined) rather the data itself
     - Given below is a snippet of code explaining the same,
-``` markdown
+```markdown
 // Link list node definition
 typdef void* t_gen;                     //< Generic data pointer
 
@@ -38,46 +41,48 @@ l->print(l);
 l->destroy(l);
 ```
 
+# Documentation
+[Source code Documentation]
 
 # LIST OF DATA STRUCTURES
 
-* Link List
+* [Link List](https://github.com/jar3m/c_everything/blob/master/ds/link_list/link_list.c)
   * Singly linked list
   * Doubly linked list 
   * Circular linked list 
   * Doubly Circular linked list 
   * XOR linked list 
 
-* Stacks
+* [Stacks](https://github.com/jar3m/c_everything/blob/master/ds/stack/stack.c)
   * Array based 
   * Link List based
 
-* Queues
+* [Queues](https://github.com/jar3m/c_everything/blob/master/ds/queue/queue.c)
   * Array based 
   * Link List based
 
 * Hashes
 
-* Disjoint Sets
+* [Disjoint Sets](https://github.com/jar3m/c_everything/blob/master/ds/disjoint_set/disjoint_set.c)
 
-* Heaps (Array based Binary heap)
+* [Heaps (Array based Binary heap)](https://github.com/jar3m/c_everything/blob/master/ds/heap/heap.c)
   * Min heap
   * Max heap
 
-* Trees
+* [Trees](https://github.com/jar3m/c_everything/blob/master/ds/tree/tree.c)
   * Binary Search Tree
   * AVL Trees 
 
-* Graphs
+* [Graphs](https://github.com/jar3m/c_everything/blob/master/ds/graph/graph.c)
  * Weighted/Unweighted
  * Symmetric/Assymetric
 
 # ALGORITHMS
-* Searching
+* [Searching](https://github.com/jar3m/c_everything/blob/master/ds/array/array.c)
   * Linear Search
   * Binary Search
 
-* Sorting
+* [Sorting](https://github.com/jar3m/c_everything/blob/master/ds/array/array.c)
   * Insertion Sort
   * Selection Sort
   * Bubble Sort
@@ -85,16 +90,19 @@ l->destroy(l);
   * Merge Sort
   * Heap Sort
 
-* Graph Algorithms
+* [Graph Algorithms](https://github.com/jar3m/c_everything/blob/master/ds/graph/graph.c)
   * Dijkstra's Shortest Path
   * Bellman Ford Shortest Path 
   * Prim's Minimum Spanning Tree
   * Kruskal's Minimus Spanning Tree
 
-
+# CONFIGURE
+Def.make change flags
 
 # BUILD
 $ make clean; make all
 
 # RUN
 $ ./foo.out
+
+
