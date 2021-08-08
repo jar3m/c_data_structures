@@ -115,3 +115,5 @@ $ make clean; make all
 
 # RUN
 $ ./foo.out
+
+<meta name="google-site-verification" content="nnCl1q8vBmkhVrzWvmuSth7KW7IBy9WiG6jaBiClmjg" />
