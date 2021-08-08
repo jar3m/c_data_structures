@@ -63,24 +63,24 @@ l->destroy(l);
 
 * [Disjoint Sets](https://github.com/jar3m/c_everything/blob/master/ds/disjoint_set/disjoint_set.c) 
 
-* [Heaps (Array based Binary heap)](https://github.com/jar3m/c_everything/blob/master/ds/heap/heap.c) [docs](https://jar3m.github.io/c_everything/docs/html/heap_8c.html)
+* [Heaps (Array based Binary heap)](https://github.com/jar3m/c_everything/blob/master/ds/heap/heap.c)
   * Min heap
   * Max heap
 
-* [Trees](https://github.com/jar3m/c_everything/blob/master/ds/tree/tree.c) [docs](https://jar3m.github.io/c_everything/docs/html/tree_8c.html)
+* [Trees](https://github.com/jar3m/c_everything/blob/master/ds/tree/tree.c) 
   * Binary Search Tree
   * AVL Trees 
 
-* [Graphs](https://github.com/jar3m/c_everything/blob/master/ds/graph/graph.c) [docs](https://jar3m.github.io/c_everything/docs/html/graph_8c.html)
+* [Graphs](https://github.com/jar3m/c_everything/blob/master/ds/graph/graph.c)
  * Weighted/Unweighted
  * Symmetric/Assymetric
 
 # ALGORITHMS
-* [Searching](https://github.com/jar3m/c_everything/blob/master/ds/array/array.c) [docs](https://jar3m.github.io/c_everything/docs/html/array_8c.html)
+* [Searching](https://github.com/jar3m/c_everything/blob/master/ds/array/array.c)
   * Linear Search
   * Binary Search
 
-* [Sorting](https://github.com/jar3m/c_everything/blob/master/ds/array/array.c) [docs](https://jar3m.github.io/c_everything/docs/html/array_8c.html)
+* [Sorting](https://github.com/jar3m/c_everything/blob/master/ds/array/array.c) 
   * Insertion Sort
   * Selection Sort
   * Bubble Sort
@@ -88,7 +88,7 @@ l->destroy(l);
   * Merge Sort
   * Heap Sort
 
-* [Graph Algorithms](https://github.com/jar3m/c_everything/blob/master/ds/graph/graph.c) [docs](https://jar3m.github.io/c_everything/docs/html/graph_8c.html)
+* [Graph Algorithms](https://github.com/jar3m/c_everything/blob/master/ds/graph/graph.c)
   * Dijkstra's Shortest Path
   * Bellman Ford Shortest Path 
   * Prim's Minimum Spanning Tree
