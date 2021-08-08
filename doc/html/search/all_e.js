@@ -1,6 +1,12 @@
 var searchData=
 [
-  ['os_2eh_203',['os.h',['../os_8h.html',1,'']]],
-  ['os_5falloc_204',['os_alloc',['../os_8h.html#afab7b23bebeebd1c3637d88fde566e95',1,'os.h']]],
-  ['os_5ffree_205',['os_free',['../os_8h.html#a1d9604d8f37116628506b9e7dc7e3ef6',1,'os.h']]]
+  ['name_322',['name',['../structdisjoint__set.html#a5ac083a645d964373f022d03df4849c8',1,'disjoint_set::name()'],['../structgraph.html#a5ac083a645d964373f022d03df4849c8',1,'graph::name()'],['../structheap.html#a5ac083a645d964373f022d03df4849c8',1,'heap::name()'],['../structlinklist.html#a5ac083a645d964373f022d03df4849c8',1,'linklist::name()'],['../structt__queue.html#a5ac083a645d964373f022d03df4849c8',1,'t_queue::name()'],['../structstack.html#a5ac083a645d964373f022d03df4849c8',1,'stack::name()'],['../structtree.html#a5ac083a645d964373f022d03df4849c8',1,'tree::name()']]],
+  ['neigh_323',['neigh',['../structgnode.html#a1732f62db9458027b42915781cf70dae',1,'gnode']]],
+  ['next_324',['next',['../structmemory__record.html#a036d0fb26bf29931c0a2a8a6fee6208d',1,'memory_record']]],
+  ['next_5fnode_325',['next_node',['../structlinklist.html#a177bebd1b47cd14e3e61c7095f1e5a90',1,'linklist']]],
+  ['nmemb_326',['nmemb',['../structmemory__record.html#a79fd723df92f68cf8a6207a1d98b4c01',1,'memory_record']]],
+  ['node_327',['node',['../structgedge.html#ab16454f87f2b5245c7bc4fa159deaa77',1,'gedge::node()'],['../structdag__info.html#abd9f7f896c5f39a850c9f8928e9e4d71',1,'dag_info::node()']]],
+  ['node_5fcount_328',['node_count',['../structtree.html#a31c8e276ee5b1f550655b8295856236c',1,'tree']]],
+  ['nodes_329',['nodes',['../structgraph.html#a421a5061e311b7a6542cb196b27780d7',1,'graph']]],
+  ['nxt_330',['nxt',['../structllnode.html#a96d2332feecbc91af592f3c3435e597e',1,'llnode']]]
 ];

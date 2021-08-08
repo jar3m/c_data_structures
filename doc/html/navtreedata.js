@@ -34,7 +34,12 @@ var NAVTREE =
       [ "Pre Commit checklist", "md_doc_merge_template.html#autotoc_md6", null ],
       [ "Unit test details", "md_doc_merge_template.html#autotoc_md7", null ]
     ] ],
-    [ "c_everything", "md__r_e_a_d_m_e.html", null ],
+    [ "c_everything", "md__r_e_a_d_m_e.html", [
+      [ "LIST OF DATA STRUCTURES", "md__r_e_a_d_m_e.html#autotoc_md9", null ],
+      [ "ALGORITHMS", "md__r_e_a_d_m_e.html#autotoc_md10", null ],
+      [ "BUILD", "md__r_e_a_d_m_e.html#autotoc_md11", null ],
+      [ "RUN", "md__r_e_a_d_m_e.html#autotoc_md12", null ]
+    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -47,7 +52,7 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
-        [ "Functions", "globals_func.html", null ],
+        [ "Functions", "globals_func.html", "globals_func" ],
         [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
@@ -61,7 +66,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"stack_8h.html"
+"link__list_8c.html#a10cc1f1bec42f2e93fd32b4e49a8a6bf",
+"structlinklist.html#a160630d70cdc1587fa747de23cf4bc46"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

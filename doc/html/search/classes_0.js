@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['data_5fparams_289',['data_params',['../structdata__params.html',1,'']]]
+  ['bfs_5finfo_486',['bfs_info',['../structbfs__info.html',1,'']]]
 ];

@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['peek_461',['peek',['../structt__queue.html#a81182a164ab3412a9473dba76e12cfa2',1,'t_queue::peek()'],['../structstack.html#a81182a164ab3412a9473dba76e12cfa2',1,'stack::peek()']]],
-  ['pop_462',['pop',['../structstack.html#ae2dbaf5425d3f0397ca2be907397ad91',1,'stack']]],
-  ['prev_5fnode_463',['prev_node',['../structlinklist.html#aa200138f2ebfb230f10df9f7ff634563',1,'linklist']]],
-  ['print_464',['print',['../structlinklist.html#a3d10b0d42d15474697029a7b9ff1584b',1,'linklist::print()'],['../structt__queue.html#a3d10b0d42d15474697029a7b9ff1584b',1,'t_queue::print()'],['../structstack.html#a3d10b0d42d15474697029a7b9ff1584b',1,'stack::print()']]],
-  ['print_5fdata_465',['print_data',['../structdata__params.html#aa37edc4a43d8de46027b4c529d29f31f',1,'data_params::print_data()'],['../structlinklist.html#aa37edc4a43d8de46027b4c529d29f31f',1,'linklist::print_data()'],['../structt__queue.html#aa37edc4a43d8de46027b4c529d29f31f',1,'t_queue::print_data()'],['../structstack.html#aa37edc4a43d8de46027b4c529d29f31f',1,'stack::print_data()']]],
-  ['print_5finfo_466',['print_info',['../structlinklist.html#a2d27fd4179fb0a19f141b87dea93e6de',1,'linklist']]],
-  ['prv_467',['prv',['../structllnode.html#a164e6d16a1b061f7008b332f965f7e32',1,'llnode']]],
-  ['push_468',['push',['../structstack.html#a4bb6fb21968fa5ce926d7d8e2d807bbc',1,'stack']]]
+  ['make_794',['make',['../structdisjoint__set.html#acd91e98e208d351fcb707c0408291a45',1,'disjoint_set']]],
+  ['max_795',['max',['../structtree.html#a614634e599d5b7e1332a67104d9c7966',1,'tree']]],
+  ['max_5fsize_796',['max_size',['../structgraph.html#a98ca8117bc73d9d7520727c4ce8772e6',1,'graph::max_size()'],['../structt__queue.html#a98ca8117bc73d9d7520727c4ce8772e6',1,'t_queue::max_size()'],['../structstack.html#a98ca8117bc73d9d7520727c4ce8772e6',1,'stack::max_size()']]],
+  ['mem_797',['mem',['../structmemory__record.html#a5f00e9b1b039412bb144bae39e66b97a',1,'memory_record']]],
+  ['mem_5frecord_798',['mem_record',['../structmem__mamnager.html#a7e1f37618e0388846134279ce6da806b',1,'mem_mamnager']]],
+  ['merge_799',['merge',['../structdisjoint__set.html#a4d54d460ccd3dcff23990d7fb6785ea2',1,'disjoint_set']]],
+  ['min_800',['min',['../structtree.html#a050b3839896123d8db4dfd2bf5898602',1,'tree']]]
 ];

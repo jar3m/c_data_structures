@@ -1,12 +1,15 @@
 /*! @file graph.c
     @brief 
     Contains definitions of routines supported by graph
+    @author Meraj
 */
 #include "graph.h"
 #include "link_list.h"
 #include "queue.h"
 #include "stack.h"
 #include "heap.h"
+#include "disjoint_set.h"
+#include "array.h"
 
 // function Declarations
 t_gen graph_delete(t_gen,t_gen);
@@ -984,7 +987,7 @@ e_cmpr graph_wedge_cmpr(t_gen x, t_gen y)
 		ret = eGREAT;
 	}
 	else if (A->weight < B->weight) {
-		ret = eGREAT;
+		ret = eLESS;
 	}
 	
 	return ret;
@@ -1003,6 +1006,30 @@ e_cmpr graph_wedge_cmpr_idx(t_gen x, int i, int j)
 	t_gen *arr = (t_gen*)x;
 	return graph_wedge_cmpr(arr[i], arr[j]);
 }
+
+/*! @brief  
+ *  Utils function used by quick sort for comparing 
+ *  graph edge weights
+ *  @param d	 - Pointer to array 
+ *  @param i	 - index 1
+ *  @param j	 - index 2
+ *  @return 	 - Comparision resutlt @see e_cmpr
+ */
+e_cmpr graph_wedge_cmpr_idx2(t_gen x, int i, int j)
+{
+	t_distinfo *arr = (t_distinfo*)x;
+	return graph_wedge_cmpr(&arr[i], &arr[j]);
+}
+
+/*! @brief  
+ *  Utils function used by quick sort for swapping
+ *  graph edges
+ *  @param d	 - Pointer to array 
+ *  @param i	 - index 1
+ *  @param j	 - index 2
+ *  @return 	 - NA
+ */
+SWP_IDX(t_distinfo, graph_wedge_swap_idx)
 
 /*! @brief  
  *  Find the shortest path from a given source vertex
@@ -1254,6 +1281,81 @@ t_gen prims_mst(t_gen d)
 	// Destroy heap and destroy the array used for storing heap
 	h->destroy(h);
 	free_mem(pq);
+
+	return dist;
+}
+
+/*! @brief  
+ *  Find the Minimum Spanning for weighted undirected graph
+ *  Using Kruskal's Algorithm
+ *  @see https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  @param d	 - Pointer instance of graph
+ *  @return 	 - Pointer to dist array to all nodes in graph
+ */
+t_gen kruskals_mst(t_gen d)
+{
+	t_graph *g = (t_graph*)d;
+	t_gnode *v, *u;
+	t_llnode *cur, *end;
+	t_linklist *neigh_list;
+	t_distinfo *dist, *tmp;
+	t_dparams dp;
+	t_disjset *set;
+	int i, j;
+
+	// Allocate mem for edge list
+	tmp  = get_mem(g->total_edges, sizeof(t_distinfo));
+	// Allocate mem for storing MST
+	dist = get_mem(g->count, sizeof(t_distinfo));
+	// Create a disjoint set
+	set  = create_disjoint_set("Kruskal graph set", g->total_edges);
+
+	// Create edge list from Adjancency list
+	for (j = i = 0; i < g->count; i++) {
+		neigh_list = (t_linklist*)(g->nodes[i].neigh);
+		cur = neigh_list->head_node(neigh_list);
+		end = neigh_list->end_node(neigh_list);
+		while (cur) {
+			tmp[j].parent = &g->nodes[i];
+			tmp[j++].edge = *((t_gedge*)cur->data);
+			
+			// Exit after neigh list traversal complete
+			cur = neigh_list->next_node(neigh_list, cur);
+			if (cur == end) {
+				break;
+			}
+		}
+	}
+
+	// Data specific operation for sorting edges
+	init_data_params(&dp, eUSER);
+	dp.cmpr_idx = graph_wedge_cmpr_idx2;
+	dp.swap_idx = graph_wedge_swap_idx;
+	
+	// Sort the edge List based on weights
+	quick_sort(tmp, g->total_edges, &dp);
+
+	// Make a disjoint set for all the vertex in graph
+	//(create a forest (a set of trees), where each vertex in the graph is a separate tree)
+	set->make(set);
+
+	// Get edges in ascending order from the edge list
+	// Kruskals algorithm terminates if MST is formed(dist contains V-1 edges) 
+	// or, all edges have been visited
+	for (j = i = 0; (j < g->count) && (i < g->total_edges); i++) {
+		u = tmp[i].parent;
+		v = tmp[i].edge.node;
+		
+		// If edges connect two different trees add to forest(Minimum spanning Tree)
+		if (set->find(set, u->idx) != set->find(set, v->idx)) {
+			dist[j++] = tmp[i];
+			set->merge(set, u->idx, v->idx);
+		}
+	}
+	
+	// Destroy disjoint set and the  edge list
+	set->destroy(set);
+	free_mem(tmp);
 
 	return dist;
 }

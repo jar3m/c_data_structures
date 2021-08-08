@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['generic_5fdef_2ec_300',['generic_def.c',['../generic__def_8c.html',1,'']]],
-  ['generic_5fdef_2eh_301',['generic_def.h',['../generic__def_8h.html',1,'']]]
+  ['disjoint_5fset_2ec_509',['disjoint_set.c',['../disjoint__set_8c.html',1,'']]],
+  ['disjoint_5fset_2eh_510',['disjoint_set.h',['../disjoint__set_8h.html',1,'']]]
 ];

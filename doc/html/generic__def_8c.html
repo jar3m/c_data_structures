@@ -27,6 +27,7 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">C Everything
    </div>
+   <div id="projectbrief">This is a C repository containing a curated set of generic data structures and algorithm.</div>
   </td>
  </tr>
  </tbody>
@@ -105,6 +106,14 @@ Functions</h2></td></tr>
 <tr class="separator:a4135ff2cb7b5e2c78fa6fe068ef43de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73be15b9b63b32c6bc1dd8f15aacd15c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generic__def_8c.html#a73be15b9b63b32c6bc1dd8f15aacd15c">print_str</a> (<a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> str)</td></tr>
 <tr class="separator:a73be15b9b63b32c6bc1dd8f15aacd15c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22d84e9ae547a9401b35b7252a6ea0c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generic__def_8c.html#a22d84e9ae547a9401b35b7252a6ea0c2">gen_get_idx</a> (<a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> x, int idx1)</td></tr>
+<tr class="separator:a22d84e9ae547a9401b35b7252a6ea0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f323366c2b8ae8f40697ae0efe9766e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generic__def_8c.html#a6f323366c2b8ae8f40697ae0efe9766e">gen_cpy_idx</a> (<a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> x, int idx1, <a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> data)</td></tr>
+<tr class="separator:a6f323366c2b8ae8f40697ae0efe9766e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e6b16a18b18203ed2a8fd34bcb9c97a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generic__def_8c.html#a2e6b16a18b18203ed2a8fd34bcb9c97a">gen_swp_idx</a> (<a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> x, int idx1, int idx2)</td></tr>
+<tr class="separator:a2e6b16a18b18203ed2a8fd34bcb9c97a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ab76510148c07cdfc0ced088b8211ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="typedefs_8h.html#ac58fd4a35b6a6fa8d6e3891a308828cc">e_cmpr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="generic__def_8c.html#a7ab76510148c07cdfc0ced088b8211ad">gen_cmpr_idx</a> (<a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> x, int idx1, int idx2)</td></tr>
+<tr class="separator:a7ab76510148c07cdfc0ced088b8211ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains routines for handling different types of data for generic operation. </p>
@@ -188,6 +197,144 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="generic__def_8c_source.html#l00026">26</a> of file <a class="el" href="generic__def_8c_source.html">generic_def.c</a>.</p>
+
+</div>
+</div>
+<a id="a7ab76510148c07cdfc0ced088b8211ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ab76510148c07cdfc0ced088b8211ad">&#9670;&nbsp;</a></span>gen_cmpr_idx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="typedefs_8h.html#ac58fd4a35b6a6fa8d6e3891a308828cc">e_cmpr</a> gen_cmpr_idx </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="generic__def_8c_source.html#l00088">88</a> of file <a class="el" href="generic__def_8c_source.html">generic_def.c</a>.</p>
+
+</div>
+</div>
+<a id="a6f323366c2b8ae8f40697ae0efe9766e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f323366c2b8ae8f40697ae0efe9766e">&#9670;&nbsp;</a></span>gen_cpy_idx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gen_cpy_idx </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a>&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="generic__def_8c_source.html#l00074">74</a> of file <a class="el" href="generic__def_8c_source.html">generic_def.c</a>.</p>
+
+</div>
+</div>
+<a id="a22d84e9ae547a9401b35b7252a6ea0c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22d84e9ae547a9401b35b7252a6ea0c2">&#9670;&nbsp;</a></span>gen_get_idx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> gen_get_idx </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx1</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="generic__def_8c_source.html#l00068">68</a> of file <a class="el" href="generic__def_8c_source.html">generic_def.c</a>.</p>
+
+</div>
+</div>
+<a id="a2e6b16a18b18203ed2a8fd34bcb9c97a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e6b16a18b18203ed2a8fd34bcb9c97a">&#9670;&nbsp;</a></span>gen_swp_idx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gen_swp_idx </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="generic__def_8c_source.html#l00080">80</a> of file <a class="el" href="generic__def_8c_source.html">generic_def.c</a>.</p>
 
 </div>
 </div>

@@ -1,29 +1,7 @@
 var searchData=
 [
-  ['stack_235',['stack',['../structstack.html',1,'']]],
-  ['stack_2ec_236',['stack.c',['../stack_8c.html',1,'']]],
-  ['stack_2eh_237',['stack.h',['../stack_8h.html',1,'']]],
-  ['stack_5fpeek_238',['stack_peek',['../stack_8c.html#a067f8b30a949f1254f6816d4d3d574f9',1,'stack.c']]],
-  ['stack_5fpop_239',['stack_pop',['../stack_8c.html#ac93502fba40edcb1990235655ef36138',1,'stack.c']]],
-  ['stack_5fpop_5farr_5fdown_240',['stack_pop_arr_down',['../stack_8c.html#a715ebf22fbe2f310d5d65cd969d2631d',1,'stack.c']]],
-  ['stack_5fpop_5farr_5fup_241',['stack_pop_arr_up',['../stack_8c.html#acac630b6caf704ee79dd39f610d3eed3',1,'stack.c']]],
-  ['stack_5fpop_5fll_242',['stack_pop_ll',['../stack_8c.html#a2015aea5b63288c29c3522b189bd8cdd',1,'stack.c']]],
-  ['stack_5fprint_243',['stack_print',['../stack_8c.html#a7a05532dbb78c89968b17c89431ca948',1,'stack.c']]],
-  ['stack_5fpush_244',['stack_push',['../stack_8c.html#ac38889a9faca85296e445008281d49d6',1,'stack.c']]],
-  ['stack_5fpush_5farr_5fdown_245',['stack_push_arr_down',['../stack_8c.html#a3d671ff13bafc764ba81780279a802ec',1,'stack.c']]],
-  ['stack_5fpush_5farr_5fup_246',['stack_push_arr_up',['../stack_8c.html#a84104c900eda9a94c8daec2149129d50',1,'stack.c']]],
-  ['stack_5fpush_5fll_247',['stack_push_ll',['../stack_8c.html#ac72319c5a60bf68832f3331c168fbd28',1,'stack.c']]],
-  ['stack_5fsize_248',['stack_size',['../stack_8c.html#a6fb12e22e195840d8b272ca4889b4c76',1,'stack.c']]],
-  ['swap_249',['swap',['../structdata__params.html#a367489b820e375a9c9c5c0d96679183e',1,'data_params::swap()'],['../structlinklist.html#a367489b820e375a9c9c5c0d96679183e',1,'linklist::swap()']]],
-  ['swap_250',['SWAP',['../generic__def_8h.html#acbaca1a731a9fc6b8bc27eef319a5b53',1,'generic_def.h']]],
-  ['swap_5fchar_251',['swap_char',['../generic__def_8h.html#ab18d37f7c2497c17caa453d47848e767',1,'generic_def.h']]],
-  ['swap_5ffloat_252',['swap_float',['../generic__def_8h.html#ad36b38a6f4499e8be87ddee98adedeac',1,'generic_def.h']]],
-  ['swap_5fgen_253',['swap_gen',['../generic__def_8h.html#aae338450b1db3c39a1f18b4e2511a7ee',1,'generic_def.h']]],
-  ['swap_5fidx_5fchar_254',['swap_idx_char',['../generic__def_8h.html#a04f86528b915a63138a627f4a9095024',1,'generic_def.h']]],
-  ['swap_5fidx_5ffloat_255',['swap_idx_float',['../generic__def_8h.html#af43b83d79dc11a17e18b4e314b985e3a',1,'generic_def.h']]],
-  ['swap_5fidx_5fint_256',['swap_idx_int',['../generic__def_8h.html#ac19c49e64d662b6323399f04ddca81e6',1,'generic_def.h']]],
-  ['swap_5fint_257',['swap_int',['../generic__def_8h.html#aa96d18be0693bfe72f814157df7ecf24',1,'generic_def.h']]],
-  ['swap_5fstring_258',['swap_string',['../generic__def_8h.html#ace6b0973f271cb1ae15d5759cb5d06db',1,'generic_def.h']]],
-  ['swp_5fidx_259',['swp_idx',['../structdata__params.html#a8e625725b9a29e3c785ee9ed3935764d',1,'data_params']]],
-  ['swp_5fidx_260',['SWP_IDX',['../generic__def_8h.html#a99fa9f4d3bcbad131bbd2d1c547e44db',1,'generic_def.h']]]
+  ['rchild_371',['rchild',['../structtree__node.html#a64d6ef3f2094666040a8ba1b75bebaf0',1,'tree_node']]],
+  ['readme_2emd_372',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['rear_373',['rear',['../structt__queue.html#af866be352de659d624986cb76b8d45b6',1,'t_queue']]],
+  ['root_374',['root',['../structtree.html#a9bf6e8677a8b1712275ad4d17e5811c7',1,'tree']]]
 ];

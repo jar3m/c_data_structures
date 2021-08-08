@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['name_456',['name',['../structlinklist.html#a5ac083a645d964373f022d03df4849c8',1,'linklist::name()'],['../structt__queue.html#a5ac083a645d964373f022d03df4849c8',1,'t_queue::name()'],['../structstack.html#a5ac083a645d964373f022d03df4849c8',1,'stack::name()']]],
-  ['next_457',['next',['../structmemory__record.html#a036d0fb26bf29931c0a2a8a6fee6208d',1,'memory_record']]],
-  ['next_5fnode_458',['next_node',['../structlinklist.html#a177bebd1b47cd14e3e61c7095f1e5a90',1,'linklist']]],
-  ['nmemb_459',['nmemb',['../structmemory__record.html#a79fd723df92f68cf8a6207a1d98b4c01',1,'memory_record']]],
-  ['nxt_460',['nxt',['../structllnode.html#a96d2332feecbc91af592f3c3435e597e',1,'llnode']]]
+  ['lchild_789',['lchild',['../structtree__node.html#ad15d110e974c13d0fb4469c73550cf24',1,'tree_node']]],
+  ['len_790',['len',['../structgraph.html#a1806a940f24509620969be008543d4c3',1,'graph::len()'],['../structheap.html#a1806a940f24509620969be008543d4c3',1,'heap::len()'],['../structlinklist.html#a1806a940f24509620969be008543d4c3',1,'linklist::len()'],['../structt__queue.html#a1806a940f24509620969be008543d4c3',1,'t_queue::len()'],['../structstack.html#a1806a940f24509620969be008543d4c3',1,'stack::len()']]],
+  ['level_791',['level',['../structbfs__info.html#acf4d33ee4cff36f69b924471174dcb11',1,'bfs_info']]],
+  ['line_792',['line',['../structmemory__record.html#a41ebd28ef1d7c6ade45642cb6acc1039',1,'memory_record']]],
+  ['longest_5fpath_793',['longest_path',['../structdag__info.html#a970b009acdfbec1077088ff61dd09090',1,'dag_info']]]
 ];

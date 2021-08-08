@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['mem_5fmamnager_292',['mem_mamnager',['../structmem__mamnager.html',1,'']]],
-  ['memory_5frecord_293',['memory_record',['../structmemory__record.html',1,'']]]
+  ['gedge_492',['gedge',['../structgedge.html',1,'']]],
+  ['gnode_493',['gnode',['../structgnode.html',1,'']]],
+  ['graph_494',['graph',['../structgraph.html',1,'']]]
 ];

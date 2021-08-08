@@ -27,6 +27,7 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">C Everything
    </div>
+   <div id="projectbrief">This is a C repository containing a curated set of generic data structures and algorithm.</div>
   </td>
  </tr>
  </tbody>
@@ -87,6 +88,21 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 <li>add
 : <a class="el" href="structlinklist.html#a160630d70cdc1587fa747de23cf4bc46">linklist</a>
 </li>
+<li>add_edge
+: <a class="el" href="structgraph.html#a930cd3f84fb41b8e5aa40f7f496636fe">graph</a>
+</li>
+<li>add_edge_sym
+: <a class="el" href="structgraph.html#a6be98e071ec7be0165ac89d4771574c4">graph</a>
+</li>
+<li>add_vertex
+: <a class="el" href="structgraph.html#afa77e2ac7835e793c1b6500404438594">graph</a>
+</li>
+<li>add_wedge
+: <a class="el" href="structgraph.html#a9e107e3747fc887e095321fc886202ab">graph</a>
+</li>
+<li>add_wedge_sym
+: <a class="el" href="structgraph.html#a4640801afc484da2fe28bcdbbc19edde">graph</a>
+</li>
 <li>alloc_count
 : <a class="el" href="structmem__mamnager.html#af182ea4873391a19209d06a1814404c4">mem_mamnager</a>
 </li>
@@ -101,50 +117,89 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 
 
 <h3><a id="index_b"></a>- b -</h3><ul>
+<li>bfs
+: <a class="el" href="structgraph.html#aa64f7a101ff77b73de496557d1d4b37c">graph</a>
+</li>
 <li>block_size
 : <a class="el" href="structmemory__record.html#ad7524613c3881d09bda0d270ede83779">memory_record</a>
+</li>
+<li>build
+: <a class="el" href="structheap.html#a657e1e67de62efc6d957378e7417c705">heap</a>
 </li>
 </ul>
 
 
 <h3><a id="index_c"></a>- c -</h3><ul>
-<li>cmp_idx
-: <a class="el" href="structdata__params.html#a8abf3e57d64b042d89a2d881677bf102">data_params</a>
-</li>
 <li>cmpr
 : <a class="el" href="structdata__params.html#a187f3524a33318ab3e7db9bc5bf91170">data_params</a>
+, <a class="el" href="structgraph.html#a187f3524a33318ab3e7db9bc5bf91170">graph</a>
+, <a class="el" href="structheap.html#a187f3524a33318ab3e7db9bc5bf91170">heap</a>
 , <a class="el" href="structlinklist.html#a187f3524a33318ab3e7db9bc5bf91170">linklist</a>
+, <a class="el" href="structtree.html#a187f3524a33318ab3e7db9bc5bf91170">tree</a>
+</li>
+<li>cmpr_idx
+: <a class="el" href="structdata__params.html#af0b2157aef1045d66aa89ada5cb4a5b4">data_params</a>
+, <a class="el" href="structheap.html#af0b2157aef1045d66aa89ada5cb4a5b4">heap</a>
+</li>
+<li>comp
+: <a class="el" href="structbfs__info.html#a1b3f06ddcdb29e455759b0afa41793a5">bfs_info</a>
+, <a class="el" href="structdfs__info.html#a1b3f06ddcdb29e455759b0afa41793a5">dfs_info</a>
+</li>
+<li>conn_comp
+: <a class="el" href="structgraph.html#a3d9ebf0ecaacc82ed6f6a39ce17e0b50">graph</a>
+</li>
+<li>copy_idx
+: <a class="el" href="structdata__params.html#a85f634bcf7f082cb60e17e3eb8cf40c7">data_params</a>
+, <a class="el" href="structheap.html#a85f634bcf7f082cb60e17e3eb8cf40c7">heap</a>
 </li>
 <li>count
-: <a class="el" href="structlinklist.html#ad43c3812e6d13e0518d9f8b8f463ffcf">linklist</a>
+: <a class="el" href="structgraph.html#ad43c3812e6d13e0518d9f8b8f463ffcf">graph</a>
+, <a class="el" href="structheap.html#ad43c3812e6d13e0518d9f8b8f463ffcf">heap</a>
+, <a class="el" href="structlinklist.html#ad43c3812e6d13e0518d9f8b8f463ffcf">linklist</a>
 , <a class="el" href="structstack.html#ad43c3812e6d13e0518d9f8b8f463ffcf">stack</a>
 , <a class="el" href="structt__queue.html#ad43c3812e6d13e0518d9f8b8f463ffcf">t_queue</a>
-</li>
-<li>cpy_idx
-: <a class="el" href="structdata__params.html#ab4aec85daf263bdbab092d736b6b89d5">data_params</a>
+, <a class="el" href="structtree.html#ad43c3812e6d13e0518d9f8b8f463ffcf">tree</a>
 </li>
 </ul>
 
 
 <h3><a id="index_d"></a>- d -</h3><ul>
 <li>data
-: <a class="el" href="structllnode.html#a0c57c18838b7199ba906da5870b5ad6e">llnode</a>
+: <a class="el" href="structheap.html#aed770c18132e0bb110af606dd320e2a8">heap</a>
+, <a class="el" href="structllnode.html#a0c57c18838b7199ba906da5870b5ad6e">llnode</a>
 , <a class="el" href="structstack.html#aed770c18132e0bb110af606dd320e2a8">stack</a>
 , <a class="el" href="structt__queue.html#aed770c18132e0bb110af606dd320e2a8">t_queue</a>
 </li>
 <li>del
 : <a class="el" href="structlinklist.html#acc9a1f8af9aff2749ec791e617dd3755">linklist</a>
+, <a class="el" href="structtree.html#acc9a1f8af9aff2749ec791e617dd3755">tree</a>
+</li>
+<li>del_edge
+: <a class="el" href="structgraph.html#a76f4a95b3c8a633b11943d935d779096">graph</a>
+</li>
+<li>del_edge_sym
+: <a class="el" href="structgraph.html#a2bd804675be5b378be35dd9e301bb8f7">graph</a>
 </li>
 <li>del_idx
 : <a class="el" href="structlinklist.html#a8f273b6dcd7b765e328d0a28a0bf5d5b">linklist</a>
+</li>
+<li>del_vertex
+: <a class="el" href="structgraph.html#aa6d9511895aa32f9f7362c74c7ef9706">graph</a>
 </li>
 <li>deq
 : <a class="el" href="structt__queue.html#a6333544be308a0a3f173e760b3163bee">t_queue</a>
 </li>
 <li>destroy
-: <a class="el" href="structlinklist.html#a678e2a357409f0a1ee68202024f34799">linklist</a>
+: <a class="el" href="structdisjoint__set.html#a678e2a357409f0a1ee68202024f34799">disjoint_set</a>
+, <a class="el" href="structgraph.html#a678e2a357409f0a1ee68202024f34799">graph</a>
+, <a class="el" href="structheap.html#a678e2a357409f0a1ee68202024f34799">heap</a>
+, <a class="el" href="structlinklist.html#a678e2a357409f0a1ee68202024f34799">linklist</a>
 , <a class="el" href="structstack.html#a363a83911c7a8565e2100db687e64ac9">stack</a>
 , <a class="el" href="structt__queue.html#a678e2a357409f0a1ee68202024f34799">t_queue</a>
+, <a class="el" href="structtree.html#a678e2a357409f0a1ee68202024f34799">tree</a>
+</li>
+<li>dfs
+: <a class="el" href="structgraph.html#adba9679951242b813e9f5553aee4c8f6">graph</a>
 </li>
 <li>dtype
 : <a class="el" href="structlinklist.html#ac944c15d9cb36ef82be4b558fc7a50f1">linklist</a>
@@ -153,8 +208,12 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 
 
 <h3><a id="index_e"></a>- e -</h3><ul>
+<li>edge
+: <a class="el" href="structdist__info.html#aa6509f63bbe7b601fea10ee9c8dbcf79">dist_info</a>
+</li>
 <li>empty
-: <a class="el" href="structstack.html#a68cc511889109dc1cb0d2cb33b6191ba">stack</a>
+: <a class="el" href="structheap.html#a68cc511889109dc1cb0d2cb33b6191ba">heap</a>
+, <a class="el" href="structstack.html#a68cc511889109dc1cb0d2cb33b6191ba">stack</a>
 , <a class="el" href="structt__queue.html#a68cc511889109dc1cb0d2cb33b6191ba">t_queue</a>
 </li>
 <li>end_node
@@ -162,6 +221,9 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 </li>
 <li>enq
 : <a class="el" href="structt__queue.html#ae4f16ce824f276ed995b43dd0b62a4fd">t_queue</a>
+</li>
+<li>extract
+: <a class="el" href="structheap.html#ae534dfa81cfd204c7766da8d712cb335">heap</a>
 </li>
 </ul>
 
@@ -171,13 +233,18 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 : <a class="el" href="structmemory__record.html#adf16cd437526a5c5e0e0af87745acbb8">memory_record</a>
 </li>
 <li>find
-: <a class="el" href="structlinklist.html#a0d20293a07edb9d8751eed093ca44c91">linklist</a>
+: <a class="el" href="structdisjoint__set.html#ab34c79432b48bd26b30ef076273a33d7">disjoint_set</a>
+, <a class="el" href="structgraph.html#a0d20293a07edb9d8751eed093ca44c91">graph</a>
+, <a class="el" href="structlinklist.html#a0d20293a07edb9d8751eed093ca44c91">linklist</a>
+, <a class="el" href="structtree.html#a0d20293a07edb9d8751eed093ca44c91">tree</a>
 </li>
 <li>free
 : <a class="el" href="structdata__params.html#a6b4bb1f02d873b6e7eb9b02a6237643b">data_params</a>
+, <a class="el" href="structgraph.html#a6b4bb1f02d873b6e7eb9b02a6237643b">graph</a>
 , <a class="el" href="structlinklist.html#a6b4bb1f02d873b6e7eb9b02a6237643b">linklist</a>
 , <a class="el" href="structstack.html#a6b4bb1f02d873b6e7eb9b02a6237643b">stack</a>
 , <a class="el" href="structt__queue.html#a6b4bb1f02d873b6e7eb9b02a6237643b">t_queue</a>
+, <a class="el" href="structtree.html#a6b4bb1f02d873b6e7eb9b02a6237643b">tree</a>
 </li>
 <li>free_count
 : <a class="el" href="structmem__mamnager.html#aa6ac329a0f4a166d054fe006b623f161">mem_mamnager</a>
@@ -186,7 +253,8 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 : <a class="el" href="structt__queue.html#ac261b45b6346e633de22d510c9f6a770">t_queue</a>
 </li>
 <li>full
-: <a class="el" href="structstack.html#aa823c16391da4123d79ead1d3d5c349a">stack</a>
+: <a class="el" href="structheap.html#aa823c16391da4123d79ead1d3d5c349a">heap</a>
+, <a class="el" href="structstack.html#aa823c16391da4123d79ead1d3d5c349a">stack</a>
 , <a class="el" href="structt__queue.html#aa823c16391da4123d79ead1d3d5c349a">t_queue</a>
 </li>
 </ul>
@@ -195,6 +263,7 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 <h3><a id="index_g"></a>- g -</h3><ul>
 <li>get_idx
 : <a class="el" href="structdata__params.html#a33905f27d41831c760986537a6cd74a3">data_params</a>
+, <a class="el" href="structheap.html#a33905f27d41831c760986537a6cd74a3">heap</a>
 , <a class="el" href="structlinklist.html#a33905f27d41831c760986537a6cd74a3">linklist</a>
 </li>
 <li>get_node_data
@@ -204,30 +273,82 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 
 
 <h3><a id="index_h"></a>- h -</h3><ul>
+<li>has_edge
+: <a class="el" href="structgraph.html#a7d7994bbfea61f26ca16c216417c10bd">graph</a>
+</li>
 <li>head
 : <a class="el" href="structlinklist.html#a4270173c9cfd242a54e8bc2531f6c68f">linklist</a>
 </li>
 <li>head_node
 : <a class="el" href="structlinklist.html#a7a548fbe2f6d9d4841fe120154151831">linklist</a>
 </li>
+<li>height
+: <a class="el" href="structtree.html#a1c15b19896b5e12fac3ba106cab6188c">tree</a>
+, <a class="el" href="structtree__node.html#ad12fc34ce789bce6c8a05d8a17138534">tree_node</a>
+</li>
+</ul>
+
+
+<h3><a id="index_i"></a>- i -</h3><ul>
+<li>id
+: <a class="el" href="structgnode.html#ab31a21d62047a0460dc17e4ae9f5006a">gnode</a>
+</li>
+<li>idx
+: <a class="el" href="structgnode.html#ae40354a1051342eb5a9db005715dcfa9">gnode</a>
+</li>
+<li>indegree
+: <a class="el" href="structdag__info.html#a78defbb6f6fe6310997107349e4c312f">dag_info</a>
+</li>
+<li>inorder
+: <a class="el" href="structtree.html#a5ae8ff3355b7841bd8f5b82761c23e6e">tree</a>
+</li>
+<li>insert
+: <a class="el" href="structheap.html#a311bcffee0b5aed6d1d3cb184fc5d101">heap</a>
+, <a class="el" href="structtree.html#a311bcffee0b5aed6d1d3cb184fc5d101">tree</a>
+</li>
+</ul>
+
+
+<h3><a id="index_k"></a>- k -</h3><ul>
+<li>key
+: <a class="el" href="structtree__node.html#ab60506d3eeed799d2a98975b30135cf3">tree_node</a>
+</li>
 </ul>
 
 
 <h3><a id="index_l"></a>- l -</h3><ul>
+<li>lchild
+: <a class="el" href="structtree__node.html#ad15d110e974c13d0fb4469c73550cf24">tree_node</a>
+</li>
 <li>len
-: <a class="el" href="structlinklist.html#a1806a940f24509620969be008543d4c3">linklist</a>
+: <a class="el" href="structgraph.html#a1806a940f24509620969be008543d4c3">graph</a>
+, <a class="el" href="structheap.html#a1806a940f24509620969be008543d4c3">heap</a>
+, <a class="el" href="structlinklist.html#a1806a940f24509620969be008543d4c3">linklist</a>
 , <a class="el" href="structstack.html#a1806a940f24509620969be008543d4c3">stack</a>
 , <a class="el" href="structt__queue.html#a1806a940f24509620969be008543d4c3">t_queue</a>
 </li>
+<li>level
+: <a class="el" href="structbfs__info.html#acf4d33ee4cff36f69b924471174dcb11">bfs_info</a>
+</li>
 <li>line
 : <a class="el" href="structmemory__record.html#a41ebd28ef1d7c6ade45642cb6acc1039">memory_record</a>
+</li>
+<li>longest_path
+: <a class="el" href="structdag__info.html#a970b009acdfbec1077088ff61dd09090">dag_info</a>
 </li>
 </ul>
 
 
 <h3><a id="index_m"></a>- m -</h3><ul>
+<li>make
+: <a class="el" href="structdisjoint__set.html#acd91e98e208d351fcb707c0408291a45">disjoint_set</a>
+</li>
+<li>max
+: <a class="el" href="structtree.html#a614634e599d5b7e1332a67104d9c7966">tree</a>
+</li>
 <li>max_size
-: <a class="el" href="structstack.html#a98ca8117bc73d9d7520727c4ce8772e6">stack</a>
+: <a class="el" href="structgraph.html#a98ca8117bc73d9d7520727c4ce8772e6">graph</a>
+, <a class="el" href="structstack.html#a98ca8117bc73d9d7520727c4ce8772e6">stack</a>
 , <a class="el" href="structt__queue.html#a98ca8117bc73d9d7520727c4ce8772e6">t_queue</a>
 </li>
 <li>mem
@@ -236,14 +357,27 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 <li>mem_record
 : <a class="el" href="structmem__mamnager.html#a7e1f37618e0388846134279ce6da806b">mem_mamnager</a>
 </li>
+<li>merge
+: <a class="el" href="structdisjoint__set.html#a4d54d460ccd3dcff23990d7fb6785ea2">disjoint_set</a>
+</li>
+<li>min
+: <a class="el" href="structtree.html#a050b3839896123d8db4dfd2bf5898602">tree</a>
+</li>
 </ul>
 
 
 <h3><a id="index_n"></a>- n -</h3><ul>
 <li>name
-: <a class="el" href="structlinklist.html#a5ac083a645d964373f022d03df4849c8">linklist</a>
+: <a class="el" href="structdisjoint__set.html#a5ac083a645d964373f022d03df4849c8">disjoint_set</a>
+, <a class="el" href="structgraph.html#a5ac083a645d964373f022d03df4849c8">graph</a>
+, <a class="el" href="structheap.html#a5ac083a645d964373f022d03df4849c8">heap</a>
+, <a class="el" href="structlinklist.html#a5ac083a645d964373f022d03df4849c8">linklist</a>
 , <a class="el" href="structstack.html#a5ac083a645d964373f022d03df4849c8">stack</a>
 , <a class="el" href="structt__queue.html#a5ac083a645d964373f022d03df4849c8">t_queue</a>
+, <a class="el" href="structtree.html#a5ac083a645d964373f022d03df4849c8">tree</a>
+</li>
+<li>neigh
+: <a class="el" href="structgnode.html#a1732f62db9458027b42915781cf70dae">gnode</a>
 </li>
 <li>next
 : <a class="el" href="structmemory__record.html#a036d0fb26bf29931c0a2a8a6fee6208d">memory_record</a>
@@ -254,6 +388,16 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 <li>nmemb
 : <a class="el" href="structmemory__record.html#a79fd723df92f68cf8a6207a1d98b4c01">memory_record</a>
 </li>
+<li>node
+: <a class="el" href="structdag__info.html#abd9f7f896c5f39a850c9f8928e9e4d71">dag_info</a>
+, <a class="el" href="structgedge.html#ab16454f87f2b5245c7bc4fa159deaa77">gedge</a>
+</li>
+<li>node_count
+: <a class="el" href="structtree.html#a31c8e276ee5b1f550655b8295856236c">tree</a>
+</li>
+<li>nodes
+: <a class="el" href="structgraph.html#a421a5061e311b7a6542cb196b27780d7">graph</a>
+</li>
 <li>nxt
 : <a class="el" href="structllnode.html#a96d2332feecbc91af592f3c3435e597e">llnode</a>
 </li>
@@ -261,6 +405,12 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 
 
 <h3><a id="index_p"></a>- p -</h3><ul>
+<li>parent
+: <a class="el" href="structbfs__info.html#a051e2bf8bdb537a6ba2e60d1104a6950">bfs_info</a>
+, <a class="el" href="structdfs__info.html#a051e2bf8bdb537a6ba2e60d1104a6950">dfs_info</a>
+, <a class="el" href="structdist__info.html#a6a0335e4eaa7896bb21aae7e594f4642">dist_info</a>
+, <a class="el" href="structt__djset__node.html#a4dafd66c26e6b8acf64d2feba6141bcc">t_djset_node</a>
+</li>
 <li>peek
 : <a class="el" href="structstack.html#a81182a164ab3412a9473dba76e12cfa2">stack</a>
 , <a class="el" href="structt__queue.html#a81182a164ab3412a9473dba76e12cfa2">t_queue</a>
@@ -268,19 +418,41 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 <li>pop
 : <a class="el" href="structstack.html#ae2dbaf5425d3f0397ca2be907397ad91">stack</a>
 </li>
+<li>post
+: <a class="el" href="structdfs__info.html#a0d14d5d8fc7e0401ba1f864700d3d733">dfs_info</a>
+</li>
+<li>postorder
+: <a class="el" href="structtree.html#afba05be71a0e05fe3f43d093c75d35ad">tree</a>
+</li>
+<li>pre
+: <a class="el" href="structdfs__info.html#a985480057de50493114f719b1797d5b0">dfs_info</a>
+</li>
+<li>pred
+: <a class="el" href="structtree.html#a2ccb69055a754ab18490a6bacd348232">tree</a>
+</li>
+<li>preorder
+: <a class="el" href="structtree.html#a75b827f1bbc0268029c986a2853719f3">tree</a>
+</li>
 <li>prev_node
 : <a class="el" href="structlinklist.html#aa200138f2ebfb230f10df9f7ff634563">linklist</a>
 </li>
 <li>print
-: <a class="el" href="structlinklist.html#a3d10b0d42d15474697029a7b9ff1584b">linklist</a>
+: <a class="el" href="structdisjoint__set.html#a3d10b0d42d15474697029a7b9ff1584b">disjoint_set</a>
+, <a class="el" href="structgraph.html#a3d10b0d42d15474697029a7b9ff1584b">graph</a>
+, <a class="el" href="structheap.html#a3d10b0d42d15474697029a7b9ff1584b">heap</a>
+, <a class="el" href="structlinklist.html#a3d10b0d42d15474697029a7b9ff1584b">linklist</a>
 , <a class="el" href="structstack.html#a3d10b0d42d15474697029a7b9ff1584b">stack</a>
 , <a class="el" href="structt__queue.html#a3d10b0d42d15474697029a7b9ff1584b">t_queue</a>
+, <a class="el" href="structtree.html#a3d10b0d42d15474697029a7b9ff1584b">tree</a>
 </li>
 <li>print_data
 : <a class="el" href="structdata__params.html#aa37edc4a43d8de46027b4c529d29f31f">data_params</a>
+, <a class="el" href="structgraph.html#aa37edc4a43d8de46027b4c529d29f31f">graph</a>
+, <a class="el" href="structheap.html#aa37edc4a43d8de46027b4c529d29f31f">heap</a>
 , <a class="el" href="structlinklist.html#aa37edc4a43d8de46027b4c529d29f31f">linklist</a>
 , <a class="el" href="structstack.html#aa37edc4a43d8de46027b4c529d29f31f">stack</a>
 , <a class="el" href="structt__queue.html#aa37edc4a43d8de46027b4c529d29f31f">t_queue</a>
+, <a class="el" href="structtree.html#aa37edc4a43d8de46027b4c529d29f31f">tree</a>
 </li>
 <li>print_info
 : <a class="el" href="structlinklist.html#a2d27fd4179fb0a19f141b87dea93e6de">linklist</a>
@@ -295,19 +467,42 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 
 
 <h3><a id="index_r"></a>- r -</h3><ul>
+<li>rchild
+: <a class="el" href="structtree__node.html#a64d6ef3f2094666040a8ba1b75bebaf0">tree_node</a>
+</li>
 <li>rear
 : <a class="el" href="structt__queue.html#af866be352de659d624986cb76b8d45b6">t_queue</a>
+</li>
+<li>root
+: <a class="el" href="structtree.html#a9bf6e8677a8b1712275ad4d17e5811c7">tree</a>
 </li>
 </ul>
 
 
 <h3><a id="index_s"></a>- s -</h3><ul>
+<li>size
+: <a class="el" href="structdisjoint__set.html#a439227feff9d7f55384e8780cfc2eb82">disjoint_set</a>
+, <a class="el" href="structheap.html#a439227feff9d7f55384e8780cfc2eb82">heap</a>
+, <a class="el" href="structt__djset__node.html#a439227feff9d7f55384e8780cfc2eb82">t_djset_node</a>
+</li>
+<li>sort
+: <a class="el" href="structheap.html#a35b6fbe271ea84a19deab2c35c433cb6">heap</a>
+</li>
+<li>subset
+: <a class="el" href="structdisjoint__set.html#a6d3a5c5054e2f0080f88a743cdc7a26c">disjoint_set</a>
+</li>
+<li>succ
+: <a class="el" href="structtree.html#abc8666d586042ab1371332d3708360fe">tree</a>
+</li>
 <li>swap
 : <a class="el" href="structdata__params.html#a367489b820e375a9c9c5c0d96679183e">data_params</a>
+, <a class="el" href="structgraph.html#a367489b820e375a9c9c5c0d96679183e">graph</a>
 , <a class="el" href="structlinklist.html#a367489b820e375a9c9c5c0d96679183e">linklist</a>
+, <a class="el" href="structtree.html#a367489b820e375a9c9c5c0d96679183e">tree</a>
 </li>
-<li>swp_idx
-: <a class="el" href="structdata__params.html#a8e625725b9a29e3c785ee9ed3935764d">data_params</a>
+<li>swap_idx
+: <a class="el" href="structdata__params.html#a6b2c881258cf8f25e6c8338e205d45fe">data_params</a>
+, <a class="el" href="structheap.html#a6b2c881258cf8f25e6c8338e205d45fe">heap</a>
 </li>
 </ul>
 
@@ -322,11 +517,43 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 <li>top
 : <a class="el" href="structstack.html#af93f4f37fc2ad9c37af4a715423b110c">stack</a>
 </li>
+<li>topo_order_dag
+: <a class="el" href="structgraph.html#ae5734e3673eadc341d686d95ef57a5d5">graph</a>
+</li>
+<li>total_edges
+: <a class="el" href="structgraph.html#afbe7fcd202a7e7d77f923d67d0ec3457">graph</a>
+</li>
 <li>type
 : <a class="el" href="structdata__params.html#a4f82f2e3f2a65f24997dcf54eaf78201">data_params</a>
+, <a class="el" href="structheap.html#ac665af3748c497a6cc40a88db6e87e07">heap</a>
 , <a class="el" href="structlinklist.html#aa6d9640b8e39654b0ac76b326a61f7cb">linklist</a>
 , <a class="el" href="structstack.html#ab723aaec587b5a7e9cad01ef7793b31f">stack</a>
 , <a class="el" href="structt__queue.html#a4593404e7509a899f54a1fe6a9dead52">t_queue</a>
+, <a class="el" href="structtree.html#a4db128f93decce908a4dbe67b88c09dc">tree</a>
+</li>
+</ul>
+
+
+<h3><a id="index_u"></a>- u -</h3><ul>
+<li>update
+: <a class="el" href="structheap.html#a134e7c3a4771d73f6d1547c9d1f05002">heap</a>
+</li>
+</ul>
+
+
+<h3><a id="index_v"></a>- v -</h3><ul>
+<li>visited_neighbors
+: <a class="el" href="structdfs__info.html#a8d68acd7bca176ff678fe39de0167a95">dfs_info</a>
+</li>
+</ul>
+
+
+<h3><a id="index_w"></a>- w -</h3><ul>
+<li>weight
+: <a class="el" href="structgedge.html#aa01147b1f07072d246c76dc85d69df7c">gedge</a>
+</li>
+<li>wprint
+: <a class="el" href="structgraph.html#a1c8e6a957780db1e993831264bc193c2">graph</a>
 </li>
 </ul>
 </div><!-- contents -->

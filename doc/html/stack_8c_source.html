@@ -27,6 +27,7 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">C Everything
    </div>
+   <div id="projectbrief">This is a C repository containing a curated set of generic data structures and algorithm.</div>
   </td>
  </tr>
  </tbody>
@@ -322,7 +323,7 @@ $(document).ready(function(){initNavTree('stack_8c_source.html',''); initResizab
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <a class="code" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> n;</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <span class="comment">// index out of bound</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordflow">if</span> ((idx &lt; 0) &amp;&amp; (idx &gt;= s-&gt;<a class="code" href="structstack.html#ad43c3812e6d13e0518d9f8b8f463ffcf">count</a>)) {</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordflow">if</span> ((idx &lt; 0) || (idx &gt;= s-&gt;<a class="code" href="structstack.html#ad43c3812e6d13e0518d9f8b8f463ffcf">count</a>)) {</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <a class="code" href="logger_8h.html#afa662eea87f350b242541623133e1c5d">LOG_WARN</a>(<span class="stringliteral">&quot;STACKS&quot;</span>, <span class="stringliteral">&quot;index is out of bounds\n&quot;</span>, s-&gt;<a class="code" href="structstack.html#ad43c3812e6d13e0518d9f8b8f463ffcf">count</a>);</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    }</div>
@@ -333,37 +334,38 @@ $(document).ready(function(){initNavTree('stack_8c_source.html',''); initResizab
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    }</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="comment">// Return data for link list based stack</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    n = l-&gt;<a class="code" href="structlinklist.html#a33905f27d41831c760986537a6cd74a3">get_idx</a>(l, idx);</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="keywordflow">return</span> l-&gt;<a class="code" href="structlinklist.html#af9fd2c81a5210dd050924fc45525652e">get_node_data</a>(n);</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;}</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
-<div class="line"><a name="l00326"></a><span class="lineno"><a class="line" href="stack_8c.html#abb35c12ddb877637429f3ad73dcdf441">  326</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stack_8c.html#abb35c12ddb877637429f3ad73dcdf441">destroy_stack</a> (<a class="code" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> d)</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;{</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <a class="code" href="structstack.html">t_stack</a> *s = (<a class="code" href="structstack.html">t_stack</a>*)d;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <a class="code" href="structlinklist.html">t_linklist</a> *l = NULL;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="comment">// Free created stack space</span></div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordflow">switch</span> (s-&gt;<a class="code" href="structstack.html#ab723aaec587b5a7e9cad01ef7793b31f">type</a>) </div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    {</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="stack_8h.html#aa02a5ab81e3098b3aff77fe6f2fd76ebaacc296cb91adb5f99f176b834fee5965">eLL_STACK</a>:</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            l = (<a class="code" href="structlinklist.html">t_linklist</a>*)s-&gt;<a class="code" href="structstack.html#aed770c18132e0bb110af606dd320e2a8">data</a>;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;            l-&gt;<a class="code" href="structlinklist.html#a678e2a357409f0a1ee68202024f34799">destroy</a>(l);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="stack_8h.html#aa02a5ab81e3098b3aff77fe6f2fd76eba56fb7f6f52f525afbe41644e49eca296">eARRAY_STACK</a>:</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="stack_8h.html#aa02a5ab81e3098b3aff77fe6f2fd76ebae596aba4909d719f9d919bfef42f4e03">eARRAY_STACK_DOWN</a>:</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;            <span class="keywordflow">while</span> (s-&gt;<a class="code" href="structstack.html#a68cc511889109dc1cb0d2cb33b6191ba">empty</a>(s) != <span class="keyword">true</span>) {</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                s-&gt;<a class="code" href="structstack.html#a6b4bb1f02d873b6e7eb9b02a6237643b">free</a>(s-&gt;<a class="code" href="structstack.html#ae2dbaf5425d3f0397ca2be907397ad91">pop</a>(s), __FILE__, __LINE__);</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;            }</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            <a class="code" href="memory__manager_8h.html#ab79313f40637a8a20e3dcaac82e5a28f">free_mem</a>(s-&gt;<a class="code" href="structstack.html#aed770c18132e0bb110af606dd320e2a8">data</a>);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        }</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="comment">// Free stack</span></div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <a class="code" href="memory__manager_8h.html#ab79313f40637a8a20e3dcaac82e5a28f">free_mem</a>(s);</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;}</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    l = (<a class="code" href="structlinklist.html">t_linklist</a>*)s-&gt;<a class="code" href="structstack.html#aed770c18132e0bb110af606dd320e2a8">data</a>;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    n = l-&gt;<a class="code" href="structlinklist.html#a33905f27d41831c760986537a6cd74a3">get_idx</a>(l, idx);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keywordflow">return</span> l-&gt;<a class="code" href="structlinklist.html#af9fd2c81a5210dd050924fc45525652e">get_node_data</a>(n);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;}</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
+<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="stack_8c.html#abb35c12ddb877637429f3ad73dcdf441">  327</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="stack_8c.html#abb35c12ddb877637429f3ad73dcdf441">destroy_stack</a> (<a class="code" href="typedefs_8h.html#a8d067d5bd795f6d56743f8713c1ccd8a">t_gen</a> d)</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;{</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <a class="code" href="structstack.html">t_stack</a> *s = (<a class="code" href="structstack.html">t_stack</a>*)d;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <a class="code" href="structlinklist.html">t_linklist</a> *l = NULL;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keywordtype">int</span> i;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="comment">// Free created stack space</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keywordflow">switch</span> (s-&gt;<a class="code" href="structstack.html#ab723aaec587b5a7e9cad01ef7793b31f">type</a>) </div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    {</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="stack_8h.html#aa02a5ab81e3098b3aff77fe6f2fd76ebaacc296cb91adb5f99f176b834fee5965">eLL_STACK</a>:</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;            l = (<a class="code" href="structlinklist.html">t_linklist</a>*)s-&gt;<a class="code" href="structstack.html#aed770c18132e0bb110af606dd320e2a8">data</a>;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            l-&gt;<a class="code" href="structlinklist.html#a678e2a357409f0a1ee68202024f34799">destroy</a>(l);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="stack_8h.html#aa02a5ab81e3098b3aff77fe6f2fd76eba56fb7f6f52f525afbe41644e49eca296">eARRAY_STACK</a>:</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="stack_8h.html#aa02a5ab81e3098b3aff77fe6f2fd76ebae596aba4909d719f9d919bfef42f4e03">eARRAY_STACK_DOWN</a>:</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;            <span class="keywordflow">while</span> (s-&gt;<a class="code" href="structstack.html#a68cc511889109dc1cb0d2cb33b6191ba">empty</a>(s) != <span class="keyword">true</span>) {</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                s-&gt;<a class="code" href="structstack.html#a6b4bb1f02d873b6e7eb9b02a6237643b">free</a>(s-&gt;<a class="code" href="structstack.html#ae2dbaf5425d3f0397ca2be907397ad91">pop</a>(s), __FILE__, __LINE__);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            }</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;            <a class="code" href="memory__manager_8h.html#ab79313f40637a8a20e3dcaac82e5a28f">free_mem</a>(s-&gt;<a class="code" href="structstack.html#aed770c18132e0bb110af606dd320e2a8">data</a>);</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        }</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="comment">// Free stack</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <a class="code" href="memory__manager_8h.html#ab79313f40637a8a20e3dcaac82e5a28f">free_mem</a>(s);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;}</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
 <div class="ttc" id="alink__list_8c_html_aa82c512392e4228a23073e29f9f4302d"><div class="ttname"><a href="link__list_8c.html#aa82c512392e4228a23073e29f9f4302d">create_link_list</a></div><div class="ttdeci">t_gen create_link_list(char *name, e_lltype type, t_dparams *prm)</div><div class="ttdoc">Create an instance of link list</div><div class="ttdef"><b>Definition:</b> <a href="link__list_8c_source.html#l00069">link_list.c:69</a></div></div>
 <div class="ttc" id="alink__list_8h_html_adfc118d2ce73caed08250eb67dd9517eaa531b2f4fc53d914ccbf1ae1a5df2a34"><div class="ttname"><a href="link__list_8h.html#adfc118d2ce73caed08250eb67dd9517eaa531b2f4fc53d914ccbf1ae1a5df2a34">eSINGLE_LINKLIST</a></div><div class="ttdeci">@ eSINGLE_LINKLIST</div><div class="ttdoc">Singly Link list</div><div class="ttdef"><b>Definition:</b> <a href="link__list_8h_source.html#l00011">link_list.h:11</a></div></div>
 <div class="ttc" id="alogger_8h_html_afa662eea87f350b242541623133e1c5d"><div class="ttname"><a href="logger_8h.html#afa662eea87f350b242541623133e1c5d">LOG_WARN</a></div><div class="ttdeci">#define LOG_WARN(mod, fmt, args...)</div><div class="ttdef"><b>Definition:</b> <a href="logger_8h_source.html#l00018">logger.h:18</a></div></div>
@@ -378,7 +380,7 @@ $(document).ready(function(){initNavTree('stack_8c_source.html',''); initResizab
 <div class="ttc" id="astack_8c_html_a7a05532dbb78c89968b17c89431ca948"><div class="ttname"><a href="stack_8c.html#a7a05532dbb78c89968b17c89431ca948">stack_print</a></div><div class="ttdeci">void stack_print(t_gen d)</div><div class="ttdoc">print_stack_info</div><div class="ttdef"><b>Definition:</b> <a href="stack_8c_source.html#l00267">stack.c:267</a></div></div>
 <div class="ttc" id="astack_8c_html_a84104c900eda9a94c8daec2149129d50"><div class="ttname"><a href="stack_8c.html#a84104c900eda9a94c8daec2149129d50">stack_push_arr_up</a></div><div class="ttdeci">t_gen stack_push_arr_up(t_gen d, t_gen data)</div><div class="ttdoc">Push an element into up growing stack</div><div class="ttdef"><b>Definition:</b> <a href="stack_8c_source.html#l00114">stack.c:114</a></div></div>
 <div class="ttc" id="astack_8c_html_a97c92a32d6c6d7cf56f798e1e237a4ed"><div class="ttname"><a href="stack_8c.html#a97c92a32d6c6d7cf56f798e1e237a4ed">is_stack_empty</a></div><div class="ttdeci">bool is_stack_empty(t_gen d)</div><div class="ttdoc">Check stack empty</div><div class="ttdef"><b>Definition:</b> <a href="stack_8c_source.html#l00093">stack.c:93</a></div></div>
-<div class="ttc" id="astack_8c_html_abb35c12ddb877637429f3ad73dcdf441"><div class="ttname"><a href="stack_8c.html#abb35c12ddb877637429f3ad73dcdf441">destroy_stack</a></div><div class="ttdeci">void destroy_stack(t_gen d)</div><div class="ttdoc">Destroy instance of the stack</div><div class="ttdef"><b>Definition:</b> <a href="stack_8c_source.html#l00326">stack.c:326</a></div></div>
+<div class="ttc" id="astack_8c_html_abb35c12ddb877637429f3ad73dcdf441"><div class="ttname"><a href="stack_8c.html#abb35c12ddb877637429f3ad73dcdf441">destroy_stack</a></div><div class="ttdeci">void destroy_stack(t_gen d)</div><div class="ttdoc">Destroy instance of the stack</div><div class="ttdef"><b>Definition:</b> <a href="stack_8c_source.html#l00327">stack.c:327</a></div></div>
 <div class="ttc" id="astack_8c_html_abd7a8380c594402ed74588d3af2ca72b"><div class="ttname"><a href="stack_8c.html#abd7a8380c594402ed74588d3af2ca72b">is_stack_full</a></div><div class="ttdeci">bool is_stack_full(t_gen d)</div><div class="ttdoc">Check stack full</div><div class="ttdef"><b>Definition:</b> <a href="stack_8c_source.html#l00083">stack.c:83</a></div></div>
 <div class="ttc" id="astack_8c_html_ac38889a9faca85296e445008281d49d6"><div class="ttname"><a href="stack_8c.html#ac38889a9faca85296e445008281d49d6">stack_push</a></div><div class="ttdeci">f_gen2 stack_push[]</div><div class="ttdoc">Look Up function ptrs for pushing to stack.</div><div class="ttdef"><b>Definition:</b> <a href="stack_8c_source.html#l00024">stack.c:24</a></div></div>
 <div class="ttc" id="astack_8c_html_ac72319c5a60bf68832f3331c168fbd28"><div class="ttname"><a href="stack_8c.html#ac72319c5a60bf68832f3331c168fbd28">stack_push_ll</a></div><div class="ttdeci">t_gen stack_push_ll(t_gen d, t_gen data)</div><div class="ttdoc">Push an element into a link list based stack</div><div class="ttdef"><b>Definition:</b> <a href="stack_8c_source.html#l00202">stack.c:202</a></div></div>
@@ -391,7 +393,7 @@ $(document).ready(function(){initNavTree('stack_8c_source.html',''); initResizab
 <div class="ttc" id="astack_8h_html_aa02a5ab81e3098b3aff77fe6f2fd76ebae596aba4909d719f9d919bfef42f4e03"><div class="ttname"><a href="stack_8h.html#aa02a5ab81e3098b3aff77fe6f2fd76ebae596aba4909d719f9d919bfef42f4e03">eARRAY_STACK_DOWN</a></div><div class="ttdeci">@ eARRAY_STACK_DOWN</div><div class="ttdoc">Down Growing Stack.</div><div class="ttdef"><b>Definition:</b> <a href="stack_8h_source.html#l00015">stack.h:15</a></div></div>
 <div class="ttc" id="astructdata__params_html"><div class="ttname"><a href="structdata__params.html">data_params</a></div><div class="ttdoc">data params struct defn</div><div class="ttdef"><b>Definition:</b> <a href="common_8h_source.html#l00018">common.h:18</a></div></div>
 <div class="ttc" id="astructdata__params_html_a6b4bb1f02d873b6e7eb9b02a6237643b"><div class="ttname"><a href="structdata__params.html#a6b4bb1f02d873b6e7eb9b02a6237643b">data_params::free</a></div><div class="ttdeci">f_free free</div><div class="ttdoc">Routine used for freeing elements of said data.</div><div class="ttdef"><b>Definition:</b> <a href="common_8h_source.html#l00026">common.h:26</a></div></div>
-<div class="ttc" id="astructdata__params_html_aa37edc4a43d8de46027b4c529d29f31f"><div class="ttname"><a href="structdata__params.html#aa37edc4a43d8de46027b4c529d29f31f">data_params::print_data</a></div><div class="ttdeci">f_print print_data</div><div class="ttdoc">Routine used for printing elem data.</div><div class="ttdef"><b>Definition:</b> <a href="common_8h_source.html#l00031">common.h:31</a></div></div>
+<div class="ttc" id="astructdata__params_html_aa37edc4a43d8de46027b4c529d29f31f"><div class="ttname"><a href="structdata__params.html#aa37edc4a43d8de46027b4c529d29f31f">data_params::print_data</a></div><div class="ttdeci">f_print print_data</div><div class="ttdoc">Routine used for printing elem data.</div><div class="ttdef"><b>Definition:</b> <a href="common_8h_source.html#l00033">common.h:33</a></div></div>
 <div class="ttc" id="astructlinklist_html"><div class="ttname"><a href="structlinklist.html">linklist</a></div><div class="ttdoc">Link List main structure.</div><div class="ttdef"><b>Definition:</b> <a href="link__list_8h_source.html#l00026">link_list.h:26</a></div></div>
 <div class="ttc" id="astructlinklist_html_a160630d70cdc1587fa747de23cf4bc46"><div class="ttname"><a href="structlinklist.html#a160630d70cdc1587fa747de23cf4bc46">linklist::add</a></div><div class="ttdeci">f_ins add</div><div class="ttdoc">routine to Add elem at begin of link list</div><div class="ttdef"><b>Definition:</b> <a href="link__list_8h_source.html#l00038">link_list.h:38</a></div></div>
 <div class="ttc" id="astructlinklist_html_a33905f27d41831c760986537a6cd74a3"><div class="ttname"><a href="structlinklist.html#a33905f27d41831c760986537a6cd74a3">linklist::get_idx</a></div><div class="ttdeci">f_get_idx get_idx</div><div class="ttdoc">routine to get node at idx</div><div class="ttdef"><b>Definition:</b> <a href="link__list_8h_source.html#l00042">link_list.h:42</a></div></div>

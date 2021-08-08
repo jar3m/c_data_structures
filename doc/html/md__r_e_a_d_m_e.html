@@ -27,6 +27,7 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">C Everything
    </div>
+   <div id="projectbrief">This is a C repository containing a curated set of generic data structures and algorithm.</div>
   </td>
  </tr>
  </tbody>
@@ -85,7 +86,113 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html',''); initResizab
 <div class="title">c_everything </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A library that builds an abstract set of procedures for smooth operation. </p>
+<div class="textblock"><ul>
+<li>This is a C repository containing a curated set of data structures and algorithm.</li>
+<li>The data structures are implemented keeping them Generic and Abstract.</li>
+<li>Genericness: Since in C any data structure is completely type dependent, we've tried to achieve a genric data structure that supports any standard data types (int, char, float, etc..) and user defined data types (struct user {})<ul>
+<li>The means by which we achieved a data structure by storing the pointer to the data (std or user defined) rather the data itself</li>
+<li>Given below is a snippet of code explaining the same, <div class="fragment"><div class="line">// Link list node definition</div>
+<div class="line">typdef void* t_gen;                     //&lt; Generic data pointer</div>
+<div class="line"> </div>
+<div class="line">typedef struct llnode {</div>
+<div class="line">        t_gen data;                     //&lt; Pointer to the data to be stored in link list</div>
+<div class="line">        struct llnode *nxt;             //&lt; Pointer to next node in list</div>
+<div class="line">        struct llnode *prv;             //&lt; Pointer to prev node in list</div>
+<div class="line">} t_llnode;</div>
+</div><!-- fragment --></li>
+</ul>
+</li>
+<li>Abstractness: The operations/procedures for each data structure is abstracted to the user by using function pointers, thus creating a psuedo class like structure <div class="fragment"><div class="line">t_linklist *l;</div>
+<div class="line">t_dparams dp;</div>
+<div class="line"> </div>
+<div class="line">// Data type specific operations to be given to data structure</div>
+<div class="line">init_data_params(&amp;dp, eSTRING);</div>
+<div class="line"> </div>
+<div class="line">// Create a string XOR link list</div>
+<div class="line">l = create_link_list(&quot;STRING XORLL&quot;,eXOR_LINKLIST, &amp;dp);</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">// Add elements to linklist</div>
+<div class="line">l-&gt;add(l, &quot;Hello&quot;);</div>
+<div class="line">l-&gt;add(l, &quot;World&quot;);</div>
+<div class="line"> </div>
+<div class="line">// print linklist</div>
+<div class="line">l-&gt;print(l);</div>
+<div class="line"> </div>
+<div class="line">// Destroy linklist</div>
+<div class="line">l-&gt;destroy(l);</div>
+</div><!-- fragment --></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md9"></a>
+LIST OF DATA STRUCTURES</h1>
+<ul>
+<li>Link List<ul>
+<li>Singly linked list</li>
+<li>Doubly linked list</li>
+<li>Circular linked list</li>
+<li>Doubly Circular linked list</li>
+<li>XOR linked list</li>
+</ul>
+</li>
+<li>Stacks<ul>
+<li>Array based</li>
+<li>Link List based</li>
+</ul>
+</li>
+<li>Queues<ul>
+<li>Array based</li>
+<li>Link List based</li>
+</ul>
+</li>
+<li>Hashes</li>
+<li>Disjoint Sets</li>
+<li>Heaps (Array based Binary heap)<ul>
+<li>Min heap</li>
+<li>Max heap</li>
+</ul>
+</li>
+<li>Trees<ul>
+<li>Binary Search Tree</li>
+<li>AVL Trees</li>
+</ul>
+</li>
+<li>Graphs<ul>
+<li>Weighted/Unweighted</li>
+<li>Symmetric/Assymetric</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md10"></a>
+ALGORITHMS</h1>
+<ul>
+<li>Searching<ul>
+<li>Linear Search</li>
+<li>Binary Search</li>
+</ul>
+</li>
+<li>Sorting<ul>
+<li>Insertion Sort</li>
+<li>Selection Sort</li>
+<li>Bubble Sort</li>
+<li>Quick Sort</li>
+<li>Merge Sort</li>
+<li>Heap Sort</li>
+</ul>
+</li>
+<li>Graph Algorithms<ul>
+<li>Dijkstra's Shortest Path</li>
+<li>Bellman Ford Shortest Path</li>
+<li>Prim's Minimum Spanning Tree</li>
+<li>Kruskal's Minimus Spanning Tree</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md11"></a>
+BUILD</h1>
+<p>$ make clean; make all</p>
+<h1><a class="anchor" id="autotoc_md12"></a>
+RUN</h1>
+<p>$ ./foo.out </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
