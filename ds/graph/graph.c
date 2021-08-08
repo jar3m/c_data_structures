@@ -1,6 +1,7 @@
 /*! @file graph.c
     @brief 
     Contains definitions of routines supported by graph
+    @author Meraj
 */
 #include "graph.h"
 #include "link_list.h"
