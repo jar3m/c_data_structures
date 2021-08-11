@@ -109,7 +109,10 @@ l->destroy(l);
 * [*Graph docs*](https://jar3m.github.io/c_everything/docs/html/graph_8c.html)
 
 # CONFIGURE
+Create a folder called `bin` inder the following directories  `ds/`, `common/` and `test/`
+
 Def.make change flags
+
 
 # BUILD
 $ make clean; make all
