@@ -1,4 +1,4 @@
-## C Everything
+## Generic Data stuctures using C
 
 # Info
 
