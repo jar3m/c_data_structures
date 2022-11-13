@@ -119,5 +119,4 @@ $ ./foo.out
 <meta name="description" content="Free Web tutorials">
 <meta name="keywords" content="C, data structures,algorithms, link list, stack, queue, heap, searching, sorting, trees, graphs, disjoint set, generic, STL, Dijkstra's Shortest Path, Bellman Ford Shortest Path, Prim's Minimum Spanning Tree, Kruskal's Minimus Spanning Tree, DAG, Single Link list, Doublly Link list, xor link list, circular link list, symmetric graph, acyclic graph">
 <meta name="author" content="jar3m">
-
-<meta name="google-site-verification" content="nnCl1q8vBmkhVrzWvmuSth7KW7IBy9WiG6jaBiClmjg" />
+<meta name="google-site-verification" content="7aTMIese6mJbonitvZKRbqsT5IGWhpynYjv7YXhXAi0" />
