@@ -44,43 +44,43 @@ l->destroy(l);
 
 # LIST OF DATA STRUCTURES
 
-* [**Link List**](https://github.com/jar3m/c_everything/blob/master/ds/link_list/link_list.c)
+* [**Link List**](https://github.com/jar3m/c_data_structures/blob/master/ds/link_list/link_list.c)
   * Singly linked list
   * Doubly linked list 
   * Circular linked list 
   * Doubly Circular linked list 
   * XOR linked list 
 
-* [**Stacks**](https://github.com/jar3m/c_everything/blob/master/ds/stack/stack.c) 
+* [**Stacks**](https://github.com/jar3m/c_data_structures/blob/master/ds/stack/stack.c) 
   * Array based 
   * Link List based
 
-* [**Queues**](https://github.com/jar3m/c_everything/blob/master/ds/queue/queue.c) 
+* [**Queues**](https://github.com/jar3m/c_data_structures/blob/master/ds/queue/queue.c) 
   * Array based 
   * Link List based
 
 * Hashes
 
-* [Disjoint Sets](https://github.com/jar3m/c_everything/blob/master/ds/disjoint_set/disjoint_set.c) 
+* [Disjoint Sets](https://github.com/jar3m/c_data_structures/blob/master/ds/disjoint_set/disjoint_set.c) 
 
-* [Heaps (Array based Binary heap)](https://github.com/jar3m/c_everything/blob/master/ds/heap/heap.c)
+* [Heaps (Array based Binary heap)](https://github.com/jar3m/c_data_structures/blob/master/ds/heap/heap.c)
   * Min heap
   * Max heap
 
-* [Trees](https://github.com/jar3m/c_everything/blob/master/ds/tree/tree.c) 
+* [Trees](https://github.com/jar3m/c_data_structures/blob/master/ds/tree/tree.c) 
   * Binary Search Tree
   * AVL Trees 
 
-* [Graphs](https://github.com/jar3m/c_everything/blob/master/ds/graph/graph.c)
+* [Graphs](https://github.com/jar3m/c_data_structures/blob/master/ds/graph/graph.c)
  * Weighted/Unweighted
  * Symmetric/Assymetric
 
 # ALGORITHMS
-* [Searching](https://github.com/jar3m/c_everything/blob/master/ds/array/array.c)
+* [Searching](https://github.com/jar3m/c_data_structures/blob/master/ds/array/array.c)
   * Linear Search
   * Binary Search
 
-* [Sorting](https://github.com/jar3m/c_everything/blob/master/ds/array/array.c) 
+* [Sorting](https://github.com/jar3m/c_data_structures/blob/master/ds/array/array.c) 
   * Insertion Sort
   * Selection Sort
   * Bubble Sort
@@ -88,24 +88,24 @@ l->destroy(l);
   * Merge Sort
   * Heap Sort
 
-* [Graph Algorithms](https://github.com/jar3m/c_everything/blob/master/ds/graph/graph.c)
+* [Graph Algorithms](https://github.com/jar3m/c_data_structures/blob/master/ds/graph/graph.c)
   * Dijkstra's Shortest Path
   * Bellman Ford Shortest Path 
   * Prim's Minimum Spanning Tree
   * Kruskal's Minimus Spanning Tree
 
 # Code Documentation
-* [*Source code Documentation*](https://jar3m.github.io/c_everything/docs/html/index.html)
-* [*File List*](https://jar3m.github.io/c_everything/docs/html/files.html)
-* [*Generic Data*](https://jar3m.github.io/c_everything/docs/html/generic__def_8h.html)
-* [*Link List docs*](https://jar3m.github.io/c_everything/docs/html/link_list_8c.html)
-* [*Stack docs*](https://jar3m.github.io/c_everything/docs/html/stack_8c.html)
-* [*Queue docs*](https://jar3m.github.io/c_everything/docs/html/queue_8c.html)
-* [*Heap docs*](https://jar3m.github.io/c_everything/docs/html/heap_8c.html)
-* [*Searching Sorting docs*](https://jar3m.github.io/c_everything/docs/html/array_8c.html)
-* [*Tree docs*](https://jar3m.github.io/c_everything/docs/html/tree_8c.html)
-* [*Disjoint Sets docs*](https://jar3m.github.io/c_everything/docs/html/disjoint_set_8c.html)
-* [*Graph docs*](https://jar3m.github.io/c_everything/docs/html/graph_8c.html)
+* [*Source code Documentation*](https://jar3m.github.io/c_data_structures/docs/html/index.html)
+* [*File List*](https://jar3m.github.io/c_data_structures/docs/html/files.html)
+* [*Generic Data*](https://jar3m.github.io/c_data_structures/docs/html/generic__def_8h.html)
+* [*Link List docs*](https://jar3m.github.io/c_data_structures/docs/html/link_list_8c.html)
+* [*Stack docs*](https://jar3m.github.io/c_data_structures/docs/html/stack_8c.html)
+* [*Queue docs*](https://jar3m.github.io/c_data_structures/docs/html/queue_8c.html)
+* [*Heap docs*](https://jar3m.github.io/c_data_structures/docs/html/heap_8c.html)
+* [*Searching Sorting docs*](https://jar3m.github.io/c_data_structures/docs/html/array_8c.html)
+* [*Tree docs*](https://jar3m.github.io/c_data_structures/docs/html/tree_8c.html)
+* [*Disjoint Sets docs*](https://jar3m.github.io/c_data_structures/docs/html/disjoint_set_8c.html)
+* [*Graph docs*](https://jar3m.github.io/c_data_structures/docs/html/graph_8c.html)
 
 # CONFIGURE
 Def.make change flags
