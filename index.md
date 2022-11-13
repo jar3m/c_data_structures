@@ -99,7 +99,7 @@ l->destroy(l);
 * [*File List*](https://jar3m.github.io/c_everything/docs/html/files.html)
 * [*Generic Data*](https://jar3m.github.io/c_everything/docs/html/generic__def_8h.html)
 * [*Link List docs*](https://jar3m.github.io/c_everything/docs/html/link_list_8c.html)
-* [*Stack docs*](https://jar3m.github.io/c_everything/docs/html/stackt_8c.html)
+* [*Stack docs*](https://jar3m.github.io/c_everything/docs/html/stack_8c.html)
 * [*Queue docs*](https://jar3m.github.io/c_everything/docs/html/queue_8c.html)
 * [*Heap docs*](https://jar3m.github.io/c_everything/docs/html/heap_8c.html)
 * [*Searching Sorting docs*](https://jar3m.github.io/c_everything/docs/html/array_8c.html)
